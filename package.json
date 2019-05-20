@@ -1,17 +1,21 @@
 {
-  "name": "hello-world",
+  "name": "calipmetrics",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ungap/url-search-params": "^0.1.2",
     "leaflet": "^1.5.1",
     "leaflet.markercluster": "^1.4.1",
     "prop-types": "^15.7.2",
+    "query-string": "^6.5.0",
+    "querystring": "^0.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-leaflet": "^2.3.0",
     "react-leaflet-markercluster": "^2.0.0-rc3",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "url-search-params": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

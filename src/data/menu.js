@@ -8,7 +8,7 @@ export default [
         url: '/bmap'
     },
     {
-        title: 'Contact Us',
-        url: '/contact'
+        title: 'LoguedIn',
+        url: '/logued_in'
     }
 ];
