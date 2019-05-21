@@ -4,6 +4,29 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 class BMap extends Component {
+
+  componentDidMount(){
+    var token = JSON.parse(localStorage.getItem('token'));
+
+    var url = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.status=paid&access_token="+ token.access_token;
+
+    fetch(url)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(data){
+        for (var i = 0; i < data.results.length; i++) {
+          if (data.results[i].shipping.receiver_address !== undefined) {
+            if (data.results[i].shipping.receiver_address.latitude !== null) {
+              console.log(data.results[i].shipping.receiver_address.latitude);
+              console.log(data.results[i].shipping.receiver_address.longitude);
+              console.log('--------------------')  
+            }
+          }
+        }
+      })
+  }
+
   render() {
     return (
       <div className="BMap">
