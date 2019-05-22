@@ -3,12 +3,20 @@ import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
+
+var complete_marker_list = {lat: {}, long: {}};
+var marker_list = {lat: {0:0}, long: {0:0}};
+
+
 class BMap extends Component {
 
   componentDidMount(){
     var token = JSON.parse(localStorage.getItem('token'));
 
     var url = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.status=paid&access_token="+ token.access_token;
+
+    var cont = 0;
+    var cont2 = 0;
 
     fetch(url)
       .then(function(response){
@@ -18,51 +26,60 @@ class BMap extends Component {
         for (var i = 0; i < data.results.length; i++) {
           if (data.results[i].shipping.receiver_address !== undefined) {
             if (data.results[i].shipping.receiver_address.latitude !== null) {
-              console.log(data.results[i].shipping.receiver_address.latitude);
-              console.log(data.results[i].shipping.receiver_address.longitude);
-              console.log('--------------------')  
+
+              complete_marker_list.lat[cont] = data.results[i].shipping.receiver_address.latitude;
+              complete_marker_list.long[cont] = data.results[i].shipping.receiver_address.longitude;
+              cont++;
             }
           }
         }
-      })
+
+        for (var x = 0; x < Object.keys(complete_marker_list.lat).length; x++) {
+
+          for (var y = 0; y < Object.keys(marker_list.lat).length; y++) {
+
+            if(complete_marker_list.lat[x] === marker_list.lat[y] && complete_marker_list.long[x] === marker_list.long[y]){
+              break;
+
+            }else if(y === Object.keys(marker_list.lat).length - 1){
+
+              marker_list.lat[cont2] = complete_marker_list.lat[x];
+              marker_list.long[cont2] = complete_marker_list.long[x];
+              cont2++;
+            }
+
+          }
+        }
+
+        localStorage.setItem('markerList',JSON.stringify(marker_list));
+      });
   }
 
   render() {
+    var ml = JSON.parse(localStorage.getItem('markerList'));
+    
+    var makers = [];
+
+    function makeMarkers(){
+      for (var i = 0;i<Object.keys(ml.lat).length;i++){
+        makers.push(<Marker position={[ml.lat[i], ml.long[i]]}><Popup>Marker</Popup></Marker>);
+      }
+
+      return makers;
+    }
+
     return (
       <div className="BMap">
         <h1 style={{textAlign: 'center'}}>MAP PAGE</h1>
         
         <div>
-          <Map style={{ display: 'block',marginLeft: 'auto',marginRight: 'auto',height: '500px', width: '700px' }} center={[51.505, -0.09]} zoom={13} maxZoom={17}>
+          <Map style={{ display: 'block',marginLeft: 'auto',marginRight: 'auto',height: '500px', width: '700px' }} center={[-34.304573, -64.76381]} zoom={3} maxZoom={17}>
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             <MarkerClusterGroup maxClusterRadius={120}>
-              <Marker position={[51.505, -0.09]}>
-                <Popup>Marker 1</Popup>
-              </Marker>
-              <Marker position={[51.300, -0.04]}>
-                <Popup>Marker 2</Popup>
-              </Marker>
-              <Marker position={[51.700, -0.13]}>
-                <Popup>Marker 3</Popup>
-              </Marker>
-              <Marker position={[51.505, 0.2]}>
-                <Popup>Marker 4</Popup>
-              </Marker>
-              <Marker position={[51.390, -0.04]}>
-                <Popup>Marker 5</Popup>
-              </Marker>
-              <Marker position={[51.760, -0.13]}>
-                <Popup>Marker 6</Popup>
-              </Marker>
-              <Marker position={[51.540, 0.2]}>
-                <Popup>Marker 7</Popup>
-              </Marker>
-              <Marker position={[51.540, 0.3]}>
-                <Popup>Marker 8</Popup>
-              </Marker>
+              {makeMarkers()}
             </MarkerClusterGroup>
           </Map>
         </div>

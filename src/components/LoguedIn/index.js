@@ -53,8 +53,7 @@ class LoguedIn extends Component {
   render() {
     return (
       <div className="LoguedIn">
-        <h1 style={{textAlign: 'center'}}>CONTACT PAGE</h1>
-        <button style={{textAlign: 'center',display: 'block',marginLeft: 'auto',marginRight: 'auto',height: '10%', width: '10%'}}>Mapa</button>
+        <h1 style={{textAlign: 'center'}}>YOU ARE LOGUED</h1>
       </div>
     );
   }
