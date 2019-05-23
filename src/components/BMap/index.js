@@ -10,7 +10,7 @@ var marker_list = {lat: {0:0}, long: {0:0}};
 
 class BMap extends Component {
 
-  componentDidMount(){
+  componentWillMount(){
     var token = JSON.parse(localStorage.getItem('token'));
 
     var url = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.status=paid&access_token="+ token.access_token;
@@ -50,7 +50,7 @@ class BMap extends Component {
 
           }
         }
-
+        console.log(marker_list)
         localStorage.setItem('markerList',JSON.stringify(marker_list));
       });
   }
