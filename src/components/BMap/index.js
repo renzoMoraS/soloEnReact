@@ -4,8 +4,8 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 
-var complete_marker_list = {lat: {}, long: {}};
-var marker_list = {lat: {0:0}, long: {0:0}};
+var complete_marker_list = {name: {}, lat: {}, long: {}};
+var marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
 
 
 class BMap extends Component {
@@ -26,7 +26,8 @@ class BMap extends Component {
         for (var i = 0; i < data.results.length; i++) {
           if (data.results[i].shipping.receiver_address !== undefined) {
             if (data.results[i].shipping.receiver_address.latitude !== null) {
-
+              
+              complete_marker_list.name[cont] = data.results[i].buyer.nickname;
               complete_marker_list.lat[cont] = data.results[i].shipping.receiver_address.latitude;
               complete_marker_list.long[cont] = data.results[i].shipping.receiver_address.longitude;
               cont++;
@@ -39,10 +40,17 @@ class BMap extends Component {
           for (var y = 0; y < Object.keys(marker_list.lat).length; y++) {
 
             if(complete_marker_list.lat[x] === marker_list.lat[y] && complete_marker_list.long[x] === marker_list.long[y]){
+              if (marker_list.cant[y] === undefined) {
+                marker_list.cant[y] = 1;
+              }else{
+                marker_list.cant[y] = marker_list.cant[y] + 1;
+              }
+
               break;
 
             }else if(y === Object.keys(marker_list.lat).length - 1){
-
+              
+              marker_list.name[cont2] = complete_marker_list.name[x];
               marker_list.lat[cont2] = complete_marker_list.lat[x];
               marker_list.long[cont2] = complete_marker_list.long[x];
               cont2++;
@@ -62,7 +70,7 @@ class BMap extends Component {
 
     function makeMarkers(){
       for (var i = 0;i<Object.keys(ml.lat).length;i++){
-        makers.push(<Marker position={[ml.lat[i], ml.long[i]]}><Popup>Marker</Popup></Marker>);
+        makers.push(<Marker position={[ml.lat[i], ml.long[i]]}><Popup>{ml.name[i] + " : " + ml.cant[i] + " compras"}</Popup></Marker>);
       }
 
       return makers;
