@@ -4,4 +4,4 @@ This is a project from the Luis A. Huergo Institute students to the enterprise C
 
 - Mercadolibre's API.
 - HTML, CSS, JavaScript.
-- NodeJs.
+- React.
