@@ -22,7 +22,7 @@ var options = {
 
 class LoguedIn extends Component {
 
-  componentDidMount(){
+  componentWillMount(){
 
     const URLSearchParams = window.URLSearchParams;
 
@@ -34,9 +34,24 @@ class LoguedIn extends Component {
     burl.append("code",parse(this.props.location.search).code);
     burl.append("redirect_uri",options.form.redirect_uri)
 
-    var aurl = url + burl
+    var aurl = url + burl.toString()
 
-    fetch(aurl,options)
+    fetch('http://localhost:4000/sasara', { method: "POST", headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'},body: 'basura' })
+      .then(function(response){ 
+        return response.json()
+          .then(function(data) {
+            var token = data;
+            localStorage.setItem('token',JSON.stringify(token));
+            console.log(token)    
+          })
+          .catch(function(error) {
+            console.log('Fetch Error:', error);
+          });
+      });
+
+          /* fetch(aurl,options)
       .then(function(response){ 
         return response.json()
           .then(function(data) {
@@ -48,6 +63,7 @@ class LoguedIn extends Component {
           console.log('Fetch Error:', error);
         });
     });
+    */
   }
 
   render() {
