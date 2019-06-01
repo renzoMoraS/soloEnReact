@@ -34,24 +34,19 @@ class LoguedIn extends Component {
     burl.append("code",parse(this.props.location.search).code);
     burl.append("redirect_uri",options.form.redirect_uri)
 
-    var aurl = url + burl.toString()
+    var aurl = url + burl
 
-    fetch('http://localhost:4000/sasara', { method: "POST", headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'},body: 'basura' })
-      .then(function(response){ 
-        return response.json()
-          .then(function(data) {
-            var token = data;
-            localStorage.setItem('token',JSON.stringify(token));
-            console.log(token)    
-          })
-          .catch(function(error) {
-            console.log('Fetch Error:', error);
-          });
-      });
+    console.log(aurl)
 
-          /* fetch(aurl,options)
+    fetch('http://localhost/sasara', {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify('asas'), // data can be `string` or {object}!
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    })
+
+      fetch(aurl,options)
       .then(function(response){ 
         return response.json()
           .then(function(data) {
@@ -63,7 +58,7 @@ class LoguedIn extends Component {
           console.log('Fetch Error:', error);
         });
     });
-    */
+    
   }
 
   render() {
