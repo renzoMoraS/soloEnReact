@@ -1,24 +1,51 @@
 const express = require('express');
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const request = require('request');
 
 const app = express();
 
-//app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser());
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json()); // support json encoded bodies
 
 // Settings
 app.set('port', process.env.PORT || 4000);
+
+
+var options = { 
+   method: "POST",
+   headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json' 
+   }
+};
+
+
 
 app.get('/',function(req,res){
 	res.write('<h1>Server Node</h1>');
 	res.end();
 });
 
-app.post('/sasara',function(req,res){
-	console.log(req.body);
-});
 
+app.post('/sasara',function(req,res){
+    console.log(req.body.url);
+    var url = req.body.url;
+
+    request.post({url: url, json:true, options}, function (error, response, body) {
+        var token = body;
+        var murl = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.status=paid&access_token="+ token.access_token;
+
+        request.get({url: murl}, function (error, responses, body) {
+            var orders = JSON.parse(body);
+            console.log(orders.results);
+
+        })
+    });	
+
+	res.send('Got a POST request')
+});
 
 // Starting the server
 app.listen(app.get('port'), () => {

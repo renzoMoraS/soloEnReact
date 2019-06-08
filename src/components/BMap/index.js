@@ -11,6 +11,7 @@ var marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
 class BMap extends Component {
 
   componentWillMount(){
+
     var token = JSON.parse(localStorage.getItem('token'));
 
     var url = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.status=paid&access_token="+ token.access_token;
@@ -83,7 +84,7 @@ class BMap extends Component {
         <div>
           <Map style={{ display: 'block',marginLeft: 'auto',marginRight: 'auto',height: '500px', width: '700px' }} center={[-34.304573, -64.76381]} zoom={3} maxZoom={17}>
             <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             <MarkerClusterGroup maxClusterRadius={120}>

@@ -1,33 +1,33 @@
 0 info it worked if it ends with ok
 1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'start' ]
-2 info using npm@3.10.10
-3 info using node@v6.14.1
+2 info using npm@3.5.2
+3 info using node@v8.10.0
 4 verbose run-script [ 'prestart', 'start', 'poststart' ]
 5 info lifecycle calipmetrics@0.1.0~prestart: calipmetrics@0.1.0
 6 silly lifecycle calipmetrics@0.1.0~prestart: no script for prestart, continuing
 7 info lifecycle calipmetrics@0.1.0~start: calipmetrics@0.1.0
 8 verbose lifecycle calipmetrics@0.1.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle calipmetrics@0.1.0~start: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/home/ubuntu/Desktop/soloEnReact/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-10 verbose lifecycle calipmetrics@0.1.0~start: CWD: /home/ubuntu/Desktop/soloEnReact
+9 verbose lifecycle calipmetrics@0.1.0~start: PATH: /usr/share/npm/bin/node-gyp-bin:/home/neji/Desktop/soloEnReact/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+10 verbose lifecycle calipmetrics@0.1.0~start: CWD: /home/neji/Desktop/soloEnReact
 11 silly lifecycle calipmetrics@0.1.0~start: Args: [ '-c', 'react-scripts start' ]
 12 silly lifecycle calipmetrics@0.1.0~start: Returned: code: 1  signal: null
 13 info lifecycle calipmetrics@0.1.0~start: Failed to exec start script
 14 verbose stack Error: calipmetrics@0.1.0 start: `react-scripts start`
 14 verbose stack Exit status 1
-14 verbose stack     at EventEmitter.<anonymous> (/usr/lib/node_modules/npm/lib/utils/lifecycle.js:255:16)
-14 verbose stack     at emitTwo (events.js:106:13)
-14 verbose stack     at EventEmitter.emit (events.js:191:7)
-14 verbose stack     at ChildProcess.<anonymous> (/usr/lib/node_modules/npm/lib/utils/spawn.js:40:14)
-14 verbose stack     at emitTwo (events.js:106:13)
-14 verbose stack     at ChildProcess.emit (events.js:191:7)
-14 verbose stack     at maybeClose (internal/child_process.js:920:16)
-14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:230:5)
+14 verbose stack     at EventEmitter.<anonymous> (/usr/share/npm/lib/utils/lifecycle.js:232:16)
+14 verbose stack     at emitTwo (events.js:126:13)
+14 verbose stack     at EventEmitter.emit (events.js:214:7)
+14 verbose stack     at ChildProcess.<anonymous> (/usr/share/npm/lib/utils/spawn.js:24:14)
+14 verbose stack     at emitTwo (events.js:126:13)
+14 verbose stack     at ChildProcess.emit (events.js:214:7)
+14 verbose stack     at maybeClose (internal/child_process.js:925:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
 15 verbose pkgid calipmetrics@0.1.0
-16 verbose cwd /home/ubuntu/Desktop/soloEnReact
-17 error Linux 4.18.0-15-generic
+16 verbose cwd /home/neji/Desktop/soloEnReact
+17 error Linux 4.18.0-20-generic
 18 error argv "/usr/bin/node" "/usr/bin/npm" "start"
-19 error node v6.14.1
-20 error npm  v3.10.10
+19 error node v8.10.0
+20 error npm  v3.5.2
 21 error code ELIFECYCLE
 22 error calipmetrics@0.1.0 start: `react-scripts start`
 22 error Exit status 1

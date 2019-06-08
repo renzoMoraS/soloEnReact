@@ -38,15 +38,17 @@ class LoguedIn extends Component {
 
     console.log(aurl)
 
-    fetch('http://localhost/sasara', {
-      method: 'POST', // or 'PUT'
-      body: JSON.stringify('asas'), // data can be `string` or {object}!
+    fetch('/sasara', {
+      method: 'POST',
+      body: JSON.stringify({
+        "url": aurl
+      }),
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }
     })
 
-      fetch(aurl,options)
+    /*  fetch(aurl,options)
       .then(function(response){ 
         return response.json()
           .then(function(data) {
@@ -57,7 +59,7 @@ class LoguedIn extends Component {
           .catch(function(error) {
           console.log('Fetch Error:', error);
         });
-    });
+    }); */
     
   }
 
