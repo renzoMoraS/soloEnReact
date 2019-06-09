@@ -47,6 +47,13 @@ class LoguedIn extends Component {
         'Content-Type': 'application/json',
       }
     })
+    .then(function(response){ 
+      return response.json()
+        .then(function(data) {
+          console.log(data)
+          localStorage.setItem('datosMapa',JSON.stringify(data));
+        })
+    });
 
     /*  fetch(aurl,options)
       .then(function(response){ 

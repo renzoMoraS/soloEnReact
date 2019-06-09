@@ -37,14 +37,12 @@ app.post('/sasara',function(req,res){
         var token = body;
         var murl = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.status=paid&access_token="+ token.access_token;
 
-        request.get({url: murl}, function (error, responses, body) {
+        request.get({url: murl}, function (error, response, body) {
             var orders = JSON.parse(body);
-            console.log(orders.results);
-            
+            res.send(orders)
         })
     });	
 
-	res.send('Got a POST request')
 });
 
 // Starting the server

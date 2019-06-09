@@ -12,18 +12,11 @@ class BMap extends Component {
 
   componentWillMount(){
 
-    var token = JSON.parse(localStorage.getItem('token'));
-
-    var url = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.status=paid&access_token="+ token.access_token;
+    var data = JSON.parse(localStorage.getItem('datosMapa'));
 
     var cont = 0;
     var cont2 = 0;
 
-    fetch(url)
-      .then(function(response){
-        return response.json();
-      })
-      .then(function(data){
         for (var i = 0; i < data.results.length; i++) {
           if (data.results[i].shipping.receiver_address !== undefined) {
             if (data.results[i].shipping.receiver_address.latitude !== null) {
@@ -61,7 +54,7 @@ class BMap extends Component {
         }
         console.log(marker_list)
         localStorage.setItem('markerList',JSON.stringify(marker_list));
-      });
+
   }
 
   render() {
