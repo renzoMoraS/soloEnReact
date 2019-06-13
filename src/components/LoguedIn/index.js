@@ -50,7 +50,6 @@ class LoguedIn extends Component {
     .then(function(response){ 
       return response.json()
         .then(function(data) {
-          console.log(data)
           localStorage.setItem('datosMapa',JSON.stringify(data));
         })
     });
