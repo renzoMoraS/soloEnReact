@@ -16,6 +16,10 @@ var ventasPorMes = {
     diciembre: 0
 }
 
+var cats = { rpg: 0, otro: 0}
+
+var contCats = 0
+
 //var catList = [30]
 
 class CatTime extends Component {
@@ -39,71 +43,66 @@ class CatTime extends Component {
             diciembre: 0
         }
 
-        /* function caseCat(){
-              for (var i = 0; i < 2; i++){
-                switch (data.results[0].order_items[0].item.category_id){
-                    case 'MLA1430':
-                        catList[0] = 'Ropa y Accesorios'
-                        break;
-                    case 'MLA1132':
-                        catList[1] = 'Juegos y Juguetes'
-                        break;
-                }
-            }
-            return catList[i];
-        } */
+        cats = { rpg: [], otro: []}
+
+        contCats = 0
 
         for (var i = 0; i < data.results.length; i++) {
             if (data.results[i].status === "paid") {
                 if (data.results[i].shipping.receiver_address !== undefined) {
                     if (data.results[i].shipping.receiver_address.latitude !== null) {
-                        //var category = caseCat();
-                        //if (category = 'Cartas y Juguetes'){
-                            switch (data.results[i].date_closed.substr(5,2)) {
-                                case '01':
-                                    ventasPorMes.enero ++
-                                    break;
-                                case '02':
-                                    ventasPorMes.febrero ++
-                                    break;
-                                case '03':
-                                    ventasPorMes.marzo ++
-                                    break;
-                                case '04':
-                                    ventasPorMes.abril ++
-                                    break;
-                                case '05':
-                                    ventasPorMes.mayo ++
-                                    break;
-                                case '06':
-                                    ventasPorMes.junio ++
-                                    break;
-                                case '07':
-                                    ventasPorMes.julio ++
-                                    break;
-                                case '08':
-                                    ventasPorMes.agosto ++
-                                    break;
-                                case '09':
-                                    ventasPorMes.septiembre ++
-                                    break;
-                                case '10':
-                                    ventasPorMes.octubre ++
-                                    break;
-                                case '11':
-                                    ventasPorMes.noviembre ++
-                                    break;  
-                                case '12':
-                                    ventasPorMes.diciembre ++
-                                    break;  
-                                default:
-                                    break;
-                            }
-                        //}
+                        if (data.results[i].order_items[0].item.category_id === 'MLA3390') {
+                            cats.rpg[contCats] = data.results[i].date_closed.substr(5,2)
+                            console.log(cats.rpg[contCats])
+                            contCats++
+                        }
                     }
                 }
             }
             
+        }
+
+        for (var x = 0; x < cats.rpg.length ; x++) {
+            switch (cats.rpg[x]) {
+                case '01':
+                    ventasPorMes.enero ++
+                    break;
+                case '02':
+                    ventasPorMes.febrero ++
+                    break;
+                case '03':
+                    ventasPorMes.marzo ++
+                    break;
+                case '04':
+                    ventasPorMes.abril ++
+                    break;
+                case '05':
+                    ventasPorMes.mayo ++
+                    break;
+                case '06':
+                    ventasPorMes.junio ++
+                    break;
+                case '07':
+                    ventasPorMes.julio ++
+                    break;
+                case '08':
+                    ventasPorMes.agosto ++
+                    break;
+                case '09':
+                    ventasPorMes.septiembre ++
+                    break;
+                case '10':
+                    ventasPorMes.octubre ++
+                    break;
+                case '11':
+                    ventasPorMes.noviembre ++
+                    break;  
+                case '12':
+                    ventasPorMes.diciembre ++
+                    break;  
+                default:
+                    break;
+            }
         }
 
     }
@@ -113,7 +112,32 @@ class CatTime extends Component {
         var data={
             labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             datasets: [{
-                label: 'Ventas por mes',
+                label: 'Cartas Coleccionables R.P.G.',
+                data: [ventasPorMes.enero,ventasPorMes.febrero,ventasPorMes.marzo,ventasPorMes.abril,ventasPorMes.mayo,ventasPorMes.junio,ventasPorMes.julio,ventasPorMes.agosto,ventasPorMes.septiembre,ventasPorMes.octubre,ventasPorMes.noviembre,ventasPorMes.diciembre],
+                backgroundColor: [
+                    'rgba(255, 98, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Ropa',
                 data: [ventasPorMes.enero,ventasPorMes.febrero,ventasPorMes.marzo,ventasPorMes.abril,ventasPorMes.mayo,ventasPorMes.junio,ventasPorMes.julio,ventasPorMes.agosto,ventasPorMes.septiembre,ventasPorMes.octubre,ventasPorMes.noviembre,ventasPorMes.diciembre],
                 backgroundColor: [
                     'rgba(255, 98, 132, 0.2)',
