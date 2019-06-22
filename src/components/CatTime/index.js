@@ -16,6 +16,8 @@ var ventasPorMes = {
     diciembre: 0
 }
 
+//var catList = [30]
+
 class CatTime extends Component {
 
     componentWillMount(){
@@ -36,53 +38,70 @@ class CatTime extends Component {
             noviembre: 0,
             diciembre: 0
         }
-        
+
+        /* function caseCat(){
+              for (var i = 0; i < 2; i++){
+                switch (data.results[0].order_items[0].item.category_id){
+                    case 'MLA1430':
+                        catList[0] = 'Ropa y Accesorios'
+                        break;
+                    case 'MLA1132':
+                        catList[1] = 'Juegos y Juguetes'
+                        break;
+                }
+            }
+            return catList[i];
+        } */
+
         for (var i = 0; i < data.results.length; i++) {
             if (data.results[i].status === "paid") {
                 if (data.results[i].shipping.receiver_address !== undefined) {
                     if (data.results[i].shipping.receiver_address.latitude !== null) {
-                        switch (data.results[i].date_closed.substr(5,2)) {
-                            case '01':
-                                ventasPorMes.enero ++
-                                break;
-                            case '02':
-                                ventasPorMes.febrero ++
-                                break;
-                            case '03':
-                                ventasPorMes.marzo ++
-                                break;
-                            case '04':
-                                ventasPorMes.abril ++
-                                break;
-                            case '05':
-                                ventasPorMes.mayo ++
-                                break;
-                            case '06':
-                                ventasPorMes.junio ++
-                                break;
-                            case '07':
-                                ventasPorMes.julio ++
-                                break;
-                            case '08':
-                                ventasPorMes.agosto ++
-                                break;
-                            case '09':
-                                ventasPorMes.septiembre ++
-                                break;
-                            case '10':
-                                ventasPorMes.octubre ++
-                                break;
-                            case '11':
-                                ventasPorMes.noviembre ++
-                                break;  
-                            case '12':
-                                ventasPorMes.diciembre ++
-                                break;  
-                            default:
-                                break;
-                        }
+                        //var category = caseCat();
+                        //if (category = 'Cartas y Juguetes'){
+                            switch (data.results[i].date_closed.substr(5,2)) {
+                                case '01':
+                                    ventasPorMes.enero ++
+                                    break;
+                                case '02':
+                                    ventasPorMes.febrero ++
+                                    break;
+                                case '03':
+                                    ventasPorMes.marzo ++
+                                    break;
+                                case '04':
+                                    ventasPorMes.abril ++
+                                    break;
+                                case '05':
+                                    ventasPorMes.mayo ++
+                                    break;
+                                case '06':
+                                    ventasPorMes.junio ++
+                                    break;
+                                case '07':
+                                    ventasPorMes.julio ++
+                                    break;
+                                case '08':
+                                    ventasPorMes.agosto ++
+                                    break;
+                                case '09':
+                                    ventasPorMes.septiembre ++
+                                    break;
+                                case '10':
+                                    ventasPorMes.octubre ++
+                                    break;
+                                case '11':
+                                    ventasPorMes.noviembre ++
+                                    break;  
+                                case '12':
+                                    ventasPorMes.diciembre ++
+                                    break;  
+                                default:
+                                    break;
+                            }
+                        //}
                     }
-                } 
+                }
             }
             
         }
