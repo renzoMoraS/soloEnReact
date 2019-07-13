@@ -42,8 +42,17 @@ app.post('/sasara',function(req,res){
             res.send(orders)
         })
     });	
-
 });
+
+app.post('/categories',function(req,res){
+    console.log(req.body.category);
+    var cat = req.body.category;
+    var url = 'https://api.mercadolibre.com/categories/' + cat
+    request.get({url: url}, function (error, response, body) {
+        var catName = JSON.parse(body);
+        res.send(catName.name)
+    })
+});	
 
 // Starting the server
 app.listen(app.get('port'), () => {

@@ -6,15 +6,23 @@ import {Line} from 'react-chartjs-2';
 
 var categories = [0]
 var catBoolean = false
-var showCats = {lines:[]}
-var catReceived
+var showCats = []
+var arrayNormie = []
+var speedData
 
 class CatTime extends Component {
+    constructor(props){
+        super(props);
+        this.state = {termino:false};
+    }
 
     componentWillMount(){
+        let currentComponent = this;
+
         var data = JSON.parse(localStorage.getItem('clientsOrders'));
 
         for (var i = 0; i < data.results.length; i++) {
+            
             catBoolean = false
             if (data.results[i].status === "paid" && data.results[i].shipping.receiver_address !== undefined && data.results[i].shipping.receiver_address.latitude !== null) {
                 var category = data.results[i].order_items[0].item.category_id
@@ -44,49 +52,31 @@ class CatTime extends Component {
                     .then(function(response){
                         return response.text()
                         .then(function(data) {
-                                localStorage.setItem('category',data);
-                                console.log(localStorage.getItem('category'))
+                            arrayNormie.push(data)
                         })
+                    })
+                    .then(function() {
+                        console.log(arrayNormie.length)
+                        
+                        showCats.push({
+                                label: arrayNormie[arrayNormie.length - 1],
+                                data: [0,1,2,3,4,5,6,7,8,9,10,11],
+                                fill: true,
+                                color:"#04B404",
+                                borderColor: "#04B404",
+                                borderWidth: 2
+                        })
+                        
+                        currentComponent.setState({termino:true})
+                        
+                        console.log(showCats)
                     });
-
-                    if (catReceived !== localStorage.getItem('category')) {
-                        catReceived = localStorage.getItem('category');
-                    }
-                    console.log(catReceived)
-
-                    if (showCats.lines[showCats.lines.length] === undefined || showCats.lines[showCats.lines.length] === null) {
-                        showCats.lines[0] = {
-                            labels: ['enero','febrero'],
-                            datasets: [{
-                                label: catReceived,
-                                data: [0,1],
-                                fill: true,
-                                color:"#04B404",
-                                borderColor: "#04B404",
-                                borderWidth: 2
-                            }]
-                        }
-                    } else {
-                        showCats.lines[showCats.lines.length] = {
-                            labels: ['enero','febrero'],
-                            datasets: [{
-                                label: catReceived,
-                                data: [0,1],
-                                fill: true,
-                                color:"#04B404",
-                                borderColor: "#04B404",
-                                borderWidth: 2
-                            }]
-                        }   
-                    }
                 }
             }
         }
-        console.log(categories, showCats.lines)
     }
   
     render() {
-
         var options = {
             lineTension: 0,
             responsive: true,
@@ -100,19 +90,38 @@ class CatTime extends Component {
             }
         }
 
-      return (
-        <div className="CatTime">
-          <div>  
-            <Line
-                data={showCats.lines[0]}
-                options = {options}
-                height = {600}
-                width = {500}
-            />
-          </div>
-        </div>
-      );
-    }
+        // hace un if para que mire si termino y si termino que ponga lo que está acá abajo.
+        speedData = {
+            labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Sepriembre", "Octubre", "Noviembre", "Diciembre"],
+            datasets: [{
+                label:"No funca",
+                data: [0,1,2,3,4,5,6,7,8,9,10,11],
+                fill: true,
+                color:"#04B404",
+                borderColor: "#04B404",
+                borderWidth: 2
+            }]
+        }
+        if (this.state.termino) {
+            speedData = {
+                labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Sepriembre", "Octubre", "Noviembre", "Diciembre"],
+                datasets: showCats
+            }
+        }
+
+        return (
+            <div className="CatTime">
+              <div>  
+                <Line
+                    data={speedData}
+                    options = {options}
+                    height = {600}
+                    width = {500}
+                />
+              </div>
+            </div>
+          );
+        }
 }
 
 export default (CatTime);
