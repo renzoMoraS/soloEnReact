@@ -12,7 +12,9 @@ class BMap extends Component {
 
   componentWillMount(){
 
-    var data = JSON.parse(localStorage.getItem('datosMapa'));
+    marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
+
+    var data = JSON.parse(localStorage.getItem('clientsOrders'));
 
     var cont = 0;
     var cont2 = 0;
