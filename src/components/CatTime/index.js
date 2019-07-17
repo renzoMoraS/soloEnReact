@@ -9,6 +9,7 @@ var catBoolean = false
 var showCats = []
 var arrayNormie = []
 var speedData
+var month = [12]
 
 class CatTime extends Component {
     constructor(props){
@@ -17,6 +18,8 @@ class CatTime extends Component {
     }
 
     componentWillMount(){
+        month = [0,0,0,0,0,0,0,0,0,0,0,0]
+
         let currentComponent = this;
 
         var data = JSON.parse(localStorage.getItem('clientsOrders'));
@@ -57,20 +60,93 @@ class CatTime extends Component {
                     })
                     .then(function() {
                         console.log(arrayNormie.length)
-                        
                         showCats.push({
-                                label: arrayNormie[arrayNormie.length - 1],
-                                data: [0,1,2,3,4,5,6,7,8,9,10,11],
-                                fill: true,
-                                color:"#04B404",
-                                borderColor: "#04B404",
-                                borderWidth: 2
+                            label: arrayNormie[arrayNormie.length - 1],
+                            data: month,
+                            fill: true,
+                            color:"#04B404",
+                            borderColor: "#04B404",
+                            borderWidth: 2
                         })
+
+                        month = [0,0,0,0,0,0,0,0,0,0,0,0]
                         
                         currentComponent.setState({termino:true})
                         
                         console.log(showCats)
                     });
+                }
+            }
+        }
+
+        for (var j = 0; j < categories.length; j++) {
+            console.log(categories[j])
+            for (var p = 0; p < data.results.length; p++) {
+                if (data.results[p].order_items[0].item.category_id === categories[j] && data.results[p].status === "paid" && data.results[p].shipping.receiver_address !== undefined && data.results[p].shipping.receiver_address.latitude !== null) {
+                    switch (data.results[p].date_closed.substr(5,2)) {
+                        case '01':
+                            month[0] = month[0] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '02':
+                            month[1] = month[1] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '03':
+                            month[2] = month[2] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '04':
+                            month[3] = month[3] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '05':
+                            month[4] = month[4] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '06':
+                            month[5] = month[5] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '07':
+                            month[6] = month[6] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '08':
+                            month[7] = month[7] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '09':
+                            month[8] = month[8] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '10':
+                            month[9] = month[9] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;
+                        case '11':
+                            month[10] = month[10] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;  
+                        case '12':
+                            month[11] = month[11] + 1
+                            console.log(data.results[p].date_closed.substr(5,2))
+                            console.log(categories[j])  
+                            break;  
+                        default:
+                            break;
+                    }
                 }
             }
         }
