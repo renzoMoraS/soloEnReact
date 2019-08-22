@@ -60,7 +60,7 @@ class CatTime extends Component {
                     })
                     .then(function() {
                         console.log(arrayNormie.length)
-                        showCats.push({
+                        /*showCats.push({
                             label: arrayNormie[arrayNormie.length - 1],
                             data: month,
                             fill: true,
@@ -70,7 +70,7 @@ class CatTime extends Component {
                         })
 
                         month = [0,0,0,0,0,0,0,0,0,0,0,0]
-                        
+                        */
                         currentComponent.setState({termino:true})
                         
                         console.log(showCats)

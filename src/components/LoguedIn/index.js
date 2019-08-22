@@ -25,7 +25,6 @@ class LoguedIn extends Component {
   componentWillMount(){
 
     const URLSearchParams = window.URLSearchParams;
-
     var burl = new URLSearchParams();
 
     burl.append("grant_type","authorization_code")
