@@ -4,7 +4,7 @@ import {Line} from 'react-chartjs-2';
 //data.results[i].order_items[0].item.category_id
 //data.results[i].date_closed.substr(8,2),data.results[i].date_closed.substr(5,2),data.results[i].date_closed.substr(0,4)
 
-var categories = [0]
+var categories = []
 var catBoolean = false
 var showCats = [{
         label:"No funca",
@@ -18,6 +18,31 @@ var arrayNombres = []
 var speedData
 var month = [12]
 var data = JSON.parse(localStorage.getItem('clientsOrders'));
+
+function aleatorio(inferior,superior){
+    var numPosibilidades = superior - inferior
+    var aleat = Math.random() * numPosibilidades
+    aleat = Math.floor(aleat)
+    return parseInt(inferior) + aleat
+ }
+
+function dame_color_aleatorio(){
+    var hexadecimal = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
+    var color_aleatorio = "#";
+    for (var i=0;i<6;i++){
+       var posarray = aleatorio(0,hexadecimal.length)
+       color_aleatorio += hexadecimal[posarray]
+    }
+    return color_aleatorio
+ }
+
+ function wait(ms){
+    var start = new Date().getTime();
+    var end = start;
+    while(end < start + ms) {
+      end = new Date().getTime();
+   }
+ }
 
 
 class CatTime extends Component {
@@ -37,6 +62,7 @@ class CatTime extends Component {
     
             if (data.results[i].status === "paid" && data.results[i].shipping.receiver_address !== undefined && data.results[i].shipping.receiver_address.latitude !== null) {
                 var category = data.results[i].order_items[0].item.category_id
+                console.log(category)
     
                 for (var x = 0; x < categories.length; x++) {
                     if (category === categories[x]) {
@@ -45,32 +71,32 @@ class CatTime extends Component {
                 }
     
                 if (catBoolean === false) {
-                    if (categories[0] === 0) {
-                        categories[0] = category
-                    }else{
-                        categories[categories.length] = category
+                    
+                    categories.push(category)
+                    if (category === 'MLA412048'){
+                        console.log('Panuelo')
+                    }else if (category === 'MLA3390') {
+                        console.log('Cartas')
                     }
                     
-                        fetch('/categories', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                              "category": category
-                            }),
-                            headers:{
-                              'Content-Type': 'application/json',
-                            }
-                        })
-                        .then(function(response){
-                            return response.text()
-                            .then(function(data) {
-                                console.log('esto es data')
-                                console.log(data)
-                                arrayNombres.push(data)
-                                console.log(arrayNombres)
-                                currentComponent.setState({termino:true})
-                                currentComponent.setState({termino:false})
-                            })
-                        })
+                    fetch('/categories', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                          "category": category
+                        }),
+                        headers:{
+                          'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(function(response){
+                        return response.text()
+                    })
+                    .then(function(data) {
+                        arrayNombres.push(data)
+                        currentComponent.setState({termino:true})
+                        currentComponent.setState({termino:false})
+                    })
+                    wait(300)
                 }
             }
         }
@@ -83,63 +109,63 @@ class CatTime extends Component {
                     switch (data.results[p].date_closed.substr(5,2)) {
                         case '01':
                             month[0] = month[0] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '02':
                             month[1] = month[1] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '03':
                             month[2] = month[2] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '04':
                             month[3] = month[3] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '05':
                             month[4] = month[4] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '06':
                             month[5] = month[5] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '07':
                             month[6] = month[6] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '08':
                             month[7] = month[7] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '09':
                             month[8] = month[8] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '10':
                             month[9] = month[9] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;
                         case '11':
                             month[10] = month[10] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;  
                         case '12':
                             month[11] = month[11] + 1
-                            console.log(data.results[p].date_closed.substr(5,2))
-                            console.log(categories[j])  
+                            //console.log(data.results[p].date_closed.substr(5,2))
+                            //console.log(categories[j])  
                             break;  
                         default:
                             break;
@@ -147,7 +173,7 @@ class CatTime extends Component {
                 }
             }
 
-            console.log(arrayNombres)
+            console.log(arrayNombres[j])
             if (j===0){
                 showCats=[];
             }
@@ -155,12 +181,12 @@ class CatTime extends Component {
                 label: arrayNombres[j],
                 data: month,
                 fill: true,
-                color:"#04B404",
-                borderColor: "#04B404",
+                color: dame_color_aleatorio(),
+                borderColor: dame_color_aleatorio(),
                 borderWidth: 2
             })
-            console.log(arrayNombres)
-            console.log(showCats)
+            //console.log(arrayNombres)
+            //console.log(showCats)
 
             month = [0,0,0,0,0,0,0,0,0,0,0,0]
         }
@@ -182,7 +208,7 @@ class CatTime extends Component {
             labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
             datasets: showCats
         }
-        console.log(speedData)
+        //console.log(speedData)
         
 
         return (
