@@ -10,6 +10,7 @@ import DistExp from './components/DistExp';
 import LoguedIn from './components/LoguedIn';
 import Home from './components/Home';
 import Page404 from './components/Page404';
+import ValoracionesApp from './components/Valoraciones';
 
 const AppRoutes = () =>
     <App>
@@ -17,6 +18,7 @@ const AppRoutes = () =>
             <Route exact path="/bmap" component={BMap} />
             <Route exact path="/cattime" component={CatTime} />
             <Route exact path="/distexp" component={DistExp} />
+            <Route exact path="/valoraciones" component={ValoracionesApp} />
             <Route exact path="/logued_in" component={LoguedIn} />
             <Route exact path="/" component={Home} />
             <Route component={Page404} />

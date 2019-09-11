@@ -1,6 +1,6 @@
 // Dependencies
 import React, { Component } from 'react';
-import { parse } from 'query-string';
+import {parse} from "query-string";
 
 var url = 'https://api.mercadolibre.com/oauth/token?';
 
@@ -37,7 +37,7 @@ class LoguedIn extends Component {
 
     console.log(aurl)
 
-    fetch('/sasara', {
+    fetch('/token', {
       method: 'POST',
       body: JSON.stringify({
         "url": aurl
@@ -47,9 +47,9 @@ class LoguedIn extends Component {
       }
     })
     .then(function(response){ 
-      return response.json()
+      return response.text()
         .then(function(data) {
-          localStorage.setItem('clientsOrders',JSON.stringify(data));
+          console.log(data)
         })
     });
     

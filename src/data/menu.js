@@ -14,5 +14,9 @@ export default [
     {
         title: 'DistExp',
         url: '/distexp'
+    },
+    {
+        title: 'Valoraciones',
+        url: '/valoraciones'
     }
 ];
