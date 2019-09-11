@@ -12,7 +12,7 @@ export default [
         url: '/cattime'
     },
     {
-        title: 'LoguedIn',
-        url: '/logued_in'
+        title: 'DistExp',
+        url: '/distexp'
     }
 ];
