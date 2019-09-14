@@ -22,10 +22,8 @@ class BMap extends Component {
       return res.json()
     })
     .then(function(datas){
-      localStorage.setItem('clientsOrders', JSON.stringify(datas));
-    })
 
-    data = JSON.parse(localStorage.getItem('clientsOrders'));
+    data = datas
 
     marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
 
@@ -72,6 +70,7 @@ class BMap extends Component {
     }
     console.log(marker_list)
     localStorage.setItem('markerList',JSON.stringify(marker_list));
+  })
   }
 
   render() {

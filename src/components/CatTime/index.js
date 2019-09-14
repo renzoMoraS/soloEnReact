@@ -17,7 +17,7 @@ var showCats = [{
 var arrayNombres = []
 var speedData
 var month = [12]
-var data = JSON.parse(localStorage.getItem('clientsOrders'));
+var data
 
 function aleatorio(inferior,superior){
     var numPosibilidades = superior - inferior
@@ -52,6 +52,22 @@ class CatTime extends Component {
     }
 
     componentWillMount(){
+
+        fetch('/sasara', {
+            method: 'POST',
+            headers:{
+              'Content-Type': 'application/json',
+            }
+        })
+        .then(function(res){
+            return res.json()
+        })
+        .then(function(datas){
+        localStorage.setItem('clientsOrders', JSON.stringify(datas));
+        })
+
+        data = JSON.parse(localStorage.getItem('clientsOrders'));
+
         let currentComponent = this;
 
         month = [0,0,0,0,0,0,0,0,0,0,0,0]
@@ -60,7 +76,7 @@ class CatTime extends Component {
             
             catBoolean = false
     
-            if (data.results[i].status === "paid" && data.results[i].shipping.receiver_address !== undefined && data.results[i].shipping.receiver_address.latitude !== null) {
+            if (data.results[i].status === "paid") {
                 var category = data.results[i].order_items[0].item.category_id
                 console.log(category)
     
@@ -73,11 +89,6 @@ class CatTime extends Component {
                 if (catBoolean === false) {
                     
                     categories.push(category)
-                    if (category === 'MLA412048'){
-                        console.log('Panuelo')
-                    }else if (category === 'MLA3390') {
-                        console.log('Cartas')
-                    }
                     
                     fetch('/categories', {
                         method: 'POST',
@@ -105,7 +116,7 @@ class CatTime extends Component {
     render() {
         for (var j = 0; j < categories.length; j++) {
             for (var p = 0; p < data.results.length; p++) {
-                if (data.results[p].order_items[0].item.category_id === categories[j] && data.results[p].status === "paid" && data.results[p].shipping.receiver_address !== undefined && data.results[p].shipping.receiver_address.latitude !== null) {
+                if (data.results[p].order_items[0].item.category_id === categories[j] && data.results[p].status === "paid") {
                     switch (data.results[p].date_closed.substr(5,2)) {
                         case '01':
                             month[0] = month[0] + 1

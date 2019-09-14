@@ -23,7 +23,21 @@ class DistExp extends Component{
         contfree = 0
         contgold = 0
 
+        fetch('/sasara', {
+            method: 'POST',
+            headers:{
+              'Content-Type': 'application/json',
+            }
+        })
+        .then(function(res){
+            return res.json()
+        })
+        .then(function(datas){
+            localStorage.setItem('clientsOrders', JSON.stringify(datas));
+        })
+
         var userdata = JSON.parse(localStorage.getItem('clientsOrders'));
+
         for (var i = 0; i < userdata.results.length; i++) {
             var expo = userdata.results[i].order_items[0].listing_type_id;
             switch(expo){
