@@ -314,8 +314,8 @@ class CatTime extends Component {
                 <Line
                     data={speedData}
                     options = {options}
-                    height = {600}
-                    width = {500}
+                    height = {175}
+                    width = {200}
                 />
               </div>
             </div>
