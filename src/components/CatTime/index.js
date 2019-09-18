@@ -62,6 +62,7 @@ class CatTime extends Component {
         if (conty > 0) {
             console.log("Atras")
             conty--
+            console.log(conty)
             showdate = year[conty]
             console.log('showdate ', showdate)
             speedData = {
@@ -77,10 +78,11 @@ class CatTime extends Component {
     
     handleSubmit2(e){
         e.preventDefault();
-        console.log(year.length)
-        if (conty < year.length-1) {
+        if (conty < year.length - 1) {
             console.log("Adelante")
+            console.log(year)
             conty++
+            console.log(conty)
             showdate = year[conty]
             console.log('showdate ', showdate)
             speedData = {
@@ -125,12 +127,8 @@ class CatTime extends Component {
             if (year.length === 0) {
                 year.push(data.results[i].date_closed.substr(0,4))
             }else{
-                for (var index = 0; index < year.length; index++) {
-                    if (data.results[i].date_closed.substr(0,4) === year[index]) {
-                        break
-                    }else{
-                        year.push(data.results[i].date_closed.substr(0,4))
-                    }
+                if (year.includes(data.results[i].date_closed.substr(0,4)) === false) {
+                     year.push(data.results[i].date_closed.substr(0,4))
                 }
             }
     
@@ -174,6 +172,7 @@ class CatTime extends Component {
     }
   
     render() {
+
         for (var y = 0; y < year.length; y++) {
             month = [0,0,0,0,0,0,0,0,0,0,0,0]
             for (var j = 0; j < categories.length; j++) {
@@ -276,6 +275,7 @@ class CatTime extends Component {
                 //console.log(showCats)
             }
             yearmonth[year[y]] = showCats
+            
         }
 
         console.log(yearmonth)
@@ -299,7 +299,6 @@ class CatTime extends Component {
             datasets: yearmonth[showdate]
         }
         //console.log(speedData)
-        
 
         return (
             <div className="CatTime">
