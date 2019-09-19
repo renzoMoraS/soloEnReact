@@ -47,87 +47,84 @@ class DistExp extends Component{
             return res.json()
         })
         .then(function(userdata){
-            //localStorage.setItem('clientsOrders', JSON.stringify(datas));
             contgs = 0
-        contgpro = 0
-        contgp = 0
-        contsil = 0
-        contbr = 0
-        contfree = 0
-        contgold = 0
-
-        for (var i = 0; i < userdata.results.length; i++) {
-            var expo = userdata.results[i].order_items[0].listing_type_id;
-            switch(expo){
-                case 'gold_premium':
-                    console.log('gold_premium');
-                    contgp ++;
-                    exps[0] = contgp
-                    console.log(contgp);
-                    break;
-                case 'gold_pro':
-                    console.log('gold_pro');
-                    contgpro ++;
-                    exps[1] = contgpro;
-                    console.log(contgpro);
-                    break;
-                case 'gold_special':
-                    console.log('gold_special');
-                    contgs ++;
-                    exps[2] = contgs
-                    console.log(contgs);
-                    break;
-                case 'gold':
-                    console.log('gold');
-                    contgold ++;
-                    exps[3] = contgold
-                    console.log(contgold);
-                    break;
-                case 'silver':
-                    console.log('silver');
-                    contsil ++;
-                    exps[4] = contsil
-                    console.log(contsil);
-                    break;
-                case 'bronze':
-                    console.log('bronze');
-                    contbr ++;
-                    exps[5] = contbr
-                    console.log(contbr);
-                    break;
-                case 'free':
-                    console.log('free');
-                    contfree ++;
-                    exps[6] = contfree
-                    console.log(contfree);
-                    break;
-                default:
-                    break;
+            contgpro = 0
+            contgp = 0
+            contsil = 0
+            contbr = 0
+            contfree = 0
+            contgold = 0
+            
+            for (var i = 0; i < userdata.results.length; i++) {
+                var expo = userdata.results[i].order_items[0].listing_type_id;
+                switch(expo){
+                    case 'gold_premium':
+                        console.log('gold_premium');
+                        contgp ++;
+                        exps[0] = contgp
+                        console.log(contgp);
+                        break;
+                    case 'gold_pro':
+                        console.log('gold_pro');
+                        contgpro ++;
+                        exps[1] = contgpro;
+                        console.log(contgpro);
+                        break;
+                    case 'gold_special':
+                        console.log('gold_special');
+                        contgs ++;
+                        exps[2] = contgs
+                        console.log(contgs);
+                        break;
+                    case 'gold':
+                        console.log('gold');
+                        contgold ++;
+                        exps[3] = contgold
+                        console.log(contgold);
+                        break;
+                    case 'silver':
+                        console.log('silver');
+                        contsil ++;
+                        exps[4] = contsil
+                        console.log(contsil);
+                        break;
+                    case 'bronze':
+                        console.log('bronze');
+                        contbr ++;
+                        exps[5] = contbr
+                        console.log(contbr);
+                        break;
+                    case 'free':
+                        console.log('free');
+                        contfree ++;
+                        exps[6] = contfree
+                        console.log(contfree);
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
-
-        console.log(exps)
-
-        speedData = {
-            labels: ["Gold Premium", "Gold Pro", "Gold Special", "Gold", "Silver", "Bronze", "Free"],
-            datasets:[{
-                label: "Exposiciones",
-                data: exps,
-                fill: true,
-                color: dame_color_aleatorio(),
-                borderColor: dame_color_aleatorio(),
-                borderWidth: 2
-            }]
-        }
-            thisComponent.setState({termino:true});
-            thisComponent.setState({termino:false});
+        
+            console.log(exps)
+        
+            speedData = {
+                labels: ["Gold Premium", "Gold Pro", "Gold Special", "Gold", "Silver", "Bronze", "Free"],
+                datasets:[{
+                    label: "Exposiciones",
+                    data: exps,
+                    fill: true,
+                    color: dame_color_aleatorio(),
+                    borderColor: dame_color_aleatorio(),
+                    borderWidth: 2
+                }]
+            }
+                thisComponent.setState({termino:true});
+                thisComponent.setState({termino:false});
         })
 
     }
     
     render(){
-
-        //var userdata = JSON.parse(localStorage.getItem('clientsOrders'));
 
         speedData = {
             labels: ["Gold Premium", "Gold Pro", "Gold Special", "Gold", "Silver", "Bronze", "Free"],

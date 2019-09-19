@@ -41,14 +41,6 @@ function dame_color_aleatorio(){
     return color_aleatorio
  }
 
- function wait(ms){
-    var start = new Date().getTime();
-    var end = start;
-    while(end < start + ms) {
-      end = new Date().getTime();
-   }
- }
-
 class CatTime extends Component {
     constructor(props){
         super(props);
@@ -97,6 +89,7 @@ class CatTime extends Component {
     }
 
     componentWillMount(){
+        let currentComponent = this;
 
         fetch('/sasara', {
             method: 'POST',
@@ -108,10 +101,8 @@ class CatTime extends Component {
             return res.json()
         })
         .then(function(data){
-            //localStorage.clear()
-        //console.log(JSON.stringify(data))
-
-        let currentComponent = this;
+        
+        localStorage.setItem('clientsOrders', JSON.stringify(data));
 
         month = [0,0,0,0,0,0,0,0,0,0,0,0]
 
@@ -129,7 +120,6 @@ class CatTime extends Component {
     
             if (data.results[i].status === "paid") {
                 var category = data.results[i].order_items[0].item.category_id
-                //console.log(category)
     
                 for (var x = 0; x < categories.length; x++) {
                     if (category === categories[x]) {
@@ -140,6 +130,7 @@ class CatTime extends Component {
                 if (catBoolean === false) {
                     
                     categories.push(category)
+
                     
                     fetch('/categories', {
                         method: 'POST',
@@ -158,7 +149,7 @@ class CatTime extends Component {
                         currentComponent.setState({termino:true})
                         currentComponent.setState({termino:false})
                     })
-                    //wait(300)
+
                 }
             }
         }
@@ -168,114 +159,114 @@ class CatTime extends Component {
     }
   
     render() {
-
-        for (var y = 0; y < year.length; y++) {
-            month = [0,0,0,0,0,0,0,0,0,0,0,0]
-            for (var j = 0; j < categories.length; j++) {
-                for (var p = 0; p < data.results.length; p++) {
-                    if (data.results[p].order_items[0].item.category_id === categories[j] && data.results[p].status === "paid") {
-                         
-                        switch (data.results[p].date_closed.substr(5,2)) {
-                            case '01':
+        data = JSON.parse(localStorage.getItem('clientsOrders'));
+        if (data !== undefined) {
+            for (var y = 0; y < year.length; y++) {
+                month = [0,0,0,0,0,0,0,0,0,0,0,0]
+                for (var j = 0; j < categories.length; j++) {
+                    for (var p = 0; p < data.results.length; p++) {
+                        if (data.results[p].order_items[0].item.category_id === categories[j] && data.results[p].status === "paid") {
+                             
+                            switch (data.results[p].date_closed.substr(5,2)) {
+                                case '01':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[0] = month[0] + 1
+                                    }
+                                    break;
+                                case '02':
                                 if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                    month[0] = month[0] + 1
+                                    month[1] = month[1] + 1
                                 }
-                                break;
-                            case '02':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[1] = month[1] + 1
+    
+                                    break;
+                                case '03':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[2] = month[2] + 1
+                                }
+    
+                                    break;
+                                case '04':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[3] = month[3] + 1
+                                }
+    
+                                    break;
+                                case '05':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[4] = month[4] + 1
+                                }
+    
+                                    break;
+                                case '06':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[5] = month[5] + 1
+                                }
+    
+                                    break;
+                                case '07':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[6] = month[6] + 1
+                                }
+    
+                                    break;
+                                case '08':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[7] = month[7] + 1
+                                }
+    
+                                    break;
+                                case '09':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[8] = month[8] + 1
+                                }
+    
+                                    break;
+                                case '10':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[9] = month[9] + 1
+                                }
+    
+                                    break;
+                                case '11':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[10] = month[10] + 1
+                                }
+                                    break;  
+                                case '12':
+                                if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                    month[11] = month[11] + 1
+                                }
+                                    break;  
+                                default:
+                                    break;
                             }
-
-                                break;
-                            case '03':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[2] = month[2] + 1
-                            }
-
-                                break;
-                            case '04':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[3] = month[3] + 1
-                            }
-
-                                break;
-                            case '05':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[4] = month[4] + 1
-                            }
-
-                                break;
-                            case '06':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[5] = month[5] + 1
-                            }
-
-                                break;
-                            case '07':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[6] = month[6] + 1
-                            }
-
-                                break;
-                            case '08':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[7] = month[7] + 1
-                            }
-
-                                break;
-                            case '09':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[8] = month[8] + 1
-                            }
-
-                                break;
-                            case '10':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[9] = month[9] + 1
-                            }
-
-                                break;
-                            case '11':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[10] = month[10] + 1
-                            }
-                                break;  
-                            case '12':
-                            if (data.results[p].date_closed.substr(0,4)===year[y]) {
-                                month[11] = month[11] + 1
-                            }
-                                break;  
-                            default:
-                                break;
                         }
                     }
+    
+                    if (j===0){
+                        showCats=[];
+                    }
+                    
+                    showCats.push({
+                        label: arrayNombres[j],
+                        data: month,
+                        fill: true,
+                        color: dame_color_aleatorio(),
+                        borderColor: dame_color_aleatorio(),
+                        borderWidth: 2
+                    })
+    
+                    month = [0,0,0,0,0,0,0,0,0,0,0,0]
+    
                 }
-
-                //console.log(arrayNombres[j])
-                if (j===0){
-                    showCats=[];
-                }
+                yearmonth[year[y]] = showCats
                 
-                showCats.push({
-                    label: arrayNombres[j],
-                    data: month,
-                    fill: true,
-                    color: dame_color_aleatorio(),
-                    borderColor: dame_color_aleatorio(),
-                    borderWidth: 2
-                })
-
-                month = [0,0,0,0,0,0,0,0,0,0,0,0]
-
-                //console.log(arrayNombres)
-                //console.log(showCats)
             }
-            yearmonth[year[y]] = showCats
-            
+    
+        }else{
+
         }
-
-        console.log(yearmonth)
-
+        
         var options = {
             lineTension: 0,
             responsive: true,
@@ -294,7 +285,6 @@ class CatTime extends Component {
             labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
             datasets: yearmonth[showdate]
         }
-        //console.log(speedData)
 
         return (
             <div className="CatTime">
