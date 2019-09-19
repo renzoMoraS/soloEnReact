@@ -1,27 +1,27 @@
-// Dependencies
+////////////////IMPORTS////////////////
 import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
+////////////////GLOBAL VARIABLES////////////////
 var complete_marker_list = {name: {}, lat: {}, long: {}};
 var marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
 
+////////////////FUNCTIONS////////////////
 function makeMarkers(ml,makers){
   if (ml !== null) {
     makers = []
     for (var i = 0;i<Object.keys(ml.lat).length;i++){
       makers.push(<Marker position={[ml.lat[i], ml.long[i]]}><Popup>{ml.name[i] + " : " + ml.cant[i] + " compra/s"}</Popup></Marker>);
-      console.log(ml.cant[i])
     }
-  }else{
-
-    return 
   }
 
   return makers;
 }
 
+////////////////CLASS////////////////
 class BMap extends Component {
+
   constructor(props){
     super(props);
     this.state = {termino:false}
@@ -84,22 +84,19 @@ class BMap extends Component {
 
         }
       }
-      console.log(marker_list)
       localStorage.setItem('markerList',JSON.stringify(marker_list));
       thisComponent.setState({termino:true});
       thisComponent.setState({termino:false});
     })
   }
-
+  ////////////////END OF WILL MOUNT////////////////
+  ////////////////START OF RENDER////////////////
   render() {
     var ml = JSON.parse(localStorage.getItem('markerList'));
-
-    /*if (ml === null) {
-      ml = {lat:0}
-    }*/
     
     var makers = [];
-
+    
+    ////////////////RETURN////////////////
     return (
       <div className="BMap">
         <h1 style={{textAlign: 'center'}}>MAP PAGE</h1>
@@ -119,5 +116,6 @@ class BMap extends Component {
     );
   }
 }
+////////////////CLASS ENDS////////////////
 
 export default (BMap);

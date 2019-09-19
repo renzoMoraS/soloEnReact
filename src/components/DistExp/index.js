@@ -1,6 +1,8 @@
+////////////////IMPORTS////////////////
 import React, { Component } from 'react';
 import {Bar} from 'react-chartjs-2';
 
+////////////////GLOBAL VARIABLES////////////////
 var contgs = 0
 var contgpro = 0
 var contgp = 0
@@ -11,6 +13,7 @@ var contgold = 0
 var exps = []
 var speedData
 
+////////////////FUNCTIONS////////////////
 function aleatorio(inferior,superior){
     var numPosibilidades = superior - inferior
     var aleat = Math.random() * numPosibilidades
@@ -28,7 +31,9 @@ function dame_color_aleatorio(){
     return color_aleatorio
  }
 
+////////////////CLASS////////////////
 class DistExp extends Component{
+
     constructor(props){
         super(props);
         this.state = {termino:false};
@@ -47,13 +52,6 @@ class DistExp extends Component{
             return res.json()
         })
         .then(function(userdata){
-            contgs = 0
-            contgpro = 0
-            contgp = 0
-            contsil = 0
-            contbr = 0
-            contfree = 0
-            contgold = 0
             
             for (var i = 0; i < userdata.results.length; i++) {
                 var expo = userdata.results[i].order_items[0].listing_type_id;
@@ -123,7 +121,8 @@ class DistExp extends Component{
         })
 
     }
-    
+    ////////////////END OF WILL MOUNT////////////////
+    ////////////////START OF RENDER////////////////  
     render(){
 
         speedData = {
@@ -142,9 +141,10 @@ class DistExp extends Component{
             
         };
 
+        ////////////////RETURN////////////////
         return (
             <div className="DistExp">
-                <h1 style={{textAlign: 'center'}}>Distribucion por exposición</h1>
+                <h1 style={{textAlign: 'center'}}>Distribución por exposición</h1>
                 <div className="patient-container">
                 </div>
                 <div>
@@ -159,4 +159,6 @@ class DistExp extends Component{
         );
     }
 }
+////////////////CLASS ENDS////////////////
+
 export default (DistExp);
