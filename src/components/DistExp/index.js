@@ -42,6 +42,14 @@ class DistExp extends Component{
     componentWillMount(){
         let thisComponent = this
 
+        contgs = 0
+        contgpro = 0
+        contgp = 0
+        contsil = 0
+        contbr = 0
+        contfree = 0
+        contgold = 0
+
         fetch('/sasara', {
             method: 'POST',
             headers:{
@@ -138,7 +146,14 @@ class DistExp extends Component{
         }
         
         var options = {
-            
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
         };
 
         ////////////////RETURN////////////////
