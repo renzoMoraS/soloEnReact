@@ -8,9 +8,24 @@ var marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
 
 var data
 
+function makeMarkers(ml,makers){
+  for (var i = 0;i<Object.keys(ml.lat).length;i++){
+    makers.push(<Marker position={[ml.lat[i], ml.long[i]]}><Popup>{ml.name[i] + " : " + ml.cant[i] + " compra/s"}</Popup></Marker>);
+    console.log(ml.cant[i])
+  }
+
+  return makers;
+}
+
 class BMap extends Component {
+  constructor(props){
+    super(props);
+    this.state = {termino:false}
+  }
 
   componentWillMount(){
+
+    let thisComponent = this
 
     fetch('/sasara', {
       method: 'POST',
@@ -70,22 +85,19 @@ class BMap extends Component {
     }
     console.log(marker_list)
     localStorage.setItem('markerList',JSON.stringify(marker_list));
+    thisComponent.setState({termino:true});
+    thisComponent.setState({termino:false});
   })
   }
 
   render() {
     var ml = JSON.parse(localStorage.getItem('markerList'));
+
+    if (ml === null) {
+      ml = {lat:0}
+    }
     
     var makers = [];
-
-    function makeMarkers(){
-      for (var i = 0;i<Object.keys(ml.lat).length;i++){
-        makers.push(<Marker position={[ml.lat[i], ml.long[i]]}><Popup>{ml.name[i] + " : " + ml.cant[i] + " compra/s"}</Popup></Marker>);
-        console.log(ml.cant[i])
-      }
-
-      return makers;
-    }
 
     return (
       <div className="BMap">
@@ -98,7 +110,7 @@ class BMap extends Component {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             <MarkerClusterGroup maxClusterRadius={120}>
-              {makeMarkers()}
+              {makeMarkers(ml,makers)}
             </MarkerClusterGroup>
           </Map>
         </div>
