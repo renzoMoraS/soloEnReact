@@ -9,6 +9,7 @@ var contbr = 0
 var contfree = 0
 var contgold = 0
 var exps = []
+var speedData
 
 function aleatorio(inferior,superior){
     var numPosibilidades = superior - inferior
@@ -45,19 +46,9 @@ class DistExp extends Component{
         .then(function(res){
             return res.json()
         })
-        .then(function(datas){
-            localStorage.setItem('clientsOrders', JSON.stringify(datas));
-            thisComponent.setState({termino:true});
-            thisComponent.setState({termino:false});
-        })
-
-    }
-    
-    render(){
-
-        var userdata = JSON.parse(localStorage.getItem('clientsOrders'));
-
-        contgs = 0
+        .then(function(userdata){
+            //localStorage.setItem('clientsOrders', JSON.stringify(datas));
+            contgs = 0
         contgpro = 0
         contgp = 0
         contsil = 0
@@ -117,10 +108,10 @@ class DistExp extends Component{
 
         console.log(exps)
 
-        var speedData = {
+        speedData = {
             labels: ["Gold Premium", "Gold Pro", "Gold Special", "Gold", "Silver", "Bronze", "Free"],
             datasets:[{
-                label: "Experiencias",
+                label: "Exposiciones",
                 data: exps,
                 fill: true,
                 color: dame_color_aleatorio(),
@@ -128,6 +119,28 @@ class DistExp extends Component{
                 borderWidth: 2
             }]
         }
+            thisComponent.setState({termino:true});
+            thisComponent.setState({termino:false});
+        })
+
+    }
+    
+    render(){
+
+        //var userdata = JSON.parse(localStorage.getItem('clientsOrders'));
+
+        speedData = {
+            labels: ["Gold Premium", "Gold Pro", "Gold Special", "Gold", "Silver", "Bronze", "Free"],
+            datasets:[{
+                label: "Exposiciones",
+                data: exps,
+                fill: true,
+                color: dame_color_aleatorio(),
+                borderColor: dame_color_aleatorio(),
+                borderWidth: 2
+            }]
+        }
+        
         var options = {
             
         };

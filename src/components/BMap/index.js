@@ -37,6 +37,8 @@ class BMap extends Component {
       return res.json()
     })
     .then(function(datas){
+    
+    //localStorage.clear()
 
     data = datas
 
