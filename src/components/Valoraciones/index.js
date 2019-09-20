@@ -1,7 +1,7 @@
 //import React from 'react';
 import React, { Component } from 'react';
 //import { Alert } from 'reactstrap';
-import {Alert} from 'react-bootstrap';  
+import Alert from 'react-bootstrap/Alert';  
 //import axios from 'axios'
 //import valoracionesDeUsuarios from '../valoraciones'
 //var xhr = new XMLHttpRequest();
@@ -26,12 +26,6 @@ class valoracionesApp extends Component {
   handleChange(e){
     this.setState({text:e.target.value})
   }
-  
-  /*wrapperSetearEstado(valoracionesObtenidas) {
-    this.setState((state) => {
-      return {valoraciones: valoracionesObtenidas}
-    })
-  }*/
 
   handleSubmit(e){
     e.preventDefault();
@@ -122,9 +116,9 @@ class valoracionesApp extends Component {
       if (this.state.userok === ''){
         var unavariable = <div>...</div>
       }else if(this.state.userok === 'false') {
-        unavariable = <div><Alert variant="warning">NO HAY UN USUARIO CON ESE NOMBRE!</Alert></div>
+        unavariable = <Alert variant='warning'>NO HAY UN USUARIO CON ESE NOMBRE!</Alert>
       }else{
-        unavariable = <div><Alert variant="success">USUARIO ENCONTRADO CORRECTAMENTE</Alert></div>
+        unavariable = <Alert variant='success'>USUARIO ENCONTRADO CORRECTAMENTE</Alert>
       }
       return (
         
