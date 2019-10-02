@@ -1,72 +1,97 @@
 //import React from 'react';
 import React, { Component } from 'react';
-//import { Alert } from 'reactstrap';
-import Alert from 'react-bootstrap/Alert';  
-//import axios from 'axios'
-//import valoracionesDeUsuarios from '../valoraciones'
-//var xhr = new XMLHttpRequest();
-
-//xhr.open('GET', 'localhost:8081/valoraciones', true);
-//xhr.send();
+import {parse} from "query-string";
 
 var valoracionesObtenidas = '';
+
+var options = {
+  form: {
+   "grant_type":"authorization_code",
+   "client_id": '4069477448135367',
+   "client_secret": 'eqaPB8Ot1neu4JVVGyqDu5tPorwvmlh2',
+   "redirect_uri": "http://localhost:3000/",
+   "code": ""
+  },
+  method: "POST", 
+  headers: {
+   'Content-Type': 'application/x-www-form-urlencoded',
+   'Accept': 'application/json' 
+  }
+};
+
+
+var url = 'https://api.mercadolibre.com/oauth/token?';
 //var unavariablequemeindicaquetodoanduvomal = "";
 
 class valoracionesApp extends Component {
   constructor(props) {
       super(props)
       this.state = { termino: 'no', valoraciones: [], text: '', userok: ''}
-      this.handleInputChange = this.handleChange.bind(this)
-      this.handleInputSubmit = this.handleSubmit.bind(this)
   }
+  
 
-  onClick(e){
-    e.preventDefault();
-  }
-  handleChange(e){
-    this.setState({text:e.target.value})
-  }
-
-  handleSubmit(e){
-    e.preventDefault();
-    console.log(this.state)
-
-    var username = this.state.text;
-    localStorage.setItem('seller',username)
-
-    if (username.length!==0) {
-      fetch('/valoraciones',{
-            method: 'POST',
-            body: JSON.stringify({
-                "username": username
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-            }
-        })
-      .then((response) => {
-        if (response.ok) {
-          var lasvaloraciones = response.json();
-          lasvaloraciones.then(value => {
-            console.log(value)
-            valoracionesObtenidas = value
-            console.log(valoracionesObtenidas)
-            this.setState({termino: 'si', userok: 'true'});
-            console.log('estado'+JSON.stringify(valoracionesObtenidas))
-          })
-          
-        } else {
-          this.setState({userok: 'false', termino: 'si'});
-        }
-      })
-      /*.catch(function(error) {
-        unavariablequemeindicaquetodoanduvomal=<p>No Existe tal usuario</p>
-        this.setState({userok: 'false', termino:'si'});
-      });*/
+  componentWillMount(){
+    if (this.props.location.search !== null) {
+      return;
     }
+    const URLSearchParams = window.URLSearchParams;
+    
+    var burl = new URLSearchParams();
 
+    burl.append("grant_type","authorization_code")
+    burl.append("client_id", '4069477448135367')
+    burl.append("client_secret", 'eqaPB8Ot1neu4JVVGyqDu5tPorwvmlh2',)
+    burl.append("code",parse(this.props.location.search).code);
+    burl.append("redirect_uri",options.form.redirect_uri)
+
+    var aurl = url + burl
+
+    console.log(aurl)
+
+    fetch('/token', {
+      method: 'POST',
+      body: JSON.stringify({
+        "url": aurl
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(function(response){ 
+      return response.text()
+        .then(function(data) {
+          console.log(data)
+        })
+    });
   }
 
+  componentDidMount() {
+    fetch('/pantallaInicio',{
+      method: 'POST',
+      headers:{
+          'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => {
+      if (response.ok) {
+        var lasvaloraciones = response.json();
+        lasvaloraciones.then(value => {
+          console.log(value)
+          valoracionesObtenidas = value
+          console.log(valoracionesObtenidas)
+          this.setState({termino: 'si', userok: 'true'});
+          console.log('estado'+JSON.stringify(valoracionesObtenidas))
+        })
+        
+      } else {
+        this.setState({userok: 'false', termino: 'si'});
+      }
+    })
+    /*.catch(function(error) {
+      unavariablequemeindicaquetodoanduvomal=<p>No Existe tal usuario</p>
+      this.setState({userok: 'false', termino:'si'});
+    });*/
+  }
 
   render() {
     //if (this.state.valoraciones.length > 0) {
@@ -113,39 +138,15 @@ class valoracionesApp extends Component {
       } else {
         var elMensajeDeError = <p>funca</p>
       }*/
-      if (this.state.userok === ''){
-        var unavariable = <div>...</div>
-      }else if(this.state.userok === 'false') {
-        unavariable = <Alert variant='warning'>NO HAY UN USUARIO CON ESE NOMBRE!</Alert>
-      }else{
-        unavariable = <Alert variant='success'>USUARIO ENCONTRADO CORRECTAMENTE</Alert>
-      }
+
       return (
         
         <div>
 
-          <div style={{textAlign: 'center', padding:'20px'}}>
-            <form onSubmit= {this.handleInputSubmit}>
-              <label htmlFor="new-todo">
-                Vendedor:
-              </label>
-              <input
-                id="new-todo"
-                onChange={this.handleInputChange}
-                value={this.state.text}>
-              </input>
-              <button>
-                Buscar
-              </button>
-            </form>
-          </div>
-
-          <div>
-            {unavariable}
-          </div>
-
           <div className = "datos">
             <div>
+
+              <a href="https://auth.mercadolibre.com/authorization?client_id=4069477448135367&response_type=code&state=5ca75bd30" >Loguearse con Mercadolibre</a>
               <h4>Datos de la Empresa</h4>
 
               <ul>

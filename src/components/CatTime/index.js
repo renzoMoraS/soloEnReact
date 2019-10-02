@@ -1,9 +1,8 @@
+////////////////IMPORTS////////////////
 import React, { Component } from 'react';
 import {Line} from 'react-chartjs-2';
 
-//data.results[i].order_items[0].item.category_id
-//data.results[i].date_closed.substr(8,2),data.results[i].date_closed.substr(5,2),data.results[i].date_closed.substr(0,4)
-
+////////////////GLOBAL VARIABLES////////////////
 var categories = []
 var catBoolean = false
 var showCats = [{
@@ -17,8 +16,17 @@ var showCats = [{
 var arrayNombres = []
 var speedData
 var month = [12]
-var data = JSON.parse(localStorage.getItem('clientsOrders'));
+var data
+var year = []
+var yearmonth = {}
+var conty = 0
+var showdate = '2019'
 
+////////////////MOCK////////////////
+
+var mock = {"query":"","results":[{"id":1999389025,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-26T19:43:28.000-04:00","date_closed":"2019-04-26T19:48:29.000-04:00","expiration_date":"2019-05-24T19:48:29.000-04:00","date_last_updated":"2019-05-24T19:53:54.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3390","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783584712","title":"Blue Eyes White Dragon Original"},"quantity":1,"differential_pricing_id":null,"sale_fee":11.95,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":15,"full_unit_price":15,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":15,"mediations":[],"payments":[{"id":4713983276,"order_id":1999389025,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"rejected","status_code":null,"status_detail":"cc_rejected_high_risk","transaction_amount":15,"shipping_cost":284.99,"overpaid_amount":0,"total_paid_amount":299.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-26T19:45:53.000-04:00","date_last_modified":"2019-04-26T19:45:53.000-04:00","card_id":null,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"nativa","installments":1,"issuer_id":"1007","atm_transfer_reference":{"company_id":null,"transaction_id":null},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":[],"installment_amount":299.99,"deferred_period":null,"date_approved":null,"authorization_code":null,"transaction_order_id":null},{"id":4714304315,"order_id":1999389025,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"rejected","status_code":null,"status_detail":"cc_rejected_other_reason","transaction_amount":15,"shipping_cost":284.99,"overpaid_amount":0,"total_paid_amount":299.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-26T19:47:16.000-04:00","date_last_modified":"2019-04-26T19:47:18.000-04:00","card_id":null,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"diners","installments":1,"issuer_id":"1028","atm_transfer_reference":{"company_id":null,"transaction_id":"989655290857470"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":[],"installment_amount":299.99,"deferred_period":null,"date_approved":null,"authorization_code":null,"transaction_order_id":null},{"id":4714420390,"order_id":1999389025,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"rejected","status_code":null,"status_detail":"cc_rejected_high_risk","transaction_amount":15,"shipping_cost":284.99,"overpaid_amount":0,"total_paid_amount":299.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-26T19:43:29.000-04:00","date_last_modified":"2019-04-26T19:43:29.000-04:00","card_id":null,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"nativa","installments":1,"issuer_id":"1007","atm_transfer_reference":{"company_id":null,"transaction_id":null},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":[],"installment_amount":299.99,"deferred_period":null,"date_approved":null,"authorization_code":null,"transaction_order_id":null},{"id":4714303073,"order_id":1999389025,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"rejected","status_code":null,"status_detail":"cc_rejected_other_reason","transaction_amount":15,"shipping_cost":284.99,"overpaid_amount":0,"total_paid_amount":299.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-26T19:45:15.000-04:00","date_last_modified":"2019-04-26T19:45:17.000-04:00","card_id":null,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"diners","installments":1,"issuer_id":"1028","atm_transfer_reference":{"company_id":null,"transaction_id":"989655300857608"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":[],"installment_amount":299.99,"deferred_period":null,"date_approved":null,"authorization_code":null,"transaction_order_id":null},{"id":4713985303,"order_id":1999389025,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":15,"shipping_cost":284.99,"overpaid_amount":0,"total_paid_amount":299.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-26T19:48:28.000-04:00","date_last_modified":"2019-04-26T19:48:29.000-04:00","card_id":null,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"cencosud","installments":1,"issuer_id":"692","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":299.99,"deferred_period":null,"date_approved":"2019-04-26T19:48:29.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":"stale","status":"ready_to_ship","id":27948414195,"service_id":422,"currency_id":"ARS","shipping_mode":"me2","shipment_type":"shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":1034768527,"zip_code":"7500","latitude":-38.368671,"longitude":-60.282508,"street_number":"900","street_name":"Lamadrid","state":{"id":"AR-B","name":"Buenos Aires"},"comment":"Entre: Tacuari y Rocha","address_line":"Lamadrid 900","country":{"id":"AR","name":"Argentina"},"city":{"id":"TUxBQ1RSRTEwNDE","name":"Tres Arroyos"}},"date_created":"2019-04-26T19:43:28.000-04:00","cost":284.99,"date_first_printed":null,"shipping_option":{"id":456271553,"shipping_method_id":73328,"name":"Normal a domicilio","currency_id":"ARS","cost":284.99,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA783584712","description":"Blue Eyes White Dragon Original","quantity":1,"dimensions":"9.0x10.0x10.0,354.0"}]},"buyer":{"id":430670787,"nickname":"TESTFPIJFUSX","first_name":"Test","last_name":"Test","email":"ttest.79mj56+2-oge4tsojtha4tanrx@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":"DNI","doc_number":"1111111"}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-oge4tsojtha4tanrq@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":1999398334,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-26T19:57:58.000-04:00","date_closed":"2020-04-26T19:59:14.000-04:00","expiration_date":"2019-05-24T19:59:14.000-04:00","date_last_updated":"2019-05-24T20:04:56.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3390","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783584712","title":"Blue Eyes White Dragon Original"},"quantity":1,"differential_pricing_id":null,"sale_fee":11.95,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":15,"full_unit_price":15,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":15,"mediations":[],"payments":[{"id":4714129248,"order_id":1999398334,"payer_id":430669135,"collector":{"id":430670816},"currency_id":"ARS","status":"rejected","status_code":null,"status_detail":"cc_rejected_high_risk","transaction_amount":15,"shipping_cost":329.99,"overpaid_amount":0,"total_paid_amount":344.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-26T19:57:59.000-04:00","date_last_modified":"2019-04-26T19:57:59.000-04:00","card_id":null,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"nativa","installments":1,"issuer_id":"1007","atm_transfer_reference":{"company_id":null,"transaction_id":null},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":[],"installment_amount":344.99,"deferred_period":null,"date_approved":null,"authorization_code":null,"transaction_order_id":null},{"id":4714311777,"order_id":1999398334,"payer_id":430669135,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":15,"shipping_cost":329.99,"overpaid_amount":0,"total_paid_amount":344.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-26T19:59:13.000-04:00","date_last_modified":"2019-04-26T19:59:14.000-04:00","card_id":null,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"argencard","installments":1,"issuer_id":"4","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":344.99,"deferred_period":null,"date_approved":"2019-04-26T19:59:14.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":"stale","status":"ready_to_ship","id":27948416890,"service_id":422,"currency_id":"ARS","shipping_mode":"me2","shipment_type":"shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":1034772013,"zip_code":"5539","latitude":-33.08182,"longitude":-68.472392,"street_number":"100","street_name":"9 de Julio","state":{"id":"AR-M","name":"Mendoza"},"comment":null,"address_line":"9 de Julio 100","country":{"id":"AR","name":"Argentina"},"city":{"id":null,"name":"San Martin"}},"date_created":"2019-04-26T19:57:59.000-04:00","cost":329.99,"date_first_printed":"2019-04-26T20:04:43.000-04:00","shipping_option":{"id":446159574,"shipping_method_id":73328,"name":"Normal a domicilio","currency_id":"ARS","cost":329.99,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA783584712","description":"Blue Eyes White Dragon Original","quantity":1,"dimensions":"9.0x10.0x10.0,354.0"}]},"buyer":{"id":430669135,"nickname":"TESTXR7KY9QZ","first_name":"Test","last_name":"Test","email":"ttest.n66vdyd+2-oge4tsojthe4dgnzr@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":"DNI","doc_number":"1111111"}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-oge4tsojthe4dgnrz@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":1999410490,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-26T20:17:46.000-04:00","date_closed":"2019-04-26T20:17:47.000-04:00","expiration_date":"2019-05-24T20:17:47.000-04:00","date_last_updated":"2019-05-24T20:20:57.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3390","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783584712","title":"Blue Eyes White Dragon Original"},"quantity":1,"differential_pricing_id":null,"sale_fee":11.95,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":15,"full_unit_price":15,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":15,"mediations":[],"payments":[{"id":4714322717,"order_id":1999410490,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":15,"shipping_cost":214.99,"overpaid_amount":0,"total_paid_amount":229.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-26T20:17:46.000-04:00","date_last_modified":"2019-04-26T20:17:47.000-04:00","card_id":325414637,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"cencosud","installments":1,"issuer_id":"692","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":229.99,"deferred_period":null,"date_approved":"2019-04-26T20:17:47.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":"stale","status":"ready_to_ship","id":27948530992,"service_id":431,"currency_id":"ARS","shipping_mode":"me2","shipment_type":"shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":null,"zip_code":"7500","latitude":-38.3785373,"longitude":-60.273724,"street_number":"218","street_name":"Moreno","state":{"id":"AR-B","name":"Buenos Aires"},"comment":null,"address_line":"Moreno 218","country":{"id":"AR","name":"Argentina"},"city":{"id":null,"name":"Tres Arroyos"}},"date_created":"2019-04-26T20:17:46.000-04:00","cost":214.99,"date_first_printed":"2019-04-26T20:18:52.000-04:00","shipping_option":{"id":531435279,"shipping_method_id":503045,"name":"Retiro en Correo Argentino","currency_id":"ARS","cost":214.99,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA783584712","description":"Blue Eyes White Dragon Original","quantity":1,"dimensions":"9.0x10.0x10.0,354.0"}]},"buyer":{"id":430670787,"nickname":"TESTFPIJFUSX","first_name":"Test","last_name":"Test","email":"ttest.79mj56+2-oge4tsojugeydkmzs@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":"DNI","doc_number":"1111111"}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-oge4tsojugeydkmrv@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":1999414661,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-26T20:23:10.000-04:00","date_closed":"2019-04-26T20:23:14.000-04:00","expiration_date":"2019-05-24T20:23:14.000-04:00","date_last_updated":"2019-05-24T20:28:17.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3390","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783584712","title":"Blue Eyes White Dragon Original"},"quantity":1,"differential_pricing_id":null,"sale_fee":11.95,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":15,"full_unit_price":15,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":15,"mediations":[],"payments":[{"id":4714147364,"order_id":1999414661,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":15,"shipping_cost":284.99,"overpaid_amount":0,"total_paid_amount":299.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-26T20:23:11.000-04:00","date_last_modified":"2019-04-26T20:23:14.000-04:00","card_id":325414637,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"cencosud","installments":1,"issuer_id":"692","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":299.99,"deferred_period":null,"date_approved":"2019-04-26T20:23:14.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":"stale","status":"ready_to_ship","id":27948531845,"service_id":422,"currency_id":"ARS","shipping_mode":"me2","shipment_type":"shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":1034768527,"zip_code":"7500","latitude":-38.368671,"longitude":-60.282508,"street_number":"900","street_name":"Lamadrid","state":{"id":"AR-B","name":"Buenos Aires"},"comment":"Entre: Tacuari y Rocha","address_line":"Lamadrid 900","country":{"id":"AR","name":"Argentina"},"city":{"id":"TUxBQ1RSRTEwNDE","name":"Tres Arroyos"}},"date_created":"2019-04-26T20:23:11.000-04:00","cost":284.99,"date_first_printed":"2019-04-27T07:39:12.000-04:00","shipping_option":{"id":456271553,"shipping_method_id":73328,"name":"Normal a domicilio","currency_id":"ARS","cost":284.99,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA783584712","description":"Blue Eyes White Dragon Original","quantity":1,"dimensions":"9.0x10.0x10.0,354.0"}]},"buyer":{"id":430670787,"nickname":"TESTFPIJFUSX","first_name":"Test","last_name":"Test","email":"ttest.79mj56+2-oge4tsojuge2dombt@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":"DNI","doc_number":"1111111"}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-oge4tsojuge2dmojw@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":1999578150,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-27T07:50:13.000-04:00","date_closed":"2019-04-27T07:50:15.000-04:00","expiration_date":"2019-05-25T07:50:15.000-04:00","date_last_updated":"2019-05-25T07:58:05.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3390","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783584712","title":"Blue Eyes White Dragon Original"},"quantity":1,"differential_pricing_id":null,"sale_fee":11.95,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":15,"full_unit_price":15,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":15,"mediations":[],"payments":[{"id":4714904389,"order_id":1999578150,"payer_id":430669135,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":15,"shipping_cost":329.99,"overpaid_amount":0,"total_paid_amount":344.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-27T07:50:14.000-04:00","date_last_modified":"2019-04-27T07:50:15.000-04:00","card_id":325416018,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"argencard","installments":1,"issuer_id":"4","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":344.99,"deferred_period":null,"date_approved":"2019-04-27T07:50:15.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":"stale","status":"ready_to_ship","id":27948579150,"service_id":422,"currency_id":"ARS","shipping_mode":"me2","shipment_type":"shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":1034772013,"zip_code":"5539","latitude":-33.08182,"longitude":-68.472392,"street_number":"100","street_name":"9 de Julio","state":{"id":"AR-M","name":"Mendoza"},"comment":null,"address_line":"9 de Julio 100","country":{"id":"AR","name":"Argentina"},"city":{"id":null,"name":"San Martin"}},"date_created":"2019-04-27T07:50:14.000-04:00","cost":329.99,"date_first_printed":"2019-04-27T10:29:19.000-04:00","shipping_option":{"id":446159574,"shipping_method_id":73328,"name":"Normal a domicilio","currency_id":"ARS","cost":329.99,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA783584712","description":"Blue Eyes White Dragon Original","quantity":1,"dimensions":"9.0x10.0x10.0,354.0"}]},"buyer":{"id":430669135,"nickname":"TESTXR7KY9QZ","first_name":"Test","last_name":"Test","email":"ttest.n66vdyd+2-oge4tsojvg44dcobx@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":"DNI","doc_number":"1111111"}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-oge4tsojvg44dcobv@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":1999665308,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-27T10:37:28.000-04:00","date_closed":"2019-04-27T10:37:30.000-04:00","expiration_date":"2019-05-25T10:37:30.000-04:00","date_last_updated":"2019-05-25T10:41:01.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3390","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783584712","title":"Blue Eyes White Dragon Original"},"quantity":3,"differential_pricing_id":null,"sale_fee":11.95,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":15,"full_unit_price":15,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":45,"mediations":[],"payments":[{"id":4715156135,"order_id":1999665308,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":45,"shipping_cost":329.99,"overpaid_amount":0,"total_paid_amount":374.99,"marketplace_fee":35.85,"coupon_amount":0,"date_created":"2019-04-27T10:37:29.000-04:00","date_last_modified":"2019-04-27T10:37:30.000-04:00","card_id":325414637,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"cencosud","installments":1,"issuer_id":"692","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":374.99,"deferred_period":null,"date_approved":"2019-04-27T10:37:30.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":"stale","status":"ready_to_ship","id":27948602877,"service_id":422,"currency_id":"ARS","shipping_mode":"me2","shipment_type":"shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":1034768527,"zip_code":"7500","latitude":-38.368671,"longitude":-60.282508,"street_number":"900","street_name":"Lamadrid","state":{"id":"AR-B","name":"Buenos Aires"},"comment":"Entre: Tacuari y Rocha","address_line":"Lamadrid 900","country":{"id":"AR","name":"Argentina"},"city":{"id":"TUxBQ1RSRTEwNDE","name":"Tres Arroyos"}},"date_created":"2019-04-27T10:37:29.000-04:00","cost":329.99,"date_first_printed":"2019-04-27T10:38:13.000-04:00","shipping_option":{"id":456271558,"shipping_method_id":73328,"name":"Normal a domicilio","currency_id":"ARS","cost":329.99,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA783584712","description":"Blue Eyes White Dragon Original","quantity":3,"dimensions":"13.0x13.0x15.0,1062.0"}]},"buyer":{"id":430670787,"nickname":"TESTFPIJFUSX","first_name":"Test","last_name":"Test","email":"ttest.79mj56+2-oge4tsojwgy2tgnjq@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":"DNI","doc_number":"1111111"}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-oge4tsojwgy2tgnbt@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":1999670550,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-27T10:43:26.000-04:00","date_closed":"2019-04-27T10:43:27.000-04:00","expiration_date":"2019-05-25T10:43:27.000-04:00","date_last_updated":"2019-05-25T10:49:31.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3390","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783584712","title":"Blue Eyes White Dragon Original"},"quantity":1,"differential_pricing_id":null,"sale_fee":11.95,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":15,"full_unit_price":15,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":15,"mediations":[],"payments":[{"id":4715404856,"order_id":1999670550,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":15,"shipping_cost":284.99,"overpaid_amount":0,"total_paid_amount":299.99,"marketplace_fee":11.95,"coupon_amount":0,"date_created":"2019-04-27T10:43:26.000-04:00","date_last_modified":"2019-04-27T10:43:27.000-04:00","card_id":325414637,"reason":"Blue Eyes White Dragon Original","activation_uri":null,"payment_method_id":"cencosud","installments":1,"issuer_id":"692","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":299.99,"deferred_period":null,"date_approved":"2019-04-27T10:43:27.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":"stale","status":"ready_to_ship","id":27948692989,"service_id":422,"currency_id":"ARS","shipping_mode":"me2","shipment_type":"shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":1034768527,"zip_code":"7500","latitude":-38.368671,"longitude":-60.282508,"street_number":"900","street_name":"Lamadrid","state":{"id":"AR-B","name":"Buenos Aires"},"comment":"Entre: Tacuari y Rocha","address_line":"Lamadrid 900","country":{"id":"AR","name":"Argentina"},"city":{"id":"TUxBQ1RSRTEwNDE","name":"Tres Arroyos"}},"date_created":"2019-04-27T10:43:26.000-04:00","cost":284.99,"date_first_printed":null,"shipping_option":{"id":456271553,"shipping_method_id":73328,"name":"Normal a domicilio","currency_id":"ARS","cost":284.99,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA783584712","description":"Blue Eyes White Dragon Original","quantity":1,"dimensions":"9.0x10.0x10.0,354.0"}]},"buyer":{"id":430670787,"nickname":"TESTFPIJFUSX","first_name":"Test","last_name":"Test","email":"ttest.79mj56+2-oge4tsojwg4ydkojs@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":"DNI","doc_number":"1111111"}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-oge4tsojwg4ydkobv@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":1999675430,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-27T10:54:09.000-04:00","date_closed":"2019-04-27T10:54:10.000-04:00","expiration_date":"2019-05-09T10:54:27.000-04:00","date_last_updated":"2019-04-27T10:54:41.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3530","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783652655","title":"Producto Bueno"},"quantity":1,"differential_pricing_id":null,"sale_fee":12.6,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":20,"full_unit_price":20,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":20,"mediations":[],"payments":[{"id":4715317781,"order_id":1999675430,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":20,"shipping_cost":0,"overpaid_amount":0,"total_paid_amount":20,"marketplace_fee":12.6,"coupon_amount":0,"date_created":"2019-04-27T10:54:09.000-04:00","date_last_modified":"2019-04-27T10:54:09.000-04:00","card_id":325414637,"reason":"Producto Bueno","activation_uri":null,"payment_method_id":"cencosud","installments":1,"issuer_id":"692","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":20,"deferred_period":null,"date_approved":"2019-04-27T10:54:09.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":null,"status":"to_be_agreed","id":null,"service_id":null,"currency_id":null,"shipping_mode":null,"shipment_type":null,"sender_id":null,"picking_type":null,"date_created":null,"cost":null,"date_first_printed":null},"buyer":{"id":430670787,"nickname":"TESTFPIJFUSX","first_name":"Test","last_name":"Test","email":"ttest.79mj56+2-oge4tsojwg42tinzs@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":null,"doc_number":null}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-oge4tsojwg42tinrv@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":{"id":9040961264769,"date_created":"2019-04-27T10:54:27.000-04:00","fulfilled":true,"rating":"positive","status":"active"},"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":1999684504,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-27T11:03:42.000-04:00","date_closed":"2019-04-27T11:03:43.000-04:00","expiration_date":"2019-05-09T11:04:05.000-04:00","date_last_updated":"2019-04-27T11:04:13.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3530","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783652655","title":"Producto Bueno"},"quantity":1,"differential_pricing_id":null,"sale_fee":12.6,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":20,"full_unit_price":20,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":20,"mediations":[],"payments":[{"id":4715609257,"order_id":1999684504,"payer_id":430669135,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":20,"shipping_cost":0,"overpaid_amount":0,"total_paid_amount":20,"marketplace_fee":12.6,"coupon_amount":0,"date_created":"2019-04-27T11:03:43.000-04:00","date_last_modified":"2019-04-27T11:03:43.000-04:00","card_id":325416018,"reason":"Producto Bueno","activation_uri":null,"payment_method_id":"argencard","installments":1,"issuer_id":"4","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":20,"deferred_period":null,"date_approved":"2019-04-27T11:03:43.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":null,"status":"to_be_agreed","id":null,"service_id":null,"currency_id":null,"shipping_mode":null,"shipment_type":null,"sender_id":null,"picking_type":null,"date_created":null,"cost":null,"date_first_printed":null},"buyer":{"id":430669135,"nickname":"TESTXR7KY9QZ","first_name":"Test","last_name":"Test","email":"ttest.n66vdyd+2-oge4tsojwha2dknbr@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":null,"doc_number":null}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-oge4tsojwha2dkmzz@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":{"id":9040961256411,"date_created":"2019-04-27T11:04:05.000-04:00","fulfilled":true,"rating":"positive","status":"active"},"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":2000141427,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-28T00:54:03.000-04:00","date_closed":"2019-04-28T00:54:04.000-04:00","expiration_date":"2019-05-10T00:54:50.000-04:00","date_last_updated":"2019-04-28T00:54:59.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3530","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783652655","title":"Producto Bueno"},"quantity":1,"differential_pricing_id":null,"sale_fee":12.6,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":20,"full_unit_price":20,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":20,"mediations":[],"payments":[{"id":4717197838,"order_id":2000141427,"payer_id":431005535,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":20,"shipping_cost":0,"overpaid_amount":0,"total_paid_amount":20,"marketplace_fee":12.6,"coupon_amount":0,"date_created":"2019-04-28T00:54:04.000-04:00","date_last_modified":"2019-04-28T00:54:04.000-04:00","card_id":null,"reason":"Producto Bueno","activation_uri":null,"payment_method_id":"naranja","installments":1,"issuer_id":"5","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":20,"deferred_period":null,"date_approved":"2019-04-28T00:54:04.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":null,"status":"to_be_agreed","id":null,"service_id":null,"currency_id":null,"shipping_mode":null,"shipment_type":null,"sender_id":null,"picking_type":null,"date_created":null,"cost":null,"date_first_printed":null},"buyer":{"id":431005535,"nickname":"TESTAY4GF8V2","first_name":"Test","last_name":"Test","email":"ttest.3v09540+2-ogiydambrgqytinjt@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":null,"doc_number":null}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-ogiydambrgqytinrs@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":{"id":9040961422301,"date_created":"2019-04-28T00:54:50.000-04:00","fulfilled":true,"rating":"positive","status":"active"},"purchase":{"id":9040961545017,"date_created":"2019-04-28T22:31:35.000-04:00","fulfilled":true,"rating":"positive","status":"active"}},"tags":["test_order","not_delivered","paid"]},{"id":2000147722,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-28T00:59:07.000-04:00","date_closed":"2019-04-28T00:59:08.000-04:00","expiration_date":"2019-05-10T00:59:40.000-04:00","date_last_updated":"2019-04-28T00:59:49.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3530","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783652655","title":"Producto Bueno"},"quantity":1,"differential_pricing_id":null,"sale_fee":12.6,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":20,"full_unit_price":20,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":20,"mediations":[],"payments":[{"id":4717390912,"order_id":2000147722,"payer_id":431005535,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":20,"shipping_cost":0,"overpaid_amount":0,"total_paid_amount":20,"marketplace_fee":12.6,"coupon_amount":0,"date_created":"2019-04-28T00:59:08.000-04:00","date_last_modified":"2019-04-28T00:59:08.000-04:00","card_id":325836614,"reason":"Producto Bueno","activation_uri":null,"payment_method_id":"naranja","installments":1,"issuer_id":"5","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":20,"deferred_period":null,"date_approved":"2019-04-28T00:59:08.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":null,"status":"to_be_agreed","id":null,"service_id":null,"currency_id":null,"shipping_mode":null,"shipment_type":null,"sender_id":null,"picking_type":null,"date_created":null,"cost":null,"date_first_printed":null},"buyer":{"id":431005535,"nickname":"TESTAY4GF8V2","first_name":"Test","last_name":"Test","email":"ttest.3v09540+2-ogiydambrgq3tonby@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":null,"doc_number":null}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-ogiydambrgq3tonjx@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":{"id":9040961430390,"date_created":"2019-04-28T00:59:40.000-04:00","fulfilled":true,"rating":"positive","status":"active"},"purchase":{"id":9040961422418,"date_created":"2019-04-28T01:00:34.000-04:00","fulfilled":true,"rating":"positive","status":"active"}},"tags":["test_order","not_delivered","paid"]},{"id":2000718071,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-04-28T22:33:51.000-04:00","date_closed":"2019-04-28T22:34:01.000-04:00","expiration_date":"2019-05-26T22:34:01.000-04:00","date_last_updated":"2019-05-26T22:37:11.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3530","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":null,"id":"MLA783652655","title":"Producto Bueno"},"quantity":1,"differential_pricing_id":null,"sale_fee":12.6,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":20,"full_unit_price":20,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":20,"mediations":[],"payments":[{"id":4719194449,"order_id":2000718071,"payer_id":431005535,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":20,"shipping_cost":0,"overpaid_amount":0,"total_paid_amount":20,"marketplace_fee":12.6,"coupon_amount":0,"date_created":"2019-04-28T22:33:54.000-04:00","date_last_modified":"2019-04-28T22:34:01.000-04:00","card_id":325836614,"reason":"Producto Bueno","activation_uri":null,"payment_method_id":"naranja","installments":1,"issuer_id":"5","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":20,"deferred_period":null,"date_approved":"2019-04-28T22:34:01.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":null,"status":"pending","id":27949493442,"service_id":null,"currency_id":"ARS","shipping_mode":"custom","shipment_type":"custom_shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":1034895889,"zip_code":"8400","latitude":null,"longitude":null,"street_number":"406","street_name":"Juan Manuel de Rosas","state":{"id":"AR-R","name":"Río Negro"},"comment":null,"address_line":"Juan Manuel de Rosas 406","country":{"id":"AR","name":"Argentina"},"city":{"id":"TUxBQ1NBTmY1OWQ","name":"Bariloche"}},"date_created":"2019-04-28T22:33:51.000-04:00","cost":0,"date_first_printed":null,"shipping_option":{"id":null,"shipping_method_id":null,"name":"add_shipping_cost","currency_id":"ARS","cost":0,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA783652655","description":"Producto Bueno","quantity":1,"dimensions":null}]},"buyer":{"id":431005535,"nickname":"TESTAY4GF8V2","first_name":"Test","last_name":"Test","email":"ttest.3v09540+2-ogiydambxge4daojx@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":"DNI","doc_number":"1111111"}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-ogiydambxge4dcmbw@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":2055398912,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-06-15T07:42:37.000-04:00","date_closed":"2019-06-15T07:42:39.000-04:00","expiration_date":"2019-07-13T07:42:39.000-04:00","date_last_updated":"2019-07-13T07:47:55.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA3390","variation_id":null,"variation_attributes":[],"seller_sku":null,"warranty":"Garantía del vendedor: 90 días","id":"MLA792662242","title":"Slifer The Sky Dragon"},"quantity":1,"differential_pricing_id":33630181,"sale_fee":810,"listing_type_id":"gold_pro","base_currency_id":null,"unit_price":3000,"full_unit_price":3000,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":3000,"mediations":[],"payments":[{"id":4869850992,"order_id":2055398912,"payer_id":430670787,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":3000,"shipping_cost":0,"overpaid_amount":0,"total_paid_amount":3000,"marketplace_fee":810,"coupon_amount":0,"date_created":"2019-06-15T07:42:38.000-04:00","date_last_modified":"2019-06-15T07:42:39.000-04:00","card_id":325414637,"reason":"Slifer The Sky Dragon","activation_uri":null,"payment_method_id":"cencosud","installments":1,"issuer_id":"692","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":3000,"deferred_period":null,"date_approved":"2019-06-15T07:42:39.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":"stale","status":"ready_to_ship","id":27990481482,"service_id":422,"currency_id":"ARS","shipping_mode":"me2","shipment_type":"shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":1034768527,"zip_code":"7500","latitude":-38.368671,"longitude":-60.282508,"street_number":"900","street_name":"Lamadrid","state":{"id":"AR-B","name":"Buenos Aires"},"comment":"Entre: Tacuari y Rocha","address_line":"Lamadrid 900","country":{"id":"AR","name":"Argentina"},"city":{"id":"TUxBQ1RSRTEwNDE","name":"Tres Arroyos"}},"date_created":"2019-06-15T07:42:38.000-04:00","cost":0,"date_first_printed":null,"shipping_option":{"id":456271555,"shipping_method_id":73328,"name":"Normal a domicilio","currency_id":"ARS","cost":0,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA792662242","description":"Slifer The Sky Dragon","quantity":1,"dimensions":"10.0x11.0x11.0,662.0"}]},"buyer":{"id":430670787,"nickname":"TESTFPIJFUSX","first_name":"Test","last_name":"Test","email":"ttest.79mj56+2-ogiydknjthe4dsnju@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":"DNI","doc_number":"1111111"}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-ogiydknjthe4dsnbx@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]},{"id":2061403758,"comments":null,"status":"paid","status_detail":{"code":"item_price_restriction","description":null},"date_created":"2019-06-22T07:16:56.000-04:00","date_closed":"2019-06-22T07:16:58.000-04:00","expiration_date":"2019-07-20T07:16:58.000-04:00","date_last_updated":"2019-07-20T07:21:36.000-04:00","hidden_for_seller":false,"currency_id":"ARS","order_items":[{"item":{"seller_custom_field":null,"condition":"new","category_id":"MLA412048","variation_id":39171711147,"variation_attributes":[{"name":"Color","id":"COLOR","value_id":"283165","value_name":"Gris"},{"name":"Diseño de la tela","id":"FABRIC_DESIGN","value_id":"930483","value_name":"Liso"}],"seller_sku":null,"warranty":"Sin garantía","id":"MLA794374276","title":"Pañuelo Gigante"},"quantity":1,"differential_pricing_id":null,"sale_fee":42.5,"listing_type_id":"gold_special","base_currency_id":null,"unit_price":250,"full_unit_price":250,"base_exchange_rate":null,"currency_id":"ARS","manufacturing_days":null}],"total_amount":250,"mediations":[],"payments":[{"id":4890947895,"order_id":2061403758,"payer_id":431005535,"collector":{"id":430670816},"currency_id":"ARS","status":"approved","status_code":null,"status_detail":"accredited","transaction_amount":250,"shipping_cost":329.99,"overpaid_amount":0,"total_paid_amount":579.99,"marketplace_fee":42.5,"coupon_amount":0,"date_created":"2019-06-22T07:16:57.000-04:00","date_last_modified":"2019-06-22T07:16:58.000-04:00","card_id":325836614,"reason":"Pañuelo Gigante","activation_uri":null,"payment_method_id":"naranja","installments":1,"issuer_id":"5","atm_transfer_reference":{"company_id":null,"transaction_id":"1234567"},"coupon_id":null,"operation_type":"regular_payment","payment_type":"credit_card","available_actions":["refund"],"installment_amount":579.99,"deferred_period":null,"date_approved":"2019-06-22T07:16:58.000-04:00","authorization_code":"1234567","transaction_order_id":null}],"order_request":{"change":null,"return":null},"pickup_id":null,"pack_id":null,"shipping":{"substatus":"stale","status":"ready_to_ship","id":28000225241,"service_id":422,"currency_id":"ARS","shipping_mode":"me2","shipment_type":"shipping","sender_id":430670816,"picking_type":null,"receiver_address":{"id":1034895889,"zip_code":"8400","latitude":-41.132713,"longitude":-71.316923,"street_number":"406","street_name":"Juan Manuel de Rosas","state":{"id":"AR-R","name":"Río Negro"},"comment":null,"address_line":"Juan Manuel de Rosas 406","country":{"id":"AR","name":"Argentina"},"city":{"id":"TUxBQ1NBTmY1OWQ","name":"Bariloche"}},"date_created":"2019-06-22T07:16:57.000-04:00","cost":329.99,"date_first_printed":null,"shipping_option":{"id":462883477,"shipping_method_id":73328,"name":"Normal a domicilio","currency_id":"ARS","cost":329.99,"speed":{"shipping":null,"handling":null},"estimated_delivery":{"date":null,"time_from":null,"time_to":null}},"shipping_items":[{"id":"MLA794374276","description":"Pañuelo Gigante","quantity":1,"dimensions":"11.0x12.0x16.0,177.0"}]},"buyer":{"id":431005535,"nickname":"TESTAY4GF8V2","first_name":"Test","last_name":"Test","email":"ttest.3v09540+2-ogiydmmjugaztoobu@mail.mercadolibre.com","phone":{"area_code":"01","number":"1111-1111","extension":""},"alternative_phone":{"area_code":"","number":"","extension":""},"billing_info":{"doc_type":null,"doc_number":null}},"seller":{"id":430670816,"nickname":"TETE7930831","email":"ttest.0cr6xh+2-ogiydmmjugaztoojt@mail.mercadolibre.com","phone":{"area_code":"01","extension":"","number":"1111-1111","verified":false},"alternative_phone":{"area_code":"","extension":"","number":""},"first_name":"Test","last_name":"Test"},"feedback":{"sale":null,"purchase":null},"tags":["test_order","not_delivered","paid"]}],"sort":{"id":"date_asc","name":"Date ascending"},"available_sorts":[{"id":"date_desc","name":"Date descending"}],"filters":[{"id":"order.status","name":"Order Status","type":"text","values":[{"id":"paid","name":"Order Paid"}]}],"available_filters":[{"id":"order.status","name":"Order Status","type":"text","values":[{"id":"paid","name":"Order Paid","results":14},{"id":"confirmed","name":"Order Confirmed","results":0},{"id":"payment_in_process","name":"Payment in Process","results":0},{"id":"payment_required","name":"Payment Required","results":0},{"id":"cancelled","name":"Order Cancelled","results":0},{"id":"invalid","name":"Invalid","results":0}]},{"id":"shipping.status","name":"Shipping Status","type":"text","values":[{"id":"ready_to_ship","name":"Ready to ship","results":9},{"id":"to_be_agreed","name":"To be agreed","results":4},{"id":"pending","name":"Pending","results":1},{"id":"handling","name":"Handling","results":0},{"id":"shipped","name":"Shipped","results":0},{"id":"delivered","name":"Delivered","results":0},{"id":"not_delivered","name":"Not delivered","results":0},{"id":"not_verified","name":"Not verified","results":0},{"id":"cancelled","name":"Cancelled","results":0},{"id":"closed","name":"Closed","results":0},{"id":"error","name":"Error","results":0},{"id":"active","name":"Active","results":0},{"id":"not_specified","name":"Not specified","results":0},{"id":"stale_ready_to_ship","name":"Stale ready to ship","results":0},{"id":"stale_shipped","name":"Stale shipped","results":0}]},{"id":"feedback.sale.rating","name":"Feedback rating","type":"text","values":[{"id":"positive","name":"Positive","results":4},{"id":"negative","name":"Negative","results":0},{"id":"neutral","name":"Neutral","results":0}]},{"id":"feedback.purchase.rating","name":"Feedback rating","type":"text","values":[{"id":"positive","name":"Positive","results":2},{"id":"negative","name":"Negative","results":0},{"id":"neutral","name":"Neutral","results":0}]},{"id":"feedback.sale.fulfilled","name":"Feedback sale fulfilled","type":"boolean","values":[{"id":"T","name":"Transaction actually happened","results":4},{"id":"F","name":"Transaction was aborted","results":0}]},{"id":"feedback.purchase.fulfilled","name":"Feedback purchase fulfilled","type":"boolean","values":[{"id":"T","name":"Transaction actually happened","results":2},{"id":"F","name":"Transaction was aborted","results":0}]},{"id":"shipping.service_id","name":"Shipping Service","type":"long","values":[{"id":"422","name":"Correo Argentino Estándar","results":8},{"id":"431","name":"Estándar","results":1},{"id":"1131","name":"Andreani a sucursal next day","results":0},{"id":"1132","name":"Correo Argentino a sucursal next day","results":0},{"id":"1181","name":"Colecta Retiro Sucursal Next Day","results":0},{"id":"1191","name":"Colecta Retiro Sucursal Next Day","results":0},{"id":"136161","name":"Colecta Retiro Sucursal Next Day","results":0},{"id":"136171","name":"OCA a sucursal next day","results":0},{"id":"144021","name":"TETE20000003","results":0},{"id":"144772","name":"Prioritario","results":0},{"id":"145041","name":"Retiro en una sucursal","results":0},{"id":"147713","name":"Iflow","results":0},{"id":"147721","name":"Loginter","results":0},{"id":"151","name":"Estándar","results":0},{"id":"152","name":"Estándar","results":0},{"id":"153","name":"OCA Estándar","results":0},{"id":"154","name":"Prioritario","results":0},{"id":"154726","name":"CBT CustomShipping","results":0},{"id":"158181","name":"MEL Distribution","results":0},{"id":"158662","name":"MEL Middle Mile","results":0},{"id":"164432","name":"Shipping Network Fast","results":0},{"id":"184064","name":"Test Servicio 5","results":0},{"id":"184688","name":"Test Servicio3","results":0},{"id":"184751","name":"Test Servicio3","results":0},{"id":"184752","name":"Test Servicio3","results":0},{"id":"184753","name":"Test Servicio3","results":0},{"id":"184761","name":"Test Servicio3","results":0},{"id":"185035","name":"Test Servicio3","results":0},{"id":"185036","name":"Test Servicio3","results":0},{"id":"185037","name":"Test Servicio3","results":0},{"id":"185038","name":"Test Servicio3","results":0},{"id":"185042","name":"Test Servicio3","results":0},{"id":"185043","name":"Test Servicio3","results":0},{"id":"185045","name":"Test Servicio3","results":0},{"id":"185061","name":"Test Servicio3","results":0},{"id":"185071","name":"Test Servicio3","results":0},{"id":"185091","name":"Test Servicio3","results":0},{"id":"186973","name":"Servicio de prueba 45","results":0},{"id":"186975","name":"Test Servicio 5","results":0},{"id":"186976","name":"Test Servicio3000","results":0},{"id":"187001","name":"Servicio de prueba 40","results":0},{"id":"187002","name":"Servicio de prueba 5","results":0},{"id":"187041","name":"Test Servicio3","results":0},{"id":"187043","name":"Servicio de prueba 7","results":0},{"id":"187051","name":"Test Servicio3000","results":0},{"id":"187931","name":"Test Servicio Front #1","results":0},{"id":"188501","name":"Test","results":0},{"id":"188502","name":"Test","results":0},{"id":"251","name":"Otros","results":0},{"id":"311","name":"Colecta Normal","results":0},{"id":"312","name":"Colecta Express","results":0},{"id":"321","name":"Colecta Sucursal","results":0},{"id":"341","name":"Estándar","results":0},{"id":"351","name":"Prioritario","results":0},{"id":"381","name":"Prioritario","results":0},{"id":"421","name":"Correo Argentino Prioritario","results":0},{"id":"441","name":"Fulfillment Normal","results":0},{"id":"442","name":"Fulfillment Express","results":0},{"id":"443","name":"Fulfillment Retiro Sucursal","results":0},{"id":"451","name":"Colecta Moto Express","results":0},{"id":"581","name":"Colecta Retiro Sucursal","results":0},{"id":"591","name":"Estándar","results":0},{"id":"61","name":"Estándar","results":0},{"id":"611","name":"Estándar","results":0},{"id":"62","name":"Prioritario","results":0},{"id":"63","name":"Estándar","results":0},{"id":"64","name":"Prioritario","results":0},{"id":"652","name":"Service Test","results":0},{"id":"671","name":"Colecta Retiro Sucursal","results":0},{"id":"681","name":"Colecta Retiro Sucursal","results":0},{"id":"801","name":"Colecta Retiro Sucursal","results":0},{"id":"81","name":"Webpack","results":0},{"id":"831","name":"Andreani Estándar","results":0},{"id":"832","name":"Andreani sucursal a sucursal","results":0},{"id":"851","name":"Urbano Estándar","results":0},{"id":"881","name":"Colecta Retiro Sucursal","results":0},{"id":"911","name":"CBT DHL","results":0},{"id":"921","name":"CBT MA","results":0},{"id":"931","name":"CBT DDU","results":0}]},{"id":"shipping.substatus","name":"Shipping Substatus","type":"text","values":[{"id":"stale","name":"Stale shipped","results":9},{"id":"cost_exceeded","name":"Cost exceeded","results":0},{"id":"under_review","name":"Under review (e.g. fraud)","results":0},{"id":"reviewed","name":"Reviewed","results":0},{"id":"fraudulent","name":"Cancelled Fraudulent","results":0},{"id":"waiting_for_payment","name":"Waiting for shipping payment to be accredited","results":0},{"id":"shipment_paid","name":"Shipping cost has been paid","results":0},{"id":"regenerating","name":"Regenerating","results":0},{"id":"waiting_for_label_generation","name":"Waiting for label generation","results":0},{"id":"invoice_pending","name":"Invoice pending","results":0},{"id":"waiting_for_return_confirmation","name":"Waiting for return confirmation","results":0},{"id":"return_confirmed","name":"Return Confirmed","results":0},{"id":"manufacturing","name":"Manufacturing","results":0},{"id":"ready_to_print","name":"Ready to print","results":0},{"id":"printed","name":"Printed","results":0},{"id":"in_pickup_list","name":"In pikcup list","results":0},{"id":"ready_for_pkl_creation","name":"Ready for pkl creation","results":0},{"id":"ready_for_pickup","name":"Ready for pickup","results":0},{"id":"ready_for_dropoff","name":"Ready for drop off","results":0},{"id":"picked_up","name":"Picked up","results":0},{"id":"dropped_off","name":"Dropped off in Melipoint","results":0},{"id":"in_hub","name":"In hub","results":0},{"id":"measures_ready","name":"Measures and weight ready","results":0},{"id":"waiting_for_last_mile_authorization","name":"Waiting for last mile authorization","results":0},{"id":"waiting_for_carrier_authorization","name":"Waiting for carrier authorization","results":0},{"id":"authorized_by_carrier","name":"Authorized by carrier","results":0},{"id":"in_packing_list","name":"In packing list","results":0},{"id":"in_plp","name":"In PLP","results":0},{"id":"in_warehouse","name":"In Warehouse","results":0},{"id":"ready_to_pack","name":"Ready to Pack","results":0},{"id":"delayed","name":"Delayed","results":0},{"id":"waiting_for_withdrawal","name":"Waiting for withdrawal","results":0},{"id":"contact_with_carrier_required","name":"Contact with carrier required","results":0},{"id":"receiver_absent","name":"Receiver absent","results":0},{"id":"reclaimed","name":"Reclaimed","results":0},{"id":"not_localized","name":"Not localized","results":0},{"id":"forwarded_to_third","name":"Forwarded to third party","results":0},{"id":"soon_deliver","name":"Soon deliver","results":0},{"id":"refused_delivery","name":"Delivery refused","results":0},{"id":"bad_address","name":"Bad address","results":0},{"id":"negative_feedback","name":"Stale shipped forced to not delivered due to negative feedback by buyer","results":0},{"id":"need_review","name":"Need to review carrier status to understand what happened","results":0},{"id":"operator_intervention","name":"Need operator intervention","results":0},{"id":"claimed_me","name":"Not delivered that was claimed by the receiver","results":0},{"id":"retained","name":"Retained","results":0},{"id":"delivery_failed","name":"Delivery failed","results":0},{"id":"waiting_for_confirmation","name":"Waiting for buyer confirmation","results":0},{"id":"damaged","name":"Package damaged in hub","results":0},{"id":"fulfilled_feedback","name":"Fulfilled by buyer feedback","results":0},{"id":"no_action_taken","name":"No action taken by buyer","results":0},{"id":"double_refund","name":"Double Refund","results":0},{"id":"returning_to_sender","name":"Returning to sender","results":0},{"id":"stolen","name":"Stolen","results":0},{"id":"returned","name":"Returned","results":0},{"id":"confiscated","name":"confiscated","results":0},{"id":"to_review","name":"Closed shipment","results":0},{"id":"destroyed","name":"Destroyed","results":0},{"id":"lost","name":"Package lost","results":0},{"id":"cancelled_measurement_exceeded","name":"Shipment cancelled for measurement exceeded","results":0},{"id":"returned_to_hub","name":"Returned to hub","results":0},{"id":"returned_to_agency","name":"Returned to agency","results":0},{"id":"picked_up_for_return","name":"Picked up for return","results":0},{"id":"returning_to_warehouse","name":"Returning to Warehouse","results":0},{"id":"returned_to_warehouse","name":"Returned to Warehouse","results":0},{"id":"recovered","name":"Recovered","results":0},{"id":"label_expired","name":"Label Expired","results":0},{"id":"cancelled_manually","name":"Cancelled Manually","results":0},{"id":"return_expired","name":"Return expired","results":0},{"id":"return_session_expired","name":"Return session expired","results":0},{"id":"unfulfillable","name":"Unfulfillable","results":0},{"id":"closed_by_user","name":"User changes the type of shipping and cancels the previous","results":0}]},{"id":"feedback.status","name":"Feedback Status","type":"text","values":[{"id":"pending","name":"Waiting for your feedback","results":10},{"id":"waiting_buyer","name":"Waiting for Buyer's feedback","results":2}]},{"id":"tags","name":"Tags","type":"text","values":[{"id":"not_delivered","name":"Not Delivered","results":14},{"id":"paid","name":"Order Paid","results":14},{"id":"delivered","name":"Delivered","results":0},{"id":"not_paid","name":"Order Not Paid","results":0},{"id":"claim_closed","name":"Claim Closed","results":0},{"id":"claim_opened","name":"Claim Opened","results":0},{"id":"not_processed","name":"Not processed order","results":0},{"id":"processed","name":"Processed order","results":0},{"id":"returned","name":"Returned order","results":0},{"id":"pack_order","name":"Cart Order","results":0},{"id":"reservation","name":"Reservation Order","results":0},{"id":"contract","name":"Service Contract order","results":0},{"id":"mshops","name":"Order from Mercado Shops","results":0}]},{"id":"mediations.status","name":"Mediation Status","type":"text","values":[{"id":"claim_opened","name":"Claim opened","results":0},{"id":"claim_closed","name":"Claim closed","results":0},{"id":"dispute_opened","name":"Dispute opened","results":0},{"id":"dispute_closed","name":"Dispute closed","results":0},{"id":"seller_dispute_opened","name":"Seller dispute opened","results":0},{"id":"seller_dispute_closed","name":"Seller dispute closed","results":0}]},{"id":"order_request.return","name":"Order-Request Return status","type":"text","values":[{"id":"required","name":"Return required","results":0},{"id":"cancelled","name":"Return cancelled","results":0},{"id":"expired","name":"Return expired","results":0},{"id":"accepted","name":"Return accepted","results":0},{"id":"partially_paid","name":"Return partially paid","results":0},{"id":"paid","name":"Return paid","results":0},{"id":"failed","name":"Return failed","results":0},{"id":"closed","name":"Return closed","results":0}]},{"id":"order_request.change","name":"Order-Request Change status","type":"text","values":[{"id":"required","name":"Change required","results":0},{"id":"cancelled","name":"Change cancelled","results":0},{"id":"expired","name":"Change expired","results":0},{"id":"accepted","name":"Change accepted","results":0},{"id":"partially_paid","name":"Change partially paid","results":0},{"id":"paid","name":"Change paid","results":0},{"id":"failed","name":"Change failed","results":0},{"id":"closed","name":"Change closed","results":0}]}],"paging":{"total":14,"offset":0,"limit":50},"display":"complete"}
+
+////////////////FUNCTIONS////////////////
 function aleatorio(inferior,superior){
     var numPosibilidades = superior - inferior
     var aleat = Math.random() * numPosibilidades
@@ -36,161 +44,232 @@ function dame_color_aleatorio(){
     return color_aleatorio
  }
 
- function wait(ms){
-    var start = new Date().getTime();
-    var end = start;
-    while(end < start + ms) {
-      end = new Date().getTime();
-   }
- }
-
-
+////////////////CLASS////////////////
 class CatTime extends Component {
+
     constructor(props){
         super(props);
-        this.state = {termino:false};
+        this.state = {termino:false,boton:false};
+        this.handleInputSubmit = this.handleSubmit.bind(this)
+        this.handleInputSubmit2 = this.handleSubmit2.bind(this)
+    }   
+    
+    ////////////////BUTTON FUNCTIONS////////////////
+    handleSubmit(e){
+        e.preventDefault();
+        if (conty > 0) {
+            console.log("Atras")
+            conty--
+            console.log(conty)
+            showdate = year[conty]
+            console.log('showdate ', showdate)
+            speedData = {
+                labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                datasets: yearmonth[showdate.toString()]
+            }
+            this.setState({boton:true})
+            this.setState({boton:false})
+        }else{
+            console.log("No se puede ir Atras") 
+        }
+    } 
+    
+    handleSubmit2(e){
+        e.preventDefault();
+        if (conty < year.length - 1) {
+            console.log("Adelante")
+            console.log(year)
+            conty++
+            console.log(conty)
+            showdate = year[conty]
+            console.log('showdate ', showdate)
+            speedData = {
+                labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                datasets: yearmonth[showdate.toString()]
+            }
+            this.setState({boton:true})
+            this.setState({boton:false})
+        }else{
+            console.log("No se puede ir Adelante") 
+        }
     }
+    ////////////////END OF BUTTON FUNCTIONS////////////////
 
     componentWillMount(){
         let currentComponent = this;
 
-        month = [0,0,0,0,0,0,0,0,0,0,0,0]
-
-        for (var i = 0; i < data.results.length; i++) {
-            
-            catBoolean = false
-    
-            if (data.results[i].status === "paid" && data.results[i].shipping.receiver_address !== undefined && data.results[i].shipping.receiver_address.latitude !== null) {
-                var category = data.results[i].order_items[0].item.category_id
-                console.log(category)
-    
-                for (var x = 0; x < categories.length; x++) {
-                    if (category === categories[x]) {
-                        catBoolean = true
-                    }
-                }
-    
-                if (catBoolean === false) {
-                    
-                    categories.push(category)
-                    if (category === 'MLA412048'){
-                        console.log('Panuelo')
-                    }else if (category === 'MLA3390') {
-                        console.log('Cartas')
-                    }
-                    
-                    fetch('/categories', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                          "category": category
-                        }),
-                        headers:{
-                          'Content-Type': 'application/json',
-                        }
-                    })
-                    .then(function(response){
-                        return response.text()
-                    })
-                    .then(function(data) {
-                        arrayNombres.push(data)
-                        currentComponent.setState({termino:true})
-                        currentComponent.setState({termino:false})
-                    })
-                    wait(300)
-                }
+        fetch('/sasara', {
+            method: 'POST',
+            headers:{
+              'Content-Type': 'application/json',
             }
-        }
-    }
-  
-    render() {
-        for (var j = 0; j < categories.length; j++) {
-            for (var p = 0; p < data.results.length; p++) {
-                if (data.results[p].order_items[0].item.category_id === categories[j] && data.results[p].status === "paid" && data.results[p].shipping.receiver_address !== undefined && data.results[p].shipping.receiver_address.latitude !== null) {
-                    switch (data.results[p].date_closed.substr(5,2)) {
-                        case '01':
-                            month[0] = month[0] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '02':
-                            month[1] = month[1] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '03':
-                            month[2] = month[2] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '04':
-                            month[3] = month[3] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '05':
-                            month[4] = month[4] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '06':
-                            month[5] = month[5] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '07':
-                            month[6] = month[6] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '08':
-                            month[7] = month[7] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '09':
-                            month[8] = month[8] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '10':
-                            month[9] = month[9] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;
-                        case '11':
-                            month[10] = month[10] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;  
-                        case '12':
-                            month[11] = month[11] + 1
-                            //console.log(data.results[p].date_closed.substr(5,2))
-                            //console.log(categories[j])  
-                            break;  
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            console.log(arrayNombres[j])
-            if (j===0){
-                showCats=[];
-            }
-            showCats.push({
-                label: arrayNombres[j],
-                data: month,
-                fill: true,
-                color: dame_color_aleatorio(),
-                borderColor: dame_color_aleatorio(),
-                borderWidth: 2
-            })
-            //console.log(arrayNombres)
-            //console.log(showCats)
+        })
+        .then(function(res){
+            return res.json()
+        })
+        .then(function(data){
+        
+            localStorage.setItem('clientsOrders', JSON.stringify(data));
 
             month = [0,0,0,0,0,0,0,0,0,0,0,0]
-        }
+            ///PRUEBA DEL MOCK///
+            data = mock
+            ///PRUEBA DEL MOCK///
 
+            for (var i = 0; i < data.results.length; i++) {
+            
+                catBoolean = false
+
+                if (year.length === 0) {
+                    year.push(data.results[i].date_closed.substr(0,4))
+                }else{
+                    if (year.includes(data.results[i].date_closed.substr(0,4)) === false) {
+                        year.push(data.results[i].date_closed.substr(0,4))
+                    }
+                }
+    
+                if (data.results[i].status === "paid") {
+                    var category = data.results[i].order_items[0].item.category_id
+    
+                    for (var x = 0; x < categories.length; x++) {
+                        if (category === categories[x]) {
+                            catBoolean = true
+                        }
+                    }
+    
+                    if (catBoolean === false) {
+                    
+                        categories.push(category)
+
+                    
+                        fetch('/categories', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                "category": category
+                            }),
+                            headers:{
+                            'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(function(response){
+                            return response.text()
+                        })
+                        .then(function(data) {
+                            arrayNombres.push(data)
+                            currentComponent.setState({termino:true})
+                            currentComponent.setState({termino:false})
+                        })
+                    }
+                }
+            }
+        });
+    }
+    ////////////////END OF WILL MOUNT////////////////
+    ////////////////START OF RENDER////////////////  
+    render() {
+        data = JSON.parse(localStorage.getItem('clientsOrders'));
+        
+        ///PRUEBA DEL MOCK///
+        data = mock
+        ///PRUEBA DEL MOCK///
+
+        console.log(JSON.stringify(data))
+
+        if (data !== undefined) {
+            for (var y = 0; y < year.length; y++) {
+                month = [0,0,0,0,0,0,0,0,0,0,0,0]
+
+                for (var j = 0; j < categories.length; j++) {
+                    for (var p = 0; p < data.results.length; p++) {
+                        if (data.results[p].order_items[0].item.category_id === categories[j] && data.results[p].status === "paid") {
+                            switch (data.results[p].date_closed.substr(5,2)) {
+                                case '01':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[0] = month[0] + 1
+                                    }
+                                    break;
+                                case '02':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[1] = month[1] + 1
+                                    }
+                                    break;
+                                case '03':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[2] = month[2] + 1
+                                    }
+                                    break;
+                                case '04':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[3] = month[3] + 1
+                                    }
+                                    break;
+                                case '05':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[4] = month[4] + 1
+                                    }
+                                    break;
+                                case '06':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[5] = month[5] + 1
+                                    }
+                                    break;
+                                case '07':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[6] = month[6] + 1
+                                    }
+                                    break;
+                                case '08':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[7] = month[7] + 1
+                                    }
+                                    break;
+                                case '09':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[8] = month[8] + 1
+                                    }
+                                    break;
+                                case '10':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[9] = month[9] + 1
+                                    }
+                                    break;
+                                case '11':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[10] = month[10] + 1
+                                    }
+                                    break;  
+                                case '12':
+                                    if (data.results[p].date_closed.substr(0,4)===year[y]) {
+                                        month[11] = month[11] + 1
+                                    }
+                                    break;  
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+    
+                    if (j===0){
+                        showCats=[];
+                    }
+                    
+                    showCats.push({
+                        label: arrayNombres[j],
+                        data: month,
+                        fill: true,
+                        color: dame_color_aleatorio(),
+                        borderColor: dame_color_aleatorio(),
+                        borderWidth: 2
+                    })
+    
+                    month = [0,0,0,0,0,0,0,0,0,0,0,0]
+    
+                }
+
+                yearmonth[year[y]] = showCats
+            }
+        }
+        
         var options = {
             lineTension: 0,
             responsive: true,
@@ -206,24 +285,31 @@ class CatTime extends Component {
         
         speedData = {
             labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-            datasets: showCats
+            datasets: yearmonth[showdate]
         }
-        //console.log(speedData)
-        
 
+        ////////////////RETURN////////////////
         return (
             <div className="CatTime">
-              <div> 
+                <div>
+                <h1>{showdate}</h1>
+                <form onSubmit= {this.handleInputSubmit}>
+                    <button>Anterior</button> 
+                </form>  
+                <form onSubmit= {this.handleInputSubmit2}>
+                    <button>Siguiente</button>
+                </form>
                 <Line
                     data={speedData}
                     options = {options}
-                    height = {600}
-                    width = {500}
+                    height = {175}
+                    width = {200}
                 />
-              </div>
+                </div>
             </div>
-          );
-        }
+        );
+    }
 }
+////////////////CLASS ENDS////////////////
 
 export default (CatTime);

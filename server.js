@@ -89,6 +89,27 @@ app.post('/valoraciones', function(reqv, resv) {
 		});
 })
 
+app.post('/pantallaInicio', function(reqv, resv) {
+
+    if(token.user_id===undefined) {
+        resv.status(501);
+        resv.send('No existe tal usuario.');
+        //return
+    } else {
+
+        //console.log(thedata);
+
+        var url2 = 'https://api.mercadolibre.com/users/'+ token.user_id
+        request.get({url: url2}, function (err, res) { //?attributes=seller_reputation  --> esto estaba después del user id
+            unvalor = res;
+            //console.log(unvalor);
+            //console.log('lo de arriba es la respuewsta demercadolibre')
+
+            resv.send(unvalor.body);
+        });
+    }
+})
+
 // Starting the server
 app.listen(app.get('port'), () => {
     console.log(`Server on port ${app.get('port')}`);

@@ -5,6 +5,7 @@
   "dependencies": {
     "@ungap/url-search-params": "^0.1.2",
     "body-parser": "^1.19.0",
+    "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
     "chartjs-plugin-zoom": "^0.7.0",
     "cors": "^2.8.5",
@@ -16,12 +17,14 @@
     "query-string": "^6.5.0",
     "querystring": "^0.2.0",
     "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.12",
     "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.8.6",
     "react-leaflet": "^2.3.0",
     "react-leaflet-markercluster": "^2.0.0-rc3",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
+    "reactstrap": "^8.0.1",
     "url-search-params": "^1.1.0"
   },
   "scripts": {
