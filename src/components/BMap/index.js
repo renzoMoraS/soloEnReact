@@ -16,6 +16,8 @@ function makeMarkers(ml,makers){
     }
   }
 
+  console.log(makers)
+
   return makers;
 }
 
@@ -41,6 +43,8 @@ class BMap extends Component {
       return res.json()
     })
     .then(function(data){
+
+      console.log(data)
 
       marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
 
@@ -93,6 +97,8 @@ class BMap extends Component {
   ////////////////START OF RENDER////////////////
   render() {
     var ml = JSON.parse(localStorage.getItem('markerList'));
+    
+    console.log(ml)
     
     var makers = [];
     

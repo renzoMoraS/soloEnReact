@@ -1,4 +1,9 @@
 .Content {
   margin: 0 auto;
-  width: 90%;
+  width: 50%;
+  padding-left: 40px;
+}
+
+.Home a{
+  text-align:center;display:block;
 }

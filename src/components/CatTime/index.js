@@ -258,9 +258,7 @@ class CatTime extends Component {
         }
         
         var options = {
-            lineTension: 0,
             responsive: true,
-            maintainAspectRatio: false,
             scales: {
                 yAxes: [{
                     ticks: {
@@ -268,7 +266,7 @@ class CatTime extends Component {
                     }
                 }]
             }
-        }
+        };
         
         speedData = {
             labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],

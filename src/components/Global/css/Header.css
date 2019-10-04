@@ -4,31 +4,54 @@
   padding: 20px;
   color: white;
   text-align: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 25%;
+  background-color: #000000;
+  height: 100%; /* Full height */
+  position: fixed; /* Make it stick, even on scroll */
+  overflow: auto; /* Enable scrolling if the sidenav has too much content */
+  top: 0;
+}
+
+.Header h2{
+  float: left;
+  position: relative;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  top: 20px;
+  padding-right: 10%;
 }
 
 .Logo img {
   animation: App-logo-spin infinite 20s linear;
-  height: 88px;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  float:left;
+  width: 40px;
+  height: 35px;
+  padding: 0;
+  margin: 0;
+  padding-top: 25px;
+  padding-left: 20%;
 }
 
 .Menu {
-  margin: 0;
   padding: 0;
+  padding-top: 70px;
+  margin: 0;
   list-style: none;
 }
 
 .Menu li {
-  display: inline-block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: block;
+  width: 100%;
   padding-right: 10px;
+  text-align: center;
+  border-top: 1px solid #555;
+  border-bottom: 1px solid #555;
 }
 
 .Menu li a{
