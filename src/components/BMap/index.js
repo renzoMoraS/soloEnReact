@@ -104,11 +104,10 @@ class BMap extends Component {
     
     ////////////////RETURN////////////////
     return (
-      <div className="BMap">
-        <h1 style={{textAlign: 'center'}}>MAP PAGE</h1>
-        
+      <div className="BMap">   
         <div className="MapStyle">
-          <Map style={{position: "absolute" ,display: 'block',margin: "0", padding:0, height:"500px",width:"700px"}} center={[-34.304573, -64.76381]} zoom={3} maxZoom={17}>
+        <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb",margin:0}}>&nbsp;Mapa con las ubicaciones de tus clientes.&nbsp;</p>
+          <Map style={{position: "absolute" ,display: 'block',margin: "0", padding:0, height:"100%",width:"80%"}} center={[-34.304573, -64.76381]} zoom={3} maxZoom={17}>
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

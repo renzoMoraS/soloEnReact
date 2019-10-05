@@ -122,12 +122,12 @@ class valoracionesApp extends Component {
       }
       return (
         
-        <div>
+        <div className="Val">
 
-          <div style={{textAlign: 'center', padding:'20px'}}>
+          <div style={{textAlign: 'center'}}>
             <form onSubmit= {this.handleInputSubmit}>
               <label htmlFor="new-todo">
-                Vendedor:
+                Vendedor:&nbsp;
               </label>
               <input
                 id="new-todo"
@@ -139,6 +139,8 @@ class valoracionesApp extends Component {
               </button>
             </form>
           </div>
+
+          <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Información de usuarios por busqueda.&nbsp;</p>
 
           <div>
             {unavariable}
@@ -170,7 +172,7 @@ class valoracionesApp extends Component {
               <li>Nivel: {level_id}</li>
               <li>Estado del Vendedor: {seller_status}</li>
 
-              <h5>Transacciones</h5>
+              <h5>Ventas del Usuario</h5>
               <ul>
                 
                 <li>Canceladas: {transacciones_canceladas}</li>

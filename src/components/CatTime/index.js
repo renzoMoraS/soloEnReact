@@ -295,14 +295,14 @@ class CatTime extends Component {
                     <form style={{display:"inline-block",verticalAlign: "super"}} onSubmit= {this.handleInputSubmit}>
                         <button>Anterior</button> 
                     </form>  
+                    <p style={{display:"inline-block"}}>&nbsp;</p>
                     <form style={{display:"inline-block",verticalAlign: "super"}} onSubmit= {this.handleInputSubmit2}>
                         <button>Siguiente</button>
                     </form>
+                    <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Cantidad de ventas por categorias a lo largo del tiempo.&nbsp;</p>
                     <Line
                         data={speedData}
                         options = {options}
-                        height = {175}
-                        width = {200}
                     />
                 </div>
             </div>

@@ -159,15 +159,13 @@ class DistExp extends Component{
         ////////////////RETURN////////////////
         return (
             <div className="DistExp">
-                <h1 style={{textAlign: 'center'}}>Distribución por exposición</h1>
                 <div className="patient-container">
                 </div>
                 <div>
+                <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Cantidad de ventas totales por exposición.&nbsp;</p>
                     <Bar
                         data={speedData}
                         options = {options}
-                        height = {25}
-                        width = {75}
                     />
                 </div>
             </div>
