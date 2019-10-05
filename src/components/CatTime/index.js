@@ -290,19 +290,20 @@ class CatTime extends Component {
         return (
             <div className="CatTime">
                 <div>
-                <h1>{showdate}</h1>
-                <form onSubmit= {this.handleInputSubmit}>
-                    <button>Anterior</button> 
-                </form>  
-                <form onSubmit= {this.handleInputSubmit2}>
-                    <button>Siguiente</button>
-                </form>
-                <Line
-                    data={speedData}
-                    options = {options}
-                    height = {175}
-                    width = {200}
-                />
+                    <h1 style={{display:"inline-block"}} >{showdate}</h1>
+                    <p style={{display:"inline-block"}}>&nbsp;&nbsp;</p>
+                    <form style={{display:"inline-block",verticalAlign: "super"}} onSubmit= {this.handleInputSubmit}>
+                        <button>Anterior</button> 
+                    </form>  
+                    <form style={{display:"inline-block",verticalAlign: "super"}} onSubmit= {this.handleInputSubmit2}>
+                        <button>Siguiente</button>
+                    </form>
+                    <Line
+                        data={speedData}
+                        options = {options}
+                        height = {175}
+                        width = {200}
+                    />
                 </div>
             </div>
         );
