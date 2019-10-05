@@ -170,7 +170,7 @@ class valoracionesApp extends Component {
               <li>Nivel: {level_id}</li>
               <li>Estado del Vendedor: {seller_status}</li>
 
-              <h5>Transacciones</h5>
+              <h5>Ventas</h5>
               <ul>
                 
                 <li>Canceladas: {transacciones_canceladas}</li>

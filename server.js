@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const request = require('request');
 
+
 const app = express();
 
 app.use(cors());
@@ -30,8 +31,12 @@ app.get('/',function(req,res){
 
 app.post('/token',function(req,rest){
     var url = req.body.url;
+    console.log('url');
+    console.log(url)
     request.post({url: url, json:true, options},function(req,res,body){
+        console.log(body);
         token = body
+        //Q.E.P.D. BOCA 9-12
         rest.send('token')
     })
 })
@@ -44,6 +49,7 @@ app.post('/sasara',function(req,res){
         var orders = JSON.parse(body);
         res.send(orders)
     })
+
 });	
 
 
@@ -91,6 +97,7 @@ app.post('/valoraciones', function(reqv, resv) {
 
 app.post('/pantallaInicio', function(reqv, resv) {
 
+    console.log(token);
     if(token.user_id===undefined) {
         resv.status(501);
         resv.send('No existe tal usuario.');

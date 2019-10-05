@@ -2,3 +2,24 @@
   margin: 0 auto;
   width: 90%;
 }
+
+.datos ol {
+  background: #ff9999;
+  padding: 20px;
+}
+  
+.datos ul {
+  background: #9499a0;
+  padding: 20px;
+}
+
+.datos ol li {
+  background: #ff0000;
+  padding: 5px;
+  margin-left: 35px;
+}
+
+.datos ul li {
+  background: #ffffff;
+  margin: 5px;
+}

@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 import {parse} from "query-string";
 
 var valoracionesObtenidas = '';
+var Rivar;
 
 var options = {
   form: {
    "grant_type":"authorization_code",
-   "client_id": '4069477448135367',
-   "client_secret": 'eqaPB8Ot1neu4JVVGyqDu5tPorwvmlh2',
+   "client_id": '6722315906287226',
+   "client_secret": 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',
    "redirect_uri": "http://localhost:3000/",
    "code": ""
   },
@@ -20,27 +21,59 @@ var options = {
 };
 
 
+
 var url = 'https://api.mercadolibre.com/oauth/token?';
 //var unavariablequemeindicaquetodoanduvomal = "";
 
 class valoracionesApp extends Component {
   constructor(props) {
       super(props)
-      this.state = { termino: 'no', valoraciones: [], text: '', userok: ''}
-  }
+      this.state = { termino: 'no', valoraciones: [], text: '', userok: ''};
+      this.miFuncion.bind(this);
+    }
+
   
+  miFuncion() {
+      var val;
+      fetch('/pantallaInicio',{
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+        }
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.ok) {
+          var lasvaloraciones = response.json();
+          lasvaloraciones.then(value => {
+            console.log(value)
+            valoracionesObtenidas = value
+            console.log(valoracionesObtenidas)
+            return val = { termino: 'si', valoraciones: [], text: '', userok: 'true'};
+            //console.log('estado'+JSON.stringify(valoracionesObtenidas))
+          })
+          
+        } else {
+          this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'false'});
+          return 2
+        }
+      })
+      /*.catch(function(error) {
+        unavariablequemeindicaquetodoanduvomal=<p>No Existe tal usuario</p>
+        this.setState({userok: 'false', termino:'si'});
+      });*/
+    }
+
 
   componentWillMount(){
-    if (this.props.location.search !== null) {
-      return;
-    }
+
     const URLSearchParams = window.URLSearchParams;
     
     var burl = new URLSearchParams();
 
     burl.append("grant_type","authorization_code")
-    burl.append("client_id", '4069477448135367')
-    burl.append("client_secret", 'eqaPB8Ot1neu4JVVGyqDu5tPorwvmlh2',)
+    burl.append("client_id", '6722315906287226')
+    burl.append("client_secret", 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',)
     burl.append("code",parse(this.props.location.search).code);
     burl.append("redirect_uri",options.form.redirect_uri)
 
@@ -61,40 +94,18 @@ class valoracionesApp extends Component {
       return response.text()
         .then(function(data) {
           console.log(data)
+          Rivar = this.miFuncion();
+          
         })
     });
   }
-
-  componentDidMount() {
-    fetch('/pantallaInicio',{
-      method: 'POST',
-      headers:{
-          'Content-Type': 'application/json',
-      }
-    })
-    .then((response) => {
-      if (response.ok) {
-        var lasvaloraciones = response.json();
-        lasvaloraciones.then(value => {
-          console.log(value)
-          valoracionesObtenidas = value
-          console.log(valoracionesObtenidas)
-          this.setState({termino: 'si', userok: 'true'});
-          console.log('estado'+JSON.stringify(valoracionesObtenidas))
-        })
-        
-      } else {
-        this.setState({userok: 'false', termino: 'si'});
-      }
-    })
-    /*.catch(function(error) {
-      unavariablequemeindicaquetodoanduvomal=<p>No Existe tal usuario</p>
-      this.setState({userok: 'false', termino:'si'});
-    });*/
-  }
+  
+  
+ 
 
   render() {
     //if (this.state.valoraciones.length > 0) {
+      
       console.log(this.state.termino)
       console.log(this.state.userok)
       if (this.state.termino==='si' && this.state.userok==='true') {
@@ -146,7 +157,7 @@ class valoracionesApp extends Component {
           <div className = "datos">
             <div>
 
-              <a href="https://auth.mercadolibre.com/authorization?client_id=4069477448135367&response_type=code&state=5ca75bd30" >Loguearse con Mercadolibre</a>
+              <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" >Loguearse con Mercadolibre</a>
               <h4>Datos de la Empresa</h4>
 
               <ul>
