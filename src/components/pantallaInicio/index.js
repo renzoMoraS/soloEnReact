@@ -29,11 +29,16 @@ class valoracionesApp extends Component {
   constructor(props) {
       super(props)
       this.state = { termino: 'no', valoraciones: [], text: '', userok: ''};
-      this.miFuncion.bind(this);
+      this.miFuncion = this.miFuncion.bind(this);
     }
 
   
   miFuncion() {
+      if (this.state.termino) {
+        if (this.state.termino == 'si') {
+          return null
+        }
+      }
       var val;
       fetch('/pantallaInicio',{
         method: 'POST',
@@ -48,8 +53,9 @@ class valoracionesApp extends Component {
           lasvaloraciones.then(value => {
             console.log(value)
             valoracionesObtenidas = value
+            console.log('asdfsadfsadf')  //// NO LLEGA
             console.log(valoracionesObtenidas)
-            return val = { termino: 'si', valoraciones: [], text: '', userok: 'true'};
+            this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'true'});
             //console.log('estado'+JSON.stringify(valoracionesObtenidas))
           })
           
@@ -65,7 +71,7 @@ class valoracionesApp extends Component {
     }
 
 
-  componentWillMount(){
+  componentDidMount(){
 
     const URLSearchParams = window.URLSearchParams;
     
@@ -90,12 +96,11 @@ class valoracionesApp extends Component {
         'Content-Type': 'application/json',
       }
     })
-    .then(function(response){ 
+    .then(function(response){
       return response.text()
         .then(function(data) {
+          console.log('creo que acá nnca llega')
           console.log(data)
-          Rivar = this.miFuncion();
-          
         })
     });
   }
@@ -105,7 +110,7 @@ class valoracionesApp extends Component {
 
   render() {
     //if (this.state.valoraciones.length > 0) {
-      
+      this.miFuncion();
       console.log(this.state.termino)
       console.log(this.state.userok)
       if (this.state.termino==='si' && this.state.userok==='true') {
