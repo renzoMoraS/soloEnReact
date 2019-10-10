@@ -98,7 +98,9 @@ app.post('/valoraciones', function(reqv, resv) {
 app.post('/pantallaInicio', function(reqv, resv) {
 
     console.log(token);
-    if(token.user_id===undefined) {
+    if(token===undefined) {
+        console.log('pongo acá todo el token porque me parece que no tiene el token')
+        console.log(token)
         resv.status(501);
         resv.send('No existe tal usuario.');
         //return

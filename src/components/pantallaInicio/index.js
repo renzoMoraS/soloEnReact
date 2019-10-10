@@ -1,4 +1,8 @@
 //import React from 'react';
+
+//HAY QUE VER SI valoracionesOBTENIDAS DE MI MISMO TRAE LOS MISMOS DATOS QUE COMO SI FUERA DE OTRO USUARIO
+//PARECE QUE NO RECONOCE ADDCRESS
+
 import React, { Component } from 'react';
 import {parse} from "query-string";
 
@@ -20,6 +24,53 @@ var options = {
   }
 };
 
+function miFuncion() {
+  if (this.state.termino) {
+    if (this.state.termino == 'si') {
+      return null
+    }
+  }
+  var val;
+  fetch('/pantallaInicio', {
+    method: 'POST',
+    headers:{
+        'Content-Type': 'application/json',
+    }
+  })
+  .then((response) => {
+    console.log(response);
+    console.log('ahoraséquepasa')
+    if (response.ok) {
+      var lasvaloraciones = response.json();
+      console.log('aca van las valoraciones')
+      console.log(lasvaloraciones)
+      lasvaloraciones.then(value => {
+        console.log(value)
+        valoracionesObtenidas = value
+        console.log('asdfsadfsadf')
+        console.log(valoracionesObtenidas)
+        this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'true'});
+        //console.log('estado'+JSON.stringify(valoracionesObtenidas))
+      })
+      
+    } else {
+      console.log('el estado antes era')
+      console.log(this.state.termino)
+      console.log(this.state.userok)
+      console.log('acá deberia cambiar el estado')
+      this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'false'});
+      console.log('y ahora es')
+      console.log(this.state.termino)
+      console.log(this.state.userok)
+      return 2
+    }
+  })
+  /*.catch(function(error) {
+    unavariablequemeindicaquetodoanduvomal=<p>No Existe tal usuario</p>
+    this.setState({userok: 'false', termino:'si'});
+  });*/
+};
+
 
 
 var url = 'https://api.mercadolibre.com/oauth/token?';
@@ -29,47 +80,8 @@ class valoracionesApp extends Component {
   constructor(props) {
       super(props)
       this.state = { termino: 'no', valoraciones: [], text: '', userok: ''};
-      this.miFuncion = this.miFuncion.bind(this);
+      miFuncion = miFuncion.bind(this);
     }
-
-  
-  miFuncion() {
-      if (this.state.termino) {
-        if (this.state.termino == 'si') {
-          return null
-        }
-      }
-      var val;
-      fetch('/pantallaInicio',{
-        method: 'POST',
-        headers:{
-            'Content-Type': 'application/json',
-        }
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.ok) {
-          var lasvaloraciones = response.json();
-          lasvaloraciones.then(value => {
-            console.log(value)
-            valoracionesObtenidas = value
-            console.log('asdfsadfsadf')  //// NO LLEGA
-            console.log(valoracionesObtenidas)
-            this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'true'});
-            //console.log('estado'+JSON.stringify(valoracionesObtenidas))
-          })
-          
-        } else {
-          this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'false'});
-          return 2
-        }
-      })
-      /*.catch(function(error) {
-        unavariablequemeindicaquetodoanduvomal=<p>No Existe tal usuario</p>
-        this.setState({userok: 'false', termino:'si'});
-      });*/
-    }
-
 
   componentDidMount(){
 
@@ -99,8 +111,8 @@ class valoracionesApp extends Component {
     .then(function(response){
       return response.text()
         .then(function(data) {
-          console.log('creo que acá nnca llega')
           console.log(data)
+          miFuncion()
         })
     });
   }
@@ -110,17 +122,18 @@ class valoracionesApp extends Component {
 
   render() {
     //if (this.state.valoraciones.length > 0) {
-      this.miFuncion();
+      miFuncion();
+      console.log('parece que estariamos llamando al sennior render')
       console.log(this.state.termino)
       console.log(this.state.userok)
       if (this.state.termino==='si' && this.state.userok==='true') {
         
+        console.log('askjfhskdgjfhsdgsdfjkghdsfkgjhsdfkgjsdfgkjsdfhg ')
+        console.log(valoracionesObtenidas)
         var ciudad = valoracionesObtenidas.address.city
         console.log('esto es un console log')
         console.log(ciudad)
-
         var status = valoracionesObtenidas.status.site_status
-        console.log(valoracionesObtenidas)
         console.log(valoracionesObtenidas.status)
         var level_id = valoracionesObtenidas.seller_reputation.level_id
 
