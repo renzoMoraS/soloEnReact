@@ -36,8 +36,14 @@ app.post('/token',function(req,rest){
     request.post({url: url, json:true, options},function(req,res,body){
         console.log(body);
         token = body
-        //Q.E.P.D. BOCA 9-12
-        rest.send('token')
+        console.log(token)
+        if (token.error) {
+            rest.status(501);
+            rest.send('El token no funcionó.');
+            return
+        } else {
+            rest.send('1')
+        }
     })
 })
 
@@ -98,14 +104,14 @@ app.post('/valoraciones', function(reqv, resv) {
 app.post('/pantallaInicio', function(reqv, resv) {
 
     console.log(token);
-    if(token===undefined) {
+    if(token===undefined || token.error) {
         console.log('pongo acá todo el token porque me parece que no tiene el token')
         console.log(token)
         resv.status(501);
         resv.send('No existe tal usuario.');
         //return
     } else {
-
+        
         //console.log(thedata);
 
         var url2 = 'https://api.mercadolibre.com/users/'+ token.user_id

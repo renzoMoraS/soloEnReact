@@ -24,7 +24,7 @@ var options = {
   }
 };
 
-function miFuncion() {
+function miFuncion(textitoQueDevolvioToken) {
   if (this.state.termino) {
     if (this.state.termino == 'si') {
       return null
@@ -38,31 +38,31 @@ function miFuncion() {
     }
   })
   .then((response) => {
-    console.log(response);
-    console.log('ahoraséquepasa')
+
     if (response.ok) {
       var lasvaloraciones = response.json();
-      console.log('aca van las valoraciones')
-      console.log(lasvaloraciones)
+
       lasvaloraciones.then(value => {
-        console.log(value)
         valoracionesObtenidas = value
-        console.log('asdfsadfsadf')
-        console.log(valoracionesObtenidas)
-        this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'true'});
+        console.log('vieja estoy por poner todo en true')
+        console.log(textitoQueDevolvioToken)
+        if (textitoQueDevolvioToken==='1') {
+          this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'true'});
+          console.log('primerif')
+          console.log(textitoQueDevolvioToken)
+        } else {
+          this.setState({ termino: 'no', valoraciones: [], text: '', userok: 'true'});
+          console.log('segundoif')
+          console.log(textitoQueDevolvioToken)
         //console.log('estado'+JSON.stringify(valoracionesObtenidas))
-      })
-      
+        }
+      }
+      )
+
     } else {
-      console.log('el estado antes era')
-      console.log(this.state.termino)
-      console.log(this.state.userok)
-      console.log('acá deberia cambiar el estado')
-      this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'false'});
-      console.log('y ahora es')
-      console.log(this.state.termino)
-      console.log(this.state.userok)
-      return 2
+      this.setState({ termino: 'no', valoraciones: [], text: '', userok: 'false'});
+      console.log('elseif')
+      console.log(textitoQueDevolvioToken)
     }
   })
   /*.catch(function(error) {
@@ -79,7 +79,7 @@ var url = 'https://api.mercadolibre.com/oauth/token?';
 class valoracionesApp extends Component {
   constructor(props) {
       super(props)
-      this.state = { termino: 'no', valoraciones: [], text: '', userok: ''};
+      this.state = { termino: 'no', valoraciones: [], text: '', userok: 'false'};
       miFuncion = miFuncion.bind(this);
     }
 
@@ -98,23 +98,20 @@ class valoracionesApp extends Component {
     var aurl = url + burl
 
     console.log(aurl)
-
-    fetch('/token', {
-      method: 'POST',
-      body: JSON.stringify({
-        "url": aurl
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-      }
-    })
-    .then(function(response){
-      return response.text()
-        .then(function(data) {
-          console.log(data)
-          miFuncion()
-        })
-    });
+    if (this.state.termino==='no' && this.state.userok==='false'){
+      fetch('/token', {
+        method: 'POST',
+        body: JSON.stringify({
+          "url": aurl
+        }),
+        headers:{
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(function(response){
+        miFuncion('1')
+      });
+    }
   }
   
   
@@ -122,23 +119,19 @@ class valoracionesApp extends Component {
 
   render() {
     //if (this.state.valoraciones.length > 0) {
-      miFuncion();
-      console.log('parece que estariamos llamando al sennior render')
-      console.log(this.state.termino)
-      console.log(this.state.userok)
+      if (this.state.termino==='si' && this.state.userok==='false') {
+        miFuncion('0');
+      }
+
       if (this.state.termino==='si' && this.state.userok==='true') {
-        
-        console.log('askjfhskdgjfhsdgsdfjkghdsfkgjhsdfkgjsdfgkjsdfhg ')
-        console.log(valoracionesObtenidas)
+        console.log(this.state.termino)
+        console.log(this.state.userok)
+
         var ciudad = valoracionesObtenidas.address.city
-        console.log('esto es un console log')
-        console.log(ciudad)
         var status = valoracionesObtenidas.status.site_status
-        console.log(valoracionesObtenidas.status)
         var level_id = valoracionesObtenidas.seller_reputation.level_id
 
         var seller_status = valoracionesObtenidas.seller_reputation.power_seller_status
-        console.log(seller_status)
 
         var transacciones_canceladas = valoracionesObtenidas.seller_reputation.transactions.canceled
 
