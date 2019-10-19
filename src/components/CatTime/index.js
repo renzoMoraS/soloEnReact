@@ -49,7 +49,7 @@ class CatTime extends Component {
 
     constructor(props){
         super(props);
-        this.state = {termino:false,boton:false};
+        this.state = {termino:false,boton:false,esUnd:false};
         this.handleInputSubmit = this.handleSubmit.bind(this)
         this.handleInputSubmit2 = this.handleSubmit2.bind(this)
     }   
@@ -105,9 +105,15 @@ class CatTime extends Component {
             }
         })
         .then(function(res){
-            return res.json()
+            if(res.ok === true){
+                return res.json()
+            }else{
+                var algo = {}
+                return algo
+            }
         })
         .then(function(data){
+            if (data.results !== undefined) {
         
             localStorage.setItem('clientsOrders', JSON.stringify(data));
 
@@ -158,16 +164,24 @@ class CatTime extends Component {
                             arrayNombres.push(data)
                             currentComponent.setState({termino:true})
                             currentComponent.setState({termino:false})
+                            currentComponent.setState({esUnd : true})
                         })
                     }
                 }
             }
+        }else{
+          currentComponent.setState({esUnd : false})
+        }
         });
     }
     ////////////////END OF WILL MOUNT////////////////
     ////////////////START OF RENDER////////////////  
     render() {
-        data = JSON.parse(localStorage.getItem('clientsOrders'));
+        if (this.state.esUnd===true) {
+            data = JSON.parse(localStorage.getItem('clientsOrders'));
+          }else{
+            data = {}
+          } 
         
         ///PRUEBA DEL MOCK///
         data = mock
