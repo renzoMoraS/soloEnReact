@@ -124,7 +124,7 @@ class valoracionesApp extends Component {
       
       <div>
 
-        <div style={{textAlign: 'center', padding:'20px'}}>
+        <div style={{textAlign: 'center', padding:'10px'}}>
           <form onSubmit= {this.handleInputSubmit}>
             <label htmlFor="new-todo">
               Vendedor:

@@ -8,6 +8,31 @@ import {parse} from "query-string";
 
 var valoracionesObtenidas = '';
 var Rivar;
+var ciudad 
+var status
+var level_id 
+
+var seller_status 
+
+var transacciones_canceladas 
+
+var transacciones_completadas 
+
+var transacciones_periodo 
+
+var transacciones_total 
+
+var nombreDelUsuario 
+
+var fechaDeRegistro
+
+var pais 
+
+var tipoDeUsuario
+
+var puntos
+
+var idDelSitio 
 
 var options = {
   form: {
@@ -86,8 +111,13 @@ class valoracionesApp extends Component {
   componentDidMount(){
 
     const URLSearchParams = window.URLSearchParams;
+
     
     var burl = new URLSearchParams();
+    console.log(burl)
+    if (!parse(this.props.location.search).code) {
+        return
+    }
 
     burl.append("grant_type","authorization_code")
     burl.append("client_id", '6722315906287226')
@@ -126,34 +156,34 @@ class valoracionesApp extends Component {
       if (this.state.termino==='si' && this.state.userok==='true') {
         console.log(this.state.termino)
         console.log(this.state.userok)
+        
+        ciudad = valoracionesObtenidas.address.city
+        status = valoracionesObtenidas.status.site_status
+        level_id = valoracionesObtenidas.seller_reputation.level_id
 
-        var ciudad = valoracionesObtenidas.address.city
-        var status = valoracionesObtenidas.status.site_status
-        var level_id = valoracionesObtenidas.seller_reputation.level_id
+        seller_status = valoracionesObtenidas.seller_reputation.power_seller_status
 
-        var seller_status = valoracionesObtenidas.seller_reputation.power_seller_status
+        transacciones_canceladas = valoracionesObtenidas.seller_reputation.transactions.canceled
 
-        var transacciones_canceladas = valoracionesObtenidas.seller_reputation.transactions.canceled
+        transacciones_completadas = valoracionesObtenidas.seller_reputation.transactions.completed
 
-        var transacciones_completadas = valoracionesObtenidas.seller_reputation.transactions.completed
+        transacciones_periodo = valoracionesObtenidas.seller_reputation.transactions.period
 
-        var transacciones_periodo = valoracionesObtenidas.seller_reputation.transactions.period
-
-        var transacciones_total = valoracionesObtenidas.seller_reputation.transactions.total
+        transacciones_total = valoracionesObtenidas.seller_reputation.transactions.total
 
         //var transacciones_rating = valoracionesObtenidas.seller_reputation.transactions.ratings
 
-        var nombreDelUsuario = valoracionesObtenidas.nickname
+        nombreDelUsuario = valoracionesObtenidas.nickname
 
-        var fechaDeRegistro = valoracionesObtenidas.registration_date
+        fechaDeRegistro = valoracionesObtenidas.registration_date
 
-        var pais = valoracionesObtenidas.country_id
+        pais = valoracionesObtenidas.country_id
 
-        var tipoDeUsuario = valoracionesObtenidas.user_type
+        tipoDeUsuario = valoracionesObtenidas.user_type
 
-        var puntos = valoracionesObtenidas.points
+        puntos = valoracionesObtenidas.points
 
-        var idDelSitio = valoracionesObtenidas.site_id
+        idDelSitio = valoracionesObtenidas.site_id
       }
       /*if (unavariablequemeindicaquetodoanduvomal = 1) {
         var elMensajeDeError = <p>Se rompió todo</p>;
@@ -165,7 +195,8 @@ class valoracionesApp extends Component {
         
         <div>
 
-          <div class="link">
+          <div class="link
+          ">
             <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" >Loguearse con Mercadolibre</a>
           </div>
           <table class="tabla">
