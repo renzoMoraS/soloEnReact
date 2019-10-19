@@ -114,7 +114,7 @@ class valoracionesApp extends Component {
       var elMensajeDeError = <p>funca</p>
     }*/
     if (this.state.userok === ''){
-      var unavariable = <div>...</div>
+      var unavariable = <div class="alerta">...</div>
     }else if(this.state.userok === 'false') {
       unavariable = <Alert variant='warning'>NO HAY UN USUARIO CON ESE NOMBRE!</Alert>
     }else{
@@ -126,7 +126,7 @@ class valoracionesApp extends Component {
 
         <div style={{textAlign: 'center', padding:'10px'}}>
           <form onSubmit= {this.handleInputSubmit}>
-            <label htmlFor="new-todo">
+            <label htmlFor="new-todo" class="label">
               Vendedor:
             </label>
             <input
