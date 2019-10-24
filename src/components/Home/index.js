@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {parse} from "query-string";
 
-var ciudad
+var ciudad,status,level_id,seller_status,transacciones_canceladas,transacciones_completadas,transacciones_periodo,transacciones_total,nombreDelUsuario,fechaDeRegistro,pais,tipoDeUsuario,puntos,idDelSitio;
 
 var options = {
   form: {
@@ -42,36 +42,6 @@ function miFuncion(textitoQueDevolvioToken) {
 
         if (textitoQueDevolvioToken==='1') {
           localStorage.setItem('valoracionesObtenidas', JSON.stringify(value));
-          
-          this.ciudad = valoracionesObtenidas.address.city
-          this.status = valoracionesObtenidas.status.site_status
-          this.level_id = valoracionesObtenidas.seller_reputation.level_id
-    
-          this.seller_status = valoracionesObtenidas.seller_reputation.power_seller_status
-    
-          this.transacciones_canceladas = valoracionesObtenidas.seller_reputation.transactions.canceled
-    
-          this.transacciones_completadas = valoracionesObtenidas.seller_reputation.transactions.completed
-    
-          this.transacciones_periodo = valoracionesObtenidas.seller_reputation.transactions.period
-    
-          this.transacciones_total = valoracionesObtenidas.seller_reputation.transactions.total
-    
-          //var transacciones_rating = valoracionesObtenidas.seller_reputation.transactions.ratings
-    
-          this.nombreDelUsuario = valoracionesObtenidas.nickname
-    
-          this.fechaDeRegistro = valoracionesObtenidas.registration_date
-    
-          this.pais = valoracionesObtenidas.country_id
-    
-          this.tipoDeUsuario = valoracionesObtenidas.user_type
-    
-          this.puntos = valoracionesObtenidas.points
-    
-          this.idDelSitio = valoracionesObtenidas.site_id
-
-          console.log(this.ciudad)
           
           this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'true'});
           console.log('primerif')
@@ -178,6 +148,19 @@ class Home extends Component {
       if (algo !== null){
         console.log(algo.address.city)
         ciudad = algo.address.city
+        status = algo.status.site_status
+        level_id = algo.seller_reputation.level_id
+        seller_status = algo.seller_reputation.power_seller_status
+        transacciones_canceladas = algo.seller_reputation.transactions.canceled
+        transacciones_completadas = algo.seller_reputation.transactions.completed
+        transacciones_periodo = algo.seller_reputation.transactions.period
+        transacciones_total = algo.seller_reputation.transactions.total
+        nombreDelUsuario = algo.nickname
+        fechaDeRegistro = algo.registration_date
+        pais = algo.country_id
+        tipoDeUsuario = algo.user_type
+        puntos = algo.points
+        idDelSitio = algo.site_id
       }
 
 
@@ -203,15 +186,15 @@ class Home extends Component {
             </tr>
             <tr>
               <td>Nombre de la empresa</td>
-              <td>{this.nombreDelUsuario}</td>
+              <td>{nombreDelUsuario}</td>
             </tr>
             <tr>
               <td>Fecha de registro</td>
-              <td>{this.fechaDeRegistro}</td>
+              <td>{fechaDeRegistro}</td>
             </tr>
             <tr>
               <td>País</td>
-              <td>{this.pais}</td>
+              <td>{pais}</td>
             </tr>
             <tr>
               <td>Ciudad</td>
@@ -219,19 +202,19 @@ class Home extends Component {
             </tr>
             <tr>
               <td>Tipo de usuario</td>
-              <td>{this.tipoDeUsuario}</td>
+              <td>{tipoDeUsuario}</td>
             </tr>
             <tr>
               <td>Puntos</td>
-              <td>{this.puntos}</td>
+              <td>{puntos}</td>
             </tr>
             <tr>
               <td>ID del sitio</td>
-              <td>{this.idDelSitio}</td>
+              <td>{idDelSitio}</td>
             </tr>
             <tr>
               <td>Estado del sitio</td>
-              <td>{this.status}</td>
+              <td>{status}</td>
             </tr>
           </table>
 
@@ -242,11 +225,11 @@ class Home extends Component {
             </tr>
             <tr>
               <td>Nivel</td>
-              <td>{this.level_id}</td>
+              <td>{level_id}</td>
             </tr>
             <tr>
               <td>Estado del vendedor</td>
-              <td>{this.seller_status}</td>
+              <td>{seller_status}</td>
             </tr>
           </table>
 
@@ -256,18 +239,18 @@ class Home extends Component {
               <th></th>
             </tr>
               <td>Canceladas</td>
-              <td>{this.transacciones_canceladas}</td>
+              <td>{transacciones_canceladas}</td>
             <tr>
               <td>Completadas</td>
-              <td>{this.transacciones_completadas}</td>
+              <td>{transacciones_completadas}</td>
             </tr>
             <tr>
               <td>Periodo</td>
-              <td>{this.transacciones_periodo}</td>
+              <td>{transacciones_periodo}</td>
             </tr>
             <tr>
               <td>Total</td>
-              <td>{this.transacciones_total}</td>
+              <td>{transacciones_total}</td>
             </tr>
           </table>
           

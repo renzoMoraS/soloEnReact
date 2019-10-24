@@ -139,56 +139,89 @@ class valoracionesApp extends Component {
               </button>
             </form>
           </div>
-
+          
           <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Información de usuarios por busqueda.&nbsp;</p>
 
           <div>
             {unavariable}
           </div>
 
-          <div className = "datos">
-            <div>
-              <h4>Datos de la Empresa</h4>
+          <table class="tabla">
+            <tr>
+              <th>Datos de la Empresa</th>
+              <th></th>
+            </tr>
+            <tr>
+              <td>Nombre de la empresa</td>
+              <td>{nombreDelUsuario}</td>
+            </tr>
+            <tr>
+              <td>Fecha de registro</td>
+              <td>{fechaDeRegistro}</td>
+            </tr>
+            <tr>
+              <td>País</td>
+              <td>{pais}</td>
+            </tr>
+            <tr>
+              <td>Ciudad</td>
+              <td>{ciudad}</td>
+            </tr>
+            <tr>
+              <td>Tipo de usuario</td>
+              <td>{tipoDeUsuario}</td>
+            </tr>
+            <tr>
+              <td>Puntos</td>
+              <td>{puntos}</td>
+            </tr>
+            <tr>
+              <td>ID del sitio</td>
+              <td>{idDelSitio}</td>
+            </tr>
+            <tr>
+              <td>Estado del sitio</td>
+              <td>{status}</td>
+            </tr>
+          </table>
 
-              <ul>
+          <table class="tabla">
+            <tr>
+              <th>Reputación del usuario</th>
+              <th></th>
+            </tr>
+            <tr>
+              <td>Nivel</td>
+              <td>{level_id}</td>
+            </tr>
+            <tr>
+              <td>Estado del vendedor</td>
+              <td>{seller_status}</td>
+            </tr>
+          </table>
 
-                <li>Nombre de la empresa: {nombreDelUsuario}</li>
-                <li>Fecha de registro: {fechaDeRegistro}</li>
-                <li>País: {pais}</li>
-                <li>Ciudad: {ciudad}</li>
-                <li>Tipo de usuario: {tipoDeUsuario}</li>
-                <li>Puntos: {puntos}</li>
-                <li>ID del sitio: {idDelSitio}</li>
-                <li>Estado del sitio: {status}</li>
-
-              </ul>
-
-          </div>
-
-          <div className = "Reputacion">
-            <h4>Reputación del usuario</h4>
-            <ul>
-
-              <li>Nivel: {level_id}</li>
-              <li>Estado del Vendedor: {seller_status}</li>
-
-              <h5>Ventas del Usuario</h5>
-              <ul>
-                
-                <li>Canceladas: {transacciones_canceladas}</li>
-                <li>Completadas: {transacciones_completadas}</li>
-                <li>Periodo: {transacciones_periodo}</li>
-                <li>Total: {transacciones_total}</li>
-
-              </ul>
-
-            </ul>
-
-          </div>
-
-        </div>
+          <table class="tabla">
+            <tr>
+              <th>Ventas</th>
+              <th></th>
+            </tr>
+              <td>Canceladas</td>
+              <td>{transacciones_canceladas}</td>
+            <tr>
+              <td>Completadas</td>
+              <td>{transacciones_completadas}</td>
+            </tr>
+            <tr>
+              <td>Periodo</td>
+              <td>{transacciones_periodo}</td>
+            </tr>
+            <tr>
+              <td>Total</td>
+              <td>{transacciones_total}</td>
+            </tr>
+          </table>
       </div>
-    );    
+    );       
   }
 }
 
