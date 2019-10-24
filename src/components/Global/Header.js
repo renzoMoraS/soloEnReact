@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 // Assets
-import logo from './images/logo.svg';
+import logo from './images/logo.png';
 import './css/Header.css';
 
 class Header extends Component {

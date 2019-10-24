@@ -49,7 +49,7 @@ class CatTime extends Component {
 
     constructor(props){
         super(props);
-        this.state = {termino:false,boton:false};
+        this.state = {termino:false,boton:false,esUnd:false};
         this.handleInputSubmit = this.handleSubmit.bind(this)
         this.handleInputSubmit2 = this.handleSubmit2.bind(this)
     }   
@@ -105,9 +105,15 @@ class CatTime extends Component {
             }
         })
         .then(function(res){
-            return res.json()
+            if(res.ok === true){
+                return res.json()
+            }else{
+                var algo = {}
+                return algo
+            }
         })
         .then(function(data){
+            if (data.results !== undefined) {
         
             localStorage.setItem('clientsOrders', JSON.stringify(data));
 
@@ -158,16 +164,24 @@ class CatTime extends Component {
                             arrayNombres.push(data)
                             currentComponent.setState({termino:true})
                             currentComponent.setState({termino:false})
+                            currentComponent.setState({esUnd : true})
                         })
                     }
                 }
             }
+        }else{
+          currentComponent.setState({esUnd : false})
+        }
         });
     }
     ////////////////END OF WILL MOUNT////////////////
     ////////////////START OF RENDER////////////////  
     render() {
-        data = JSON.parse(localStorage.getItem('clientsOrders'));
+        if (this.state.esUnd===true) {
+            data = JSON.parse(localStorage.getItem('clientsOrders'));
+          }else{
+            data = {}
+          } 
         
         ///PRUEBA DEL MOCK///
         data = mock
@@ -271,9 +285,7 @@ class CatTime extends Component {
         }
         
         var options = {
-            lineTension: 0,
             responsive: true,
-            maintainAspectRatio: false,
             scales: {
                 yAxes: [{
                     ticks: {
@@ -281,7 +293,7 @@ class CatTime extends Component {
                     }
                 }]
             }
-        }
+        };
         
         speedData = {
             labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
@@ -292,19 +304,20 @@ class CatTime extends Component {
         return (
             <div className="CatTime">
                 <div>
-                <h1>{showdate}</h1>
-                <form onSubmit= {this.handleInputSubmit}>
-                    <button>Anterior</button> 
-                </form>  
-                <form onSubmit= {this.handleInputSubmit2}>
-                    <button>Siguiente</button>
-                </form>
-                <Line
-                    data={speedData}
-                    options = {options}
-                    height = {175}
-                    width = {200}
-                />
+                    <h1 style={{display:"inline-block"}} >{showdate}</h1>
+                    <p style={{display:"inline-block"}}>&nbsp;&nbsp;</p>
+                    <form style={{display:"inline-block",verticalAlign: "super"}} onSubmit= {this.handleInputSubmit}>
+                        <button>Anterior</button> 
+                    </form>  
+                    <p style={{display:"inline-block"}}>&nbsp;</p>
+                    <form style={{display:"inline-block",verticalAlign: "super"}} onSubmit= {this.handleInputSubmit2}>
+                        <button>Siguiente</button>
+                    </form>
+                    <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Cantidad de ventas por categorias a lo largo del tiempo.&nbsp;</p>
+                    <Line
+                        data={speedData}
+                        options = {options}
+                    />
                 </div>
             </div>
         );

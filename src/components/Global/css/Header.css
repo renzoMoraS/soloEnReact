@@ -1,41 +1,71 @@
 .Header {
   background-color: #222;
-  height: 168px;
-  padding: 10px;
   color: white;
   text-align: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 20%;
+  background-color: #3d3d3d;
+  height: 100%; /* Full height */
+  position: fixed; /* Make it stick, even on scroll */
+  overflow: auto; /* Enable scrolling if the sidenav has too much content */
+  top: 0;
+}
+
+.Header h2{
+  float: left;
+  position: relative;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  top: 20px;
+  padding-right: 10%;
 }
 
 .Logo img {
   animation: App-logo-spin infinite 20s linear;
-  height: 88px;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  float:left;
+  width: 40px;
+  height: 35px;
+  padding: 0;
+  margin: 0;
+  padding-top: 25px;
+  padding-left: 20%;
 }
 
 .Menu {
-  margin: 0;
   padding: 0;
+  padding-top: 70px;
+  margin: 0;
   list-style: none;
+  
 }
 
 .Menu li {
-  display: inline-block;
-  padding-right: 10px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid #555;
+  border-bottom: 1px solid #555;
 }
 
 .Menu li a{
   color: #CCC;
   text-decoration: none;
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
 }
 
-.Menu li a:hover{
-  color: #EEE;
+.Menu li:hover{
+  background-color: #222;
+}
+
+.Menu a:hover{
+  color: rgb(255, 255, 255);
+}
+
+.Menu li a:focus {
+  background-color:  #222;
 }

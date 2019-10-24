@@ -9,12 +9,14 @@ var marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
 
 ////////////////FUNCTIONS////////////////
 function makeMarkers(ml,makers){
-  if (ml !== null) {
+  if (ml !== null && ml !== {} && ml !== "vacio") {
     makers = []
     for (var i = 0;i<Object.keys(ml.lat).length;i++){
       makers.push(<Marker position={[ml.lat[i], ml.long[i]]}><Popup>{ml.name[i] + " : " + ml.cant[i] + " compra/s"}</Popup></Marker>);
     }
   }
+
+  console.log(makers)
 
   return makers;
 }
@@ -24,7 +26,7 @@ class BMap extends Component {
 
   constructor(props){
     super(props);
-    this.state = {termino:false}
+    this.state = {termino:false,esUnd:false}
   }
 
   componentWillMount(){
@@ -38,10 +40,17 @@ class BMap extends Component {
       }
     })
     .then(function(res){
-      return res.json()
+      if(res.ok === true){
+        return res.json()
+      }else{
+        var algo = {}
+        return algo
+      }
     })
     .then(function(data){
 
+      console.log(data)
+      if (data.results !== undefined) {
       marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
 
       var cont = 0;
@@ -87,22 +96,31 @@ class BMap extends Component {
       localStorage.setItem('markerList',JSON.stringify(marker_list));
       thisComponent.setState({termino:true});
       thisComponent.setState({termino:false});
+      thisComponent.setState({esUnd : true})
+    }else{
+      thisComponent.setState({esUnd : false})
+    }
     })
   }
   ////////////////END OF WILL MOUNT////////////////
   ////////////////START OF RENDER////////////////
   render() {
-    var ml = JSON.parse(localStorage.getItem('markerList'));
+    if (this.state.esUnd===true) {
+      var ml = JSON.parse(localStorage.getItem('markerList'));
+    }else{
+      var ml = "vacio"
+    } 
+    
+    console.log(ml)
     
     var makers = [];
     
     ////////////////RETURN////////////////
     return (
-      <div className="BMap">
-        <h1 style={{textAlign: 'center'}}>MAP PAGE</h1>
-        
-        <div>
-          <Map style={{ display: 'block',marginLeft: 'auto',marginRight: 'auto',height: '500px', width: '700px' }} center={[-34.304573, -64.76381]} zoom={3} maxZoom={17}>
+      <div className="BMap">   
+        <div className="MapStyle">
+        <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb",margin:0}}>&nbsp;Mapa con las ubicaciones de tus clientes.&nbsp;</p>
+          <Map style={{position: "absolute" ,display: 'block',margin: "0", padding:0, height:"96.40%",width:"80%"}} center={[-34.304573, -64.76381]} zoom={3} maxZoom={17}>
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

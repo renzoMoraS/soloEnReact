@@ -36,7 +36,7 @@ class DistExp extends Component{
 
     constructor(props){
         super(props);
-        this.state = {termino:false};
+        this.state = {termino:false,esUnd:false};
     }
 
     componentWillMount(){
@@ -57,9 +57,15 @@ class DistExp extends Component{
             }
         })
         .then(function(res){
-            return res.json()
+            if(res.ok === true){
+                return res.json()
+            }else{
+                var algo = {}
+                return algo
+            }
         })
         .then(function(userdata){
+            if (userdata.results !== undefined) {
             
             for (var i = 0; i < userdata.results.length; i++) {
                 var expo = userdata.results[i].order_items[0].listing_type_id;
@@ -126,6 +132,10 @@ class DistExp extends Component{
             }
                 thisComponent.setState({termino:true});
                 thisComponent.setState({termino:false});
+                thisComponent.setState({esUnd : true})
+            }else{
+              thisComponent.setState({esUnd : false})
+            }
         })
 
     }
@@ -159,15 +169,13 @@ class DistExp extends Component{
         ////////////////RETURN////////////////
         return (
             <div className="DistExp">
-                <h1 style={{textAlign: 'center'}}>Distribución por exposición</h1>
                 <div className="patient-container">
                 </div>
                 <div>
+                <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Cantidad de ventas totales por exposición.&nbsp;</p>
                     <Bar
                         data={speedData}
                         options = {options}
-                        height = {25}
-                        width = {75}
                     />
                 </div>
             </div>

@@ -1,5 +1,12 @@
 .Footer {
   margin: 0 auto;
   text-align: center;
-  width: 90%;
+  padding: 0;
+  position: fixed;
+  left: 20%;
+  right: 0;
+  bottom: 0;
+  width: 80%;
+  color: black;
+  text-align: center;
 }
