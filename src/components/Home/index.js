@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
 import {parse} from "query-string";
 
-var ciudad,status,level_id,seller_status,transacciones_canceladas,transacciones_completadas,transacciones_periodo,transacciones_total,nombreDelUsuario,fechaDeRegistro,pais,tipoDeUsuario,puntos,idDelSitio;
+var ciudad
+var status
+var level_id
+var seller_status
+var transacciones_canceladas
+var transacciones_completadas
+var transacciones_periodo
+var transacciones_total
+var nombreDelUsuario
+var fechaDeRegistro
+var pais
+var tipoDeUsuario
+var puntos
+var idDelSitio
 
 var options = {
   form: {
@@ -42,6 +55,9 @@ function miFuncion(textitoQueDevolvioToken) {
 
         if (textitoQueDevolvioToken==='1') {
           localStorage.setItem('valoracionesObtenidas', JSON.stringify(value));
+  
+
+          console.log(this.ciudad)
           
           this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'true'});
           console.log('primerif')
@@ -174,15 +190,11 @@ class Home extends Component {
       return (
         
         <div>
-
-          <div class="link
-          ">
-            <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" >Loguearse con Mercadolibre</a>
-          </div>
+          
           <table class="tabla">
             <tr>
               <th>Datos de la Empresa</th>
-              <th></th>
+              <th><a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">Sign In</a></th>
             </tr>
             <tr>
               <td>Nombre de la empresa</td>

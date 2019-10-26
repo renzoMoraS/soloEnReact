@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // support json encoded bodies
 
 // Settings
-app.set('port', process.env.PORT || 4000);
+app.set('port', process.env.PORT || 5000);
 
 
 var options = { 
@@ -68,7 +68,7 @@ app.post('/valoraciones', function(reqv, resv) {
 
             losdatosdelusuario = res;
             var thedata = JSON.parse(losdatosdelusuario.body)
-
+            console.log(thedata);
 			if(thedata.seller===undefined) {
 				resv.status(501);
 				resv.send('No existe tal usuario.');
