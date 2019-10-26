@@ -190,14 +190,11 @@ class Home extends Component {
       return (
         
         <div>
-
-          <div class="link">
-          </div>
           
           <table class="tabla">
             <tr>
               <th>Datos de la Empresa</th>
-              <th class="login"><a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" >Login</a></th>         
+              <th><a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">Sign In</a></th>
             </tr>
             <tr>
               <td>Nombre de la empresa</td>
