@@ -10,10 +10,10 @@ class Footer extends Component {
     copyright: PropTypes.string
   }
   render(){
-    const { copyright = '&copy; React 2019' } = this.props;
+    const { copyright = '' } = this.props;
     return (
       <div className="Footer">
-        <p dangerouslySetInnerHTML={{ __html: copyright }} />
+        
       </div>
     );
   }
