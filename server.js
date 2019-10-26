@@ -80,9 +80,8 @@ app.post('/valoraciones', function(reqv, resv) {
 
             losdatosdelusuario = res;
             var thedata = JSON.parse(losdatosdelusuario.body)
-
+            console.log(thedata)
 			if(thedata.seller===undefined) {
-				resv.status(501);
 				resv.send('No existe tal usuario.');
 				//return
 			} else {

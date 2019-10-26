@@ -191,14 +191,13 @@ class Home extends Component {
         
         <div>
 
-          <div class="link
-          ">
-            <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" >Loguearse con Mercadolibre</a>
+          <div class="link">
           </div>
+          
           <table class="tabla">
             <tr>
               <th>Datos de la Empresa</th>
-              <th></th>
+              <th class="login"><a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" >Login</a></th>         
             </tr>
             <tr>
               <td>Nombre de la empresa</td>
