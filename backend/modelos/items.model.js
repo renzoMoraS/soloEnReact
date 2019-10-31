@@ -11,6 +11,9 @@ let Item = new Schema({
     _link:{
         type: String
     },
+    _user:{
+        type: String
+    },
     _seller: {
         type: String
     },
@@ -35,6 +38,10 @@ Item.query.byName = function(name){
 
 Item.query.bySeller = function(seller){
     return this.find({ _seller: seller});
+}
+
+Item.query.byUser = function(user){
+    return this.find({ _user: user});
 }
 
 Item.query.byFoll = function(){

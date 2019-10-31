@@ -7,6 +7,7 @@ const cors = require('cors');
 const fetch = require('node-fetch');
 const mongoose = require('mongoose');
 const request = require('request');
+var meli = require('mercadolibre');
 const PORT = 4000;
 
 var token; //En donde quedara guardado el access token
@@ -18,6 +19,7 @@ let FollSell = require('./modelos/following.model'); //Vendedores seguidos
 let CatSell = require('./modelos/categorySellers.model'); //Cantidad de vendedores por categoria
 let CatTend = require('./modelos/categoryTendency.model'); //Tendencias en el tiempo para categorias
 let CatTime = require('./modelos/competencyCatTime.model'); //Tendencias en el tiempo para categorias de otro vendedor
+var preg;
 
 //Conecto las bases
 app.use(cors()); 
@@ -80,8 +82,9 @@ app.post('/token',function(req,rest){
     request.post({url: url, json:true, options},function(req,res,body){
 
         token = body
+        preg = new meli.Meli(token.client_id, token.client_secret, token.access_token, token.refresh_token);
         rest.send(token)
-
+        
     })
 
 })
@@ -147,7 +150,6 @@ app.post('/valoraciones', function(reqv, resv) {
 
 app.post('/pantallaInicio', function(reqv, resv) {
 
-    console.log(token);
     if(token===undefined || token.error) {
         console.log('pongo acá todo el token porque me parece que no tiene el token')
         console.log(token)
@@ -177,14 +179,53 @@ app.get('/ventasEnOrden',function(req,res){
 
     console.log("Entró");
     var fecha = new Date();
+    //var fechaprime = //2015-07-01
+    var ytoday = fecha.getFullYear();
+    var mtoday = fecha.getMonth();
+    var dtoday = fecha.getDate();
+    var hasta = ytoday + "-" + mtoday + "-" + dtoday
+    console.log(hasta)
+    var desde = "2015-01-01"
+    console.log(req);
+
+    if (req.query.hasta != null){
+        hasta = req.query.hasta
+        hasta = hasta.substring(0,10) 
+
+    }
+    if (req.query.desde != null){
+        desde = req.query.desde
+        desde = desde.substring(0,10) 
+    }
+
+    var murl = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.date_created.from=" + desde + "T00:00:00.000-00:00&order.date_created.to="+ hasta +"T00:00:00.000-00:00&access_token="+token.access_token;
+    console.log(murl)
+    request.get({url: murl}, function (error, response, body) {
+        var orders = JSON.parse(body);
+        //var ordersString = JSON.stringify(orders)
+        //console.log(orders)
+        res.send(orders)
+    })
+    /*console.log("Entró");
+    var fecha = new Date();
+    console.log(fecha.toLocaleDateString(undefined, {
+        weekday: 'long',    
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }))
+    //var fechaprime = //2015-07-01
+    var year = fecha.getUTCFullYear();
+    var month = fecha.getUTCMonth();
+    var day = fecha.getUTCDay();
     var fechaactual = fecha.getUTCFullYear();
-    var murl = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.date_created.from=2015-07-01T00:00:00.000-00:00&order.date_created.to="+ fechaactual +"-07-31T00:00:00.000-00:00&access_token="+token.access_token;
+    var murl = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.date_created.from=2015-07-01T00:00:00.000-00:00&order.date_created.to="+ fechaactual +"-12-31T00:00:00.000-00:00&access_token="+token.access_token;
     request.get({url: murl}, function (error, response, body) {
         var orders = JSON.parse(body);
         var ordersString = JSON.stringify(orders)
         console.log(orders)
         res.send(orders)
-    })
+    })*/
 
 })
 
@@ -294,13 +335,17 @@ routes.route('/items/searchItemId/:id').get(function(req, res) {
 routes.route('/items/searchSeller/:seller').get(function(req, res) {
 
     let seller = req.params.seller;
-    console.log(seller);
     Item.find().bySeller(seller).exec(function(err, item) {
 
         if(err)
             res.status(400).json(err)
-        else
-            res.status(200).json(item);
+        else{
+
+            if(isEmptyObject(item)) 
+                res.status(404).json(item)
+            else    
+                res.status(200).json(item);
+        }
 
     });
 
@@ -308,12 +353,21 @@ routes.route('/items/searchSeller/:seller').get(function(req, res) {
 
 routes.route('/items/getFollowed').get(function(req, res) {
 
-    Item.find().byFoll().exec(function(err, item) {
+    var real = [];
+    Item.find().byUser(token.user_id).exec(function(err, item) {
 
         if(err)
             res.status(400).json(err)
-        else
-            res.status(200).json(item);
+        else{
+
+            item.map(function(citem, i){
+
+                if(citem._following == true) real.push(citem);
+
+            })
+            res.status(200).json(real);
+
+        }
 
     });
 
@@ -463,6 +517,7 @@ app.get('/items/searchItems/:username', function(req, res) {
                             "_itemId": item.id,
                             "_name": item.title,
                             "_link": item.permalink,
+                            "_user": token.user_id,
                             "_seller": username,
                             "_following": false,
                             "_lastUpdate": "No necesario",
@@ -515,9 +570,9 @@ app.get('/items/searchItems/:username', function(req, res) {
 app.post('/items/startFollowing',function(req,rest){
     
     var item = req.body.item;
+    console.log(item);
     item = JSON.parse(item);
     var id = item._itemId;
-    console.log(token);
     var follsell = req.body.sell;
     var url = 'https://api.mercadolibre.com/items?ids=' + id + '&access_token=' + token.access_token;
     var options = {
@@ -538,7 +593,6 @@ app.post('/items/startFollowing',function(req,rest){
         response.json()
           .then(function(data) {
 
-            console.log(data);
             var res = data;
             res.map(function(aux){
                 item._lastUpdate = aux.body.last_updated;
@@ -654,7 +708,7 @@ routes.route('/FollSell/add').post(function(req, res) {
     url = 'http://localhost:4000/MLHuergo/FollSell/searchName/' + req.body._name;
     fetch(url, options)
      .then(resp =>{
-         console.log(resp);
+
         if(resp.size != 0) return;
         let follSell = new FollSell(req.body);
         follSell.save()
@@ -748,6 +802,22 @@ routes.route('/FollSell/searchName/:name').get(function(req, res) {
 
     let name = req.params.name;
     FollSell.find().byName(name).exec(function(err, item) {
+
+        if(err)
+            res.status(400).log(err)
+        else{
+            res.status(200).json(item);
+                
+        }
+
+    });
+
+});
+
+routes.route('/FollSell/searchForMe').get(function(req, res) {
+
+    let name = req.params.name;
+    FollSell.find().byUser(token.user_id).exec(function(err, item) {
 
         if(err)
             res.status(400).log(err)
@@ -877,6 +947,27 @@ routes.route('/CatTend/add').post(function(req, res) {
 
 });
 
+
+routes.route('/CatTend/checkedToday').get(function(req, res) {
+
+    var today = new Date;
+    CatTend.find().byDay(today).exec(function(err, item) {
+
+        if(err)
+            console.status(400).log(err)
+        else{
+
+            if(isEmptyObject(item))
+                res.status(400).json({error: 'Nonexistent item.'})
+            else
+                res.status(200).json(item);
+                
+        }
+
+    });
+
+});
+
 routes.route('/CatTend/searchName/:name').get(function(req, res) {
 
     let name = req.params.name;
@@ -899,7 +990,7 @@ routes.route('/CatTend/searchName/:name').get(function(req, res) {
 
 routes.route('/CatTend/delete').post(function(req, res) {
 
-    CatTend.deleteMany({_id: "5d1506238069d42b5837cdd1"}, function(err) {
+    CatTend.deleteMany({__v: 0}, function(err) {
 
         if(err) console.log(err);
         res.status(200).json({item: "Eliminado con exito"});
@@ -907,6 +998,81 @@ routes.route('/CatTend/delete').post(function(req, res) {
     });
 
 });
+
+app.get('/TenCat', function general(reqDeFE, resAFE){ //Tendencias por Categoría
+    
+    preg.get('/sites/MLA/categories', function(err, res){  
+
+        var catTime = [30];
+        let today = new Date();
+        let date = today.getDate() + "-"+ parseInt(today.getMonth()+1) +"-"+today.getFullYear();
+        fetch('http://localhost:4000/MLHuergo/CatTend', {
+
+                        method: "GET",
+                        headers: {
+                    
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Accept': 'application/json' 
+                    
+                        }
+                
+        }).then(function(resp) {resp.json().then(function(res){
+
+            if(res.body[res.length - 1]._date == date){ //Si ya se consiguieron los datos de hoy...
+
+                //calcular % de ventas acá
+                console.log("Ya tenemos datos actualizados")
+                resAFE.status(200).json(res);
+
+            }
+            //Conseguir la cantidad de ventas de hoy
+            var total = 0;
+            res.map(function(item, i){
+                
+                catTime[i] = {
+    
+                    _name: item.name,
+                    _day: date,
+                    _cant: 0
+    
+                } 
+                // de aca en adelante, una vez por día en algun otro lado
+    
+                preg.get('/sites/MLA/search', {category: [item.id]}, function(err, res){
+                    var cont = 0;
+                    res.results.map(function(producto, x){
+                    
+                        catTime[i]._cant += producto.sold_quantity;
+    
+                    })
+                    total += catTime[i]._cant; 
+                    //total = cantidad de unidades venididas TOTALES (todas las categorías)
+                    
+                    fetch('http://localhost:4000/MLHuergo/CatTend/add', { 
+                    
+                        method: 'POST',
+                        body: JSON.stringify(catTime[i]),
+                        headers:{
+                            'Content-Type': 'application/json',
+                        }
+    
+                    })
+                    .then(function(res){ 
+    
+    
+                    }).catch(function(error) {
+                        console.log('Fetch Error:', error);
+                    });
+                    
+                })
+                        
+            })
+        
+        })})
+
+    })
+
+})
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////Funciones de las vendedores X categorias/////////////////////////////////////////
@@ -965,6 +1131,26 @@ routes.route('/CatTime/searchName/:name').get(function(req, res) {
 
 });
 
+routes.route('/CatTime/searchDate/:date').get(function(req, res) {
+
+    let date = req.params.date;
+    CatTime.find().byName(date).exec(function(err, item) {
+
+        if(err)
+            console.log(err)
+        else{
+
+            if(isEmptyObject(item))
+                res.json({error: 'Nonexistent item.'})
+            else
+                res.json(item);
+                
+        }
+
+    });
+
+});
+
 routes.route('/CatTime/delete').post(function(req, res) {
 
     CatTime.deleteMany({_id: "5d1506238069d42b5837cdd1"}, function(err) {
@@ -975,3 +1161,121 @@ routes.route('/CatTime/delete').post(function(req, res) {
     });
 
 });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////Funciones de las preguntas//////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.get('/preguntas',function(reqDeFE, resAFE){
+    preg = new meli.Meli(token.client_id, token.client_secret, token.access_token, token.refresh_token);
+    contador = 0;
+    preg.get('/my/received_questions/search', function (err, res) {
+
+        var jsonpreg = JSON.stringify(res);
+        var pregparse = JSON.parse(jsonpreg);
+        
+        pregparse.questions.map(function(pregunta, index){ //por cada pregunta de questions pregunta por su usuario de ML 
+            
+            preg.get('/users/' + pregunta.from.id, function (err, res){    
+
+                pregparse.questions[index].nombre_de_usuario = res.nickname;
+                contador = contador + 1;
+                if (contador >= pregparse.questions.length * 2) {
+
+                    resAFE.send(pregparse)
+                    return
+
+                }
+
+            })
+            
+            preg.get('items', {ids: [pregunta.item_id,]}, function (err, res){
+
+                pregparse.questions[index].producto_nombre = res[0].body.title;
+                contador = contador + 1;
+                if (contador >= pregparse.questions.length * 2) {
+
+                    resAFE.send(pregparse)
+                    return
+
+                }
+
+            })
+
+        })
+        
+    })
+
+})  
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////Funciones de Mis Publicaciones//////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var arreglo = [];
+var contador = 0;
+function laotrafuncionquequiererenzo(parametro) {
+    setTimeout(lafuncionquequiererenzo,3000,parametro)
+}
+
+function lafuncionquequiererenzo(parametro) {
+        //eljason[0] = arreglo
+        
+        // console.log(arreglo)
+        console.log(arreglo)
+        parametro.send(arreglo)
+        arreglo = []
+}
+var publis = app.get('/MPublis',function(reqDeFE,resAFE) {
+      var preg = new meli.Meli(token.client_id, token.client_secret,token.access_token,token.refresh_token);
+      preg.get('/users/me', function (err, resu){
+          //console.log(err, resu);
+          jsonstr = JSON.stringify(resu);
+          pubspars = JSON.parse(jsonstr);
+  
+          preg.get('/users/'+pubspars.id+'/items/search', function (err, resi) {// sin parametros devuelve todos los items de un usuario
+                  //console.log(err, resi);
+                  //resAFE.send(resi);
+                  jsonstrprod = JSON.stringify(resi);
+                  listmisprod = JSON.parse(jsonstrprod)
+                  console.log(listmisprod)
+                  
+                  // Recorro los items del usuario
+                  var c;
+                  //console.log(listmisprod.results.length)
+              
+              //console.log('acá tengo la longitud')
+              //console.log(listmisprod.results)
+              listmisprod.results.forEach(function(value, index, array) {
+                  preg.get('/items/' + value, function (err, resmp){
+                      resmpstrin = JSON.stringify(resmp);
+                      resmppar = JSON.parse(resmpstrin);
+                    //   var listaDatos = [resmpstrin]
+                      // fs.writeFile('listaprod.json', resmpstrin, function (error) {
+                      //     if (error) throw err;
+                      // });
+                      preg.get('/sites/MLA/search',
+                              {q:resmp.title }, 
+                              function (err, respuesta) {
+                                  
+                                  contador = contador + 1;
+                                //   jsonstrto = JSON.stringify(resi);
+                                //   toparse = JSON.parse(resi);
+                                //   console.log(toparse)
+                                 console.log(JSON.parse(JSON.stringify(respuesta)))
+                                  arreglo.push(respuesta)
+                                //   listaDatos.push(toparse)
+                                  // fs.appendFile('listaprod.json', jsonstrto, function (error) {
+                                  //     if (error) throw err;
+                                  // });
+                      });
+                  });
+              });
+  
+              var dummyvar = 0;
+              
+              laotrafuncionquequiererenzo(resAFE)
+              
+          })
+      }) //esto saca los productos del usuario
+  })

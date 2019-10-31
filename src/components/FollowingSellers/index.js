@@ -52,7 +52,7 @@ class FollowingSellers extends Component {
       
     componentDidMount(){    
 
-        axios.get('http://localhost:4000/MLHuergo/FollSell')
+        axios.get('http://localhost:4000/MLHuergo/FollSell/searchForMe')
             .then(res => {
                 console.log(res.data);
                 if(!isEmptyObject(res.data)) this.setState({ items: res.data });

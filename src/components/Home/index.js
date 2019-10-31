@@ -139,6 +139,7 @@ class Home extends Component {
         }
       })
       .then(function(response){
+        console.log(response.data)
         miFuncion('1')
       });
     

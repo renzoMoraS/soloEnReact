@@ -12,21 +12,74 @@ class Header extends Component {
     title: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired
   };
-  render(){
-    const { title, items} = this.props;
-    return (
-      <div className="Header">
-        <div className="Logo">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>{title}</h2>
 
+  render(){
+
+    //const { title, items} = this.props;
+    return (
+
+      <div className="Header">
+
+        <div className="Logo">
+
+          <img src={logo} className="App-logo" alt="logo" />
           <ul className="Menu">
-            {items && items.map((item, key) => <li key={key}><Link to={item.url}>{item.title}</Link></li>)}
+
+            <li><a href="/">Home</a></li>
+            <li><button>Mi Negocio ></button>
+
+              <ul class="dropdown">
+
+                <li><a href="/BMap">Mapa de Compradores</a></li>
+                <li><a href="/cattime">Ventas X Categoria</a></li>
+                <li><a href="/distexp">Ventas X Exposición</a></li>
+                <li><a href="/Ventas">Ventas X Fecha</a></li>
+                <li><a href="/Preguntas">Preguntas recibidas</a></li>
+              </ul>
+
+            </li>
+            <li><button>Competencia ></button>
+
+              <ul class="dropdown">
+                <li><a href="/valoraciones">Valoraciones</a></li>
+                <li><a href="/Buscador">Productos</a></li>
+                <li><a href="/MisPublis">Comparacion</a></li>
+                <li><button>Seguimiento ></button>
+
+                  <ul class="dropdown">
+
+                    <li><a href="/FollowingItems">Productos</a></li>
+                    <li><a href="/FollowingSellers">Vendedores</a></li>
+
+                  </ul>
+
+                </li>
+
+              </ul>
+
+            </li>
+            <li><button>Mercado ></button>
+
+              <ul class="dropdown">
+
+                <li><a href="/Tencat">Ventas X Categoria</a></li>
+                <li><a href="/Vencat">Vendedores X Categoria</a></li>
+
+              </ul>
+
+            </li>
+
           </ul>
+
         </div>
+
       </div>
+
     );
+
   }
+
 }
+//{items && items.map((item, key) => <li key={key}><Link to={item.url}>{item.title}</Link></li>)}
 
 export default Header;

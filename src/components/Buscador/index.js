@@ -5,7 +5,7 @@ import axios from 'axios';
 import 'react-light-accordion/demo/css/index.css';
 import "bootstrap";
 import { Card, CardImg, Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
-import { parse } from 'query-string';
+import Alert from 'react-bootstrap/Alert';
 //import "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js";
 //import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js";
 //import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
@@ -51,7 +51,9 @@ class Buscador extends Component {
       render: true,
       text: '',
       items: [],
-      popoverOpen: false
+      popoverOpen: false,
+      userok: ''
+
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -67,12 +69,12 @@ class Buscador extends Component {
 
     axios.get('http://localhost:4000/MLHuergo/items/searchSeller/' + localStorage.getItem('seller'))
       .then(res => {
-        if (!isEmptyObject(res.data)) this.setState({ items: res.data });
+        if (!isEmptyObject(res.data)) this.setState({ items: res.data, userok: 'true'});
       })
       .catch(function (err) {
         console.log(err);
       })
-
+      this.setState({userok: 'false'});
   }
 
   itemList() {
@@ -85,6 +87,14 @@ class Buscador extends Component {
 
   render() {
 
+    var alerta;
+    if (this.state.userok === ''){
+      alerta = <div class = "puntitos">...</div>
+    }else if(this.state.userok === 'false') {
+      alerta = <Alert variant='warning'>NO HAY UN USUARIO CON ESE NOMBRE!</Alert>
+    }else{
+      alerta = <Alert variant='success'>USUARIO ENCONTRADO CORRECTAMENTE</Alert>
+    }
     return (
 
       <div className="Buscador">
@@ -115,6 +125,9 @@ class Buscador extends Component {
             
           </form>
 
+        </div>
+        <div>
+          {alerta}
         </div>
         <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Productos de usuarios por busqueda.&nbsp;</p>
         <table className="table table-striped" style={{ marginTop: 20 }}>
