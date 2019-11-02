@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {parse} from "query-string";
 import Badge from 'react-bootstrap/Badge';
+import cookie  from 'react-cookies';
 
 var ciudad
 var status
@@ -133,7 +134,10 @@ class Home extends Component {
 
       .then(function(response){
 
+        var algo = response.data
         console.log(response.data)
+        
+        cookie.save("cookieQueGuardaElToken", algo)
         miFuncion('1')
 
       });
