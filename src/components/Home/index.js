@@ -51,17 +51,18 @@ function miFuncion(textitoQueDevolvioToken) {
       var lasvaloraciones = response.json();
 
       lasvaloraciones.then(value => {
-
         var valoracionesObtenidas = value
 
         if (textitoQueDevolvioToken==='1') {
 
           localStorage.setItem('valoracionesObtenidas', JSON.stringify(value));
           this.setState({ termino: 'si', valoraciones: [], text: '', userok: 'true'});
+          console.log(textitoQueDevolvioToken)
 
         } else {
 
           this.setState({ termino: 'no', valoraciones: [], text: '', userok: 'true'});
+          console.log(textitoQueDevolvioToken)
 
         }
 
@@ -72,27 +73,29 @@ function miFuncion(textitoQueDevolvioToken) {
     } else {
 
       this.setState({ termino: 'no', valoraciones: [], text: '', userok: 'false'});
+      console.log(textitoQueDevolvioToken)
 
     }
+
   })
 
 };
 
-
-
 var url = 'https://api.mercadolibre.com/oauth/token?';
 
 class Home extends Component {
+
   constructor(props) {
+
       super(props)
       this.state = { termino: 'no', valoraciones: [], text: '', userok: 'false'};
       miFuncion = miFuncion.bind(this);
+
     }
 
   componentWillMount(){
 
     const URLSearchParams = window.URLSearchParams;
-
     var burl = new URLSearchParams();
 
     if (!parse(this.props.location.search).code || el_auth_code_anterior !== undefined) {
@@ -100,9 +103,9 @@ class Home extends Component {
       return
 
     } else {
-      console.log('el auth code anterior es')
-      console.log(el_auth_code_anterior)
+
       el_auth_code_anterior = parse(this.props.location.search).code
+
     }
 
     burl.append("grant_type","authorization_code")
@@ -111,10 +114,12 @@ class Home extends Component {
     burl.append("code",parse(this.props.location.search).code);
     burl.append("redirect_uri",options.form.redirect_uri)
 
-    var aurl = url + burl
-
+    var aurl = url + burl 
+    
     if (this.state.termino==='no' && this.state.userok==='false'){
+
       fetch('/token', {
+
         method: 'POST',
         body: JSON.stringify({
           "url": aurl
@@ -122,32 +127,37 @@ class Home extends Component {
         headers:{
           'Content-Type': 'application/json',
         }
+
       })
+
       .then(function(response){
+
+        console.log(response.data)
         miFuncion('1')
+
       });
     
     } else if(el_auth_code_anterior === parse(this.props.location.search).code || (this.state.termino==='si' && this.state.userok==='true')) {
+      
       miFuncion('1')
+
     }
 
 
   }
-  
-  
- 
 
   render() {
 
     if (this.state.termino==='si' && this.state.userok==='false') {
 
       miFuncion('0');
-
+      
     }
 
     var algo = JSON.parse(localStorage.getItem('valoracionesObtenidas'))
 
     if (algo !== null){
+
       ciudad = algo.address.city
       status = algo.status.site_status
       level_id = algo.seller_reputation.level_id
@@ -162,6 +172,7 @@ class Home extends Component {
       tipoDeUsuario = algo.user_type
       puntos = algo.points
       idDelSitio = algo.site_id
+
     }
 
     return (

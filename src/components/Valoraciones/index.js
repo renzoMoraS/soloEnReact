@@ -35,25 +35,35 @@ class valoracionesApp extends Component {
             }
         })
       .then((response) => {
+
+        console.log(response);
+
         if (response.ok) {
+
           var lasvaloraciones = response.json();
+
           lasvaloraciones.then(value => {
+
             valoracionesObtenidas = value
             console.log(valoracionesObtenidas)
             this.setState({termino: 'si', userok: 'true'});
             console.log('estado'+JSON.stringify(valoracionesObtenidas))
+
           })
           
         } else {
+
           this.setState({userok: 'false', termino: 'si'});
+
         }
       })
+
     }
 
   }
 
-  render() {
 
+  render() {
     if (this.state.termino==='si' && this.state.userok==='true') {
       
       var ciudad = valoracionesObtenidas.address.city

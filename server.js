@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const request = require('request');
 
-
 const app = express();
 
 app.use(cors());
@@ -11,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // support json encoded bodies
 
 // Settings
-app.set('port', process.env.PORT || 4000);
+app.set('port', process.env.PORT || 5000);
 
 
 var options = { 
@@ -30,20 +29,11 @@ app.get('/',function(req,res){
 });
 
 app.post('/token',function(req,rest){
-
     var url = req.body.url;
     request.post({url: url, json:true, options},function(req,res,body){
         token = body
-        console.log(token)
-        if (token.error) {
-            rest.status(501);
-            rest.send('El token no funcionó.');
-            return
-        } else {
-            rest.send('1')
-        }
+        rest.send('token')
     })
-    
 })
 
 app.post('/sasara',function(req,res){
@@ -54,7 +44,6 @@ app.post('/sasara',function(req,res){
         var orders = JSON.parse(body);
         res.send(orders)
     })
-
 });	
 
 
@@ -71,23 +60,28 @@ app.post('/categories',function(req,res){
 app.post('/valoraciones', function(reqv, resv) {
 		
         var unvalor = reqv.body.username;
+        //console.log(unvalor)
         console.log(token)
 		var losdatosdelusuario;
 		var url = 'https://api.mercadolibre.com/sites/MLA/search?nickname='+String(unvalor)+"&access_token="+token.access_token;
-        request.get({url: url}, function (err, res) { //Esto estaba después del user id
+        request.get({url: url}, function (err, res) { //?attributes=seller_reputation  --> esto estaba después del user id
 
             losdatosdelusuario = res;
             var thedata = JSON.parse(losdatosdelusuario.body)
-            console.log(thedata)
+            console.log(thedata);
 			if(thedata.seller===undefined) {
-
+				resv.status(501);
 				resv.send('No existe tal usuario.');
-
+				//return
 			} else {
 
+				//console.log(thedata);
+
                 var url2 = 'https://api.mercadolibre.com/users/'+ thedata.seller.id
-				request.get({url: url2}, function (err, res) { //Esto estaba después del user id
+				request.get({url: url2}, function (err, res) { //?attributes=seller_reputation  --> esto estaba después del user id
 					unvalor = res;
+					//console.log(unvalor);
+					//console.log('lo de arriba es la respuewsta demercadolibre')
 
 					resv.send(unvalor.body);
 				});
@@ -99,16 +93,21 @@ app.post('/pantallaInicio', function(reqv, resv) {
 
     console.log(token);
     if(token===undefined || token.error) {
-
+        console.log('pongo acá todo el token porque me parece que no tiene el token')
         console.log(token)
         resv.status(501);
         resv.send('No existe tal usuario.');
-
+        //return
     } else {
+        
+        //console.log(thedata);
 
         var url2 = 'https://api.mercadolibre.com/users/'+ token.user_id
-        request.get({url: url2}, function (err, res) { //Esto estaba después del user id
+        request.get({url: url2}, function (err, res) { //?attributes=seller_reputation  --> esto estaba después del user id
             unvalor = res;
+            //console.log(unvalor);
+            //console.log('lo de arriba es la respuewsta demercadolibre')
+
             resv.send(unvalor.body);
         });
     }

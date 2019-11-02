@@ -1,0 +1,17 @@
+.titulo{
+    font-size: 400%;
+    color: black;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+
+  .alinear{
+    width:100%;
+    text-align: center;
+  }
+
+  .inner
+  {
+    display: inline-block;
+  }
