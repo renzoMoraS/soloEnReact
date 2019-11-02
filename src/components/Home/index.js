@@ -173,7 +173,9 @@ class Home extends Component {
       tipoDeUsuario = algo.user_type
       puntos = algo.points
       idDelSitio = algo.site_id
-      var signout = "Log Out"
+
+      var signout = <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">Sign Out</a>
+      
       fechaDeRegistro = (JSON.stringify(fechaDeRegistro)).substring(1, 11)
 
       if (pais === 'AR'){
@@ -211,7 +213,9 @@ class Home extends Component {
       }
 
     }else{
-      signout = "Log In"
+
+      signout = <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">Sign In</a>
+    
     }
 
     return (
@@ -221,7 +225,7 @@ class Home extends Component {
         <table class="tabla">
           <tr>
             <th>Datos de la Empresa</th>
-            <th><a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">{signout}</a></th>
+            <th>{signout}</th>
           </tr>
           <tr>
             <td>Nombre de la empresa</td>
