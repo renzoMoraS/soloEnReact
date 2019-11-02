@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Alert from 'react-bootstrap/Alert'; 
-import 'bootstrap/dist/css/bootstrap.css';
+import Badge from 'react-bootstrap/Badge';
 
 var valoracionesObtenidas = '';
 
@@ -84,38 +84,38 @@ class valoracionesApp extends Component {
 
       fechaDeRegistro = (JSON.stringify(fechaDeRegistro)).substring(1, 11)
 
-      console.log(level_id)
-      console.log(seller_status)
-      if (pais == 'AR'){
+      if (pais === 'AR'){
         pais = 'Argentina'
       }
 
-      if (level_id == '5_green'){
-        level_id = <span class="label label-success">Success Label</span>//COMPUMAR
-      }else if (level_id == '4_light_green' ){
-        level_id = 'verde claro' //ARIEL_SANDIN2008
-      }else if (level_id == '2_orange'){
-        level_id = 'naranjita' //CAMILAASBORNORUS
-      }else if (level_id == '3_yellow'){
-        level_id = 'amarillito' //CONO1971
-      }else if (level_id == '1_red'){
-        level_id = 'rojito' //VEJU2313599
-      }else if (level_id == 'null'){
+      if (level_id === '5_green'){
+        level_id = <Badge variant="verdecito"> </Badge>//COMPUMAR
+      }else if (level_id === '4_light_green' ){
+        level_id = <Badge variant="verdecito_clarito"> </Badge> //ARIEL_SANDIN2008
+      }else if (level_id === '2_orange'){
+        level_id = <Badge variant="naranjita"> </Badge> //CAMILAASBORNORUS
+      }else if (level_id === '3_yellow'){
+        level_id = <Badge variant="amarillito"> </Badge> //CONO1971
+      }else if (level_id === '1_red'){
+        level_id = <Badge variant="rojito"> </Badge> //VEJU2313599
+      }else if (level_id === 'null'){
         level_id = '-'
       }
 
-      if (seller_status == 'null'){
+      if (seller_status === 'null'){
         seller_status = '-'
       }
 
-      if (status == 'active'){
+      if (status === 'active'){
         status = 'Activo'
       }else{
         status = 'Inactivo'
       }
 
-      if (transacciones_periodo == 'historic'){
+      if (transacciones_periodo === 'historic'){
         transacciones_periodo = 'Histórico'
+      }else{
+        transacciones_periodo = 'Nuevo'
       }
 
     }
@@ -152,7 +152,7 @@ class valoracionesApp extends Component {
             </button>
           </form>
         </div>
-      
+        
         <div>
           {unavariable}
         </div>
