@@ -131,3 +131,9 @@ tr a{
   padding-top: 32px;
   padding-bottom: 10px;
 }
+
+.centrado{
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+}

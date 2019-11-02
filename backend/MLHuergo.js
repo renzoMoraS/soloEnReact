@@ -198,7 +198,7 @@ app.get('/ventasEnOrden',function(req,res){
         desde = desde.substring(0,10) 
     }
 
-    var murl = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.date_created.from=" + desde + "T00:00:00.000-00:00&order.date_created.to="+ hasta +"T00:00:00.000-00:00&access_token="+token.access_token;
+    var murl = "https://api.mercadolibre.com/orders/search?seller="+ token.user_id +"&order.date_created.from=" + desde + "T00:00:00.000-00:00&order.date_created.to="+ hasta +"T23:59:00.000-00:00&access_token="+token.access_token;
     console.log(murl)
     request.get({url: murl}, function (error, response, body) {
         var orders = JSON.parse(body);
