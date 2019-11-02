@@ -121,7 +121,7 @@ app.post('/valoraciones', function(reqv, resv) {
         var unvalor = reqv.body.username;
         console.log(unvalor)
 		var losdatosdelusuario;
-		var url = 'https://api.mercadolibre.com/sites/MLA/search?nickname='+String(unvalor)+"&access_token="+token.access_token;
+		var url = 'https://api.mercadolibre.com/sites/MLA/search?nickname='+String(unvalor);
         
         request.get({url: url}, function (err, res) {
 
