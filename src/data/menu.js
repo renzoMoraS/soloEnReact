@@ -18,5 +18,26 @@ export default [
     {
         title: 'Valoraciones',
         url: '/valoraciones'
+    },
+    {
+        title: 'Buscador',
+        url: '/Buscador',
+
+    },
+    {
+        title: 'Vendedores Seguidos',
+        url: '/FollowingSellers',
+
+    },
+    {
+        title: 'Productos Seguidos',
+        url: '/FollowingItems',
+
+    },
+    {
+        title: 'Ventas',
+        url: '/Ventas',
+
     }
+
 ];

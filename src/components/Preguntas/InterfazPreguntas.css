@@ -1,0 +1,104 @@
+/* button{
+     width:250px;
+     background-color: white;
+     font-size: 125% ;
+     border-bottom: 
+   } */
+
+  .titulo{
+    font-size: 400%;
+    color: black;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+  
+   .editar_input { /*T E X T B O X*/
+    block-size: 55px;
+    width:1722px;
+    font-size: 200%;
+    text-align: center;
+  }
+  
+  .alinear{
+    width:100%;
+    text-align: center;
+  }
+
+  .inner
+  {
+    display: inline-block;
+  }
+
+  .lista {
+    font-size: 130%;
+  }
+
+  .Pregunta {
+    width:200px;
+    border-color: #4CAF50;
+    color: green;
+    font-size: 150%;
+  }
+  
+  .Pregunta:hover {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .User {
+    border-color: #2196F3;
+    color: dodgerblue;
+    font-size: 150%;
+  }
+  
+  .User:hover {
+    background: #2196F3;
+    color: white;
+  }
+
+  .Id_Producto {
+    border-color: #ff9800;
+    color: orange;
+    font-size: 150%;
+  }
+  
+  .Id_Producto:hover {
+    background: #ff9800;
+    color: white;
+  }
+  
+  .Producto {
+    width:200px;
+    border-color: #f44336;
+    color: red;
+    font-size: 150%;
+    block-size: 75px;
+  }
+  
+  .Producto:hover {
+    background: #f44336;
+    color: white;
+  }
+
+  .Estado {
+    border-color: darkmagenta;
+    color:  darkmagenta;
+    font-size: 150%;
+  }
+  
+  .Estado:hover {
+    background: darkmagenta;
+    color: white;
+  }
+
+  .Fecha {
+    border-color:  maroon;
+    color:maroon;
+    font-size: 150%;
+  }
+  
+  .Fecha:hover {
+    background-color: maroon;
+    color: white;
+  }
