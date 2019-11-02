@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Alert from 'react-bootstrap/Alert';  
+import Alert from 'react-bootstrap/Alert'; 
+import 'bootstrap/dist/css/bootstrap.css';
 
 var valoracionesObtenidas = '';
 
@@ -80,13 +81,57 @@ class valoracionesApp extends Component {
       var tipoDeUsuario = valoracionesObtenidas.user_type
       var puntos = valoracionesObtenidas.points
       var idDelSitio = valoracionesObtenidas.site_id
+
+      fechaDeRegistro = (JSON.stringify(fechaDeRegistro)).substring(1, 11)
+
+      console.log(level_id)
+      console.log(seller_status)
+      if (pais == 'AR'){
+        pais = 'Argentina'
+      }
+
+      if (level_id == '5_green'){
+        level_id = <span class="label label-success">Success Label</span>//COMPUMAR
+      }else if (level_id == '4_light_green' ){
+        level_id = 'verde claro' //ARIEL_SANDIN2008
+      }else if (level_id == '2_orange'){
+        level_id = 'naranjita' //CAMILAASBORNORUS
+      }else if (level_id == '3_yellow'){
+        level_id = 'amarillito' //CONO1971
+      }else if (level_id == '1_red'){
+        level_id = 'rojito' //VEJU2313599
+      }else if (level_id == 'null'){
+        level_id = '-'
+      }
+
+      if (seller_status == 'null'){
+        seller_status = '-'
+      }
+
+      if (status == 'active'){
+        status = 'Activo'
+      }else{
+        status = 'Inactivo'
+      }
+
+      if (transacciones_periodo == 'historic'){
+        transacciones_periodo = 'Histórico'
+      }
+
     }
+
     if (this.state.userok === ''){
+
       var unavariable = <div class = "puntitos">...</div>
+
     }else if(this.state.userok === 'false') {
+
       unavariable = <Alert variant='warning'>NO HAY UN USUARIO CON ESE NOMBRE!</Alert>
+
     }else{
+
       unavariable = <Alert variant='success'>USUARIO ENCONTRADO CORRECTAMENTE</Alert>
+
     }
     return (
       
