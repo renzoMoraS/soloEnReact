@@ -135,30 +135,30 @@ tr a{
 
 .badge-verdecito{
   background-color: green;
-  width: 50%;
+  width: 20%;
   height: 15px;
 }
 
 .badge-verdecito_clarito{
   background-color: lightgreen;
-  width: 50%;
+  width: 20%;
   height: 15px;
 }
 
 .badge-naranjita{
   background-color: orange;
-  width: 50%;
+  width: 20%;
   height: 15px;
 }
 
 .badge-amarillito{
   background-color: yellow;
-  width: 50%;
+  width: 20%;
   height: 15px;
 }
 
 .badge-rojito{
   background-color: red;
-  width: 50%;
+  width: 20%;
   height: 15px;
 }
