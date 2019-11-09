@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Alert from 'react-bootstrap/Alert'; 
 import Badge from 'react-bootstrap/Badge';
 
+
 var valoracionesObtenidas = '';
 
 class valoracionesApp extends Component {
@@ -38,7 +39,6 @@ class valoracionesApp extends Component {
       .then((response) => {
 
         console.log(response);
-
         if (response.ok) {
 
           var lasvaloraciones = response.json();
@@ -81,6 +81,7 @@ class valoracionesApp extends Component {
       var tipoDeUsuario = valoracionesObtenidas.user_type
       var puntos = valoracionesObtenidas.points
       var idDelSitio = valoracionesObtenidas.site_id
+
 
       fechaDeRegistro = (JSON.stringify(fechaDeRegistro)).substring(1, 11)
 
@@ -152,7 +153,7 @@ class valoracionesApp extends Component {
             </button>
           </form>
         </div>
-        
+
         <div>
           {unavariable}
         </div>

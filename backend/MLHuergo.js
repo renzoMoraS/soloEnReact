@@ -119,16 +119,19 @@ app.post('/categories',function(req,res){
 app.post('/valoraciones', function(reqv, resv) {
 		
         var unvalor = reqv.body.username;
+
         console.log(unvalor)
 		var losdatosdelusuario;
 		var url = 'https://api.mercadolibre.com/sites/MLA/search?nickname='+String(unvalor);
         
         request.get({url: url}, function (err, res) {
 
+
             losdatosdelusuario = res;
             var thedata = JSON.parse(losdatosdelusuario.body)
 
 			if(thedata.seller===undefined) {
+
 
 				resv.status(501);
 				resv.send('No existe tal usuario.');
@@ -141,7 +144,7 @@ app.post('/valoraciones', function(reqv, resv) {
 					unvalor = res;
 					console.log(unvalor);
                     resv.send(unvalor.body);
-                    
+
 				});
 			}
 		});
@@ -164,7 +167,6 @@ app.post('/pantallaInicio', function(reqv, resv) {
             unvalor = res;
             console.log(unvalor);
             resv.send(unvalor.body);
-
         });
     }
 })
