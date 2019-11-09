@@ -3,7 +3,6 @@ import {parse} from "query-string";
 import Badge from 'react-bootstrap/Badge';
 import cookie  from 'react-cookies';
 
-
 var ciudad
 var status
 var level_id
@@ -86,69 +85,7 @@ function miFuncion(textitoQueDevolvioToken) {
 
 var url = 'https://api.mercadolibre.com/oauth/token?';
 
-
 class Home extends Component {
-  constructor(props) {
-      super(props)
-      this.state = { termino: 'no', valoraciones: [], text: '', userok: 'false'};
-      miFuncion = miFuncion.bind(this);
-    }
-
-  componentWillMount(){
-
-    const URLSearchParams = window.URLSearchParams;
-
-    var burl = new URLSearchParams();
-    console.log(burl)
-    if (!parse(this.props.location.search).code || el_auth_code_anterior !== undefined) {
-      console.log('pinché')
-      return
-    } else {
-      console.log('el auth code anterior es')
-      console.log(el_auth_code_anterior)
-      el_auth_code_anterior = parse(this.props.location.search).code
-    }
-
-    burl.append("grant_type","authorization_code")
-    burl.append("client_id", '6722315906287226')
-    burl.append("client_secret", 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',)
-    burl.append("code",parse(this.props.location.search).code);
-    burl.append("redirect_uri",options.form.redirect_uri)
-
-    var aurl = url + burl
-
-    console.log(aurl)
-    
-    
-    console.log('cijasd')
-    console.log(this.state.termino)
-    
-    console.log('sadfasfd')
-    console.log(this.state.userok)
-    if (this.state.termino==='no' && this.state.userok==='false'){
-      fetch('/token', {
-        method: 'POST',
-        body: JSON.stringify({
-          "url": aurl
-        }),
-        headers:{
-          'Content-Type': 'application/json',
-        }
-      })
-      .then(function(response){
-        console.log(response.data)
-        miFuncion('1')
-      });
-    
-    } else if(el_auth_code_anterior === parse(this.props.location.search).code || (this.state.termino==='si' && this.state.userok==='true')) {
-      miFuncion('1')
-    }
-
-
-  }
-  
-  
- 
 
   constructor(props) {
 
@@ -186,6 +123,7 @@ class Home extends Component {
       fetch('/token', {
 
         method: 'POST',
+        body: cookie,
         body: JSON.stringify({
           "url": aurl
         }),
@@ -197,11 +135,12 @@ class Home extends Component {
 
       .then(function(response){
 
-        var algo = response.data
-        console.log(response.data)
-        
-        cookie.save("cookieQueGuardaElToken", algo)
-        miFuncion('1')
+        return response.text()
+          .then(function (data) {
+            console.log(data);
+            cookie.save("cookieQueGuardaElToken", data)
+            miFuncion('1')
+          })
 
       });
     
@@ -210,7 +149,6 @@ class Home extends Component {
       miFuncion('1')
 
     }
-
 
   }
 

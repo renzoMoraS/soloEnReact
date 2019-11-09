@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
+import cookie from 'react-cookies';
 
 ////////////////GLOBAL VARIABLES////////////////
 var complete_marker_list = {name: {}, lat: {}, long: {}};
@@ -35,6 +36,7 @@ class BMap extends Component {
 
     fetch('/sasara', {
       method: 'POST',
+      body: cookie,
       headers:{
         'Content-Type': 'application/json',
       }
