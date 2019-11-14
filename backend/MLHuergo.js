@@ -167,7 +167,7 @@ app.post('/pantallaInicio', function(reqv, resv) {
         
         request.get({url: url2}, function (err, res) {
 
-            var token = JSON.parse(reqv.body);
+            var token = reqv.body;
             unvalor = res;
             resv.send(unvalor.body);
         });
