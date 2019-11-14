@@ -98,7 +98,7 @@ class CatTime extends Component {
     componentWillMount(){
         let currentComponent = this;
 
-        fetch('/sasara', {
+        fetch('https://pruebaenreact.azurewebsites.net/sasara', {
             method: 'POST',
             headers:{
               'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ class CatTime extends Component {
                         categories.push(category)
 
                     
-                        fetch('/categories', {
+                        fetch('https://pruebaenreact.azurewebsites.net/categories', {
                             method: 'POST',
                             body: JSON.stringify({
                                 "category": category

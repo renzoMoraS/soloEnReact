@@ -33,7 +33,7 @@ class BMap extends Component {
 
     let thisComponent = this
 
-    fetch('/sasara', {
+    fetch('https://pruebaenreact.azurewebsites.net/sasara', {
       method: 'POST',
       headers:{
         'Content-Type': 'application/json',

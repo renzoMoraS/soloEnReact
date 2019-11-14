@@ -28,7 +28,7 @@ class Preguntas extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/preguntas')
+    fetch('https://pruebaenreact.azurewebsites.net/preguntas')
     .then(function (res) { // res es un json
       return res.json()
     })

@@ -50,7 +50,7 @@ class DistExp extends Component{
         contfree = 0
         contgold = 0
 
-        fetch('/sasara', {
+        fetch('https://pruebaenreact.azurewebsites.net/sasara', {
             method: 'POST',
             headers:{
               'Content-Type': 'application/json',

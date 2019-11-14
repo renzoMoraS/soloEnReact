@@ -35,7 +35,7 @@ class valoracionesApp extends Component {
     localStorage.setItem('seller',username)
 
     if (username.length!==0) {
-      fetch('/valoraciones',{
+      fetch('https://pruebaenreact.azurewebsites.net/valoraciones',{
             method: 'POST',
             body: JSON.stringify({
                 "username": username

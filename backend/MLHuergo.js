@@ -62,9 +62,9 @@ app.post('/token',function(req,rest){
     var valores = {
 
         "grant_type":"authorization_code",
-        "client_id": '1928415112086289',
-        "client_secret": 'QOAOPJRyiMQgtW0HjF86OYS6Ky6fYR0a',
-        "redirect_uri": "http://localhost:3000/logued_in",
+        "client_id": '5512240852624948',
+        "client_secret": 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',
+        "redirect_uri": "https://pruebaenreact.azurewebsites.net",
         "code": ""
 
     };

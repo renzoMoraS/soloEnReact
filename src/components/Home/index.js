@@ -19,9 +19,9 @@ var idDelSitio
 var options = {
   form: {
     "grant_type":"authorization_code",
-    "client_id": '6722315906287226',
-    "client_secret": 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',
-    "redirect_uri": "http://localhost:3000/",
+    "client_id": '5512240852624948',
+    "client_secret": 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',
+    "redirect_uri": "https://pruebaenreact.azurewebsites.net",
     "code": ""
   },
   method: "POST", 
@@ -39,7 +39,7 @@ function miFuncion(textitoQueDevolvioToken) {
     }
   }
 
-  fetch('/pantallaInicio', {
+  fetch('https://pruebaenreact.azurewebsites.net/pantallaInicio', {
     method: 'POST',
     headers:{
         'Content-Type': 'application/json',
@@ -113,8 +113,8 @@ class Home extends Component {
     }
 
     burl.append("grant_type","authorization_code")
-    burl.append("client_id", '6722315906287226')
-    burl.append("client_secret", 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',)
+    burl.append("client_id", '5512240852624948')
+    burl.append("client_secret", 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',)
     burl.append("code",parse(this.props.location.search).code);
     burl.append("redirect_uri",options.form.redirect_uri)
 
@@ -129,7 +129,7 @@ class Home extends Component {
     console.log('sadfasfd')
     console.log(this.state.userok)
     if (this.state.termino==='no' && this.state.userok==='false'){
-      fetch('/token', {
+      fetch('https://pruebaenreact.azurewebsites.net/token', {
         method: 'POST',
         body: JSON.stringify({
           "url": aurl
@@ -195,7 +195,7 @@ class Home extends Component {
           <table class="tabla">
             <tr>
               <th>Datos de la Empresa</th>
-              <th><a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">Sign In</a></th>
+              <th><a href="https://auth.mercadolibre.com/authorization?client_id=5512240852624948&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">Sign In</a></th>
             </tr>
             <tr>
               <td>Nombre de la empresa</td>
