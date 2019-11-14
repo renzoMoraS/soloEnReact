@@ -1,16 +1,9 @@
-//import React from 'react';
 import React, { Component } from 'react';
-//import { Alert } from 'reactstrap';
-import Alert from 'react-bootstrap/Alert';  
-//import axios from 'axios'
-//import valoracionesDeUsuarios from '../valoraciones'
-//var xhr = new XMLHttpRequest();
+import Alert from 'react-bootstrap/Alert'; 
+import Badge from 'react-bootstrap/Badge';
 
-//xhr.open('GET', 'localhost:8081/valoraciones', true);
-//xhr.send();
 
 var valoracionesObtenidas = '';
-//var unavariablequemeindicaquetodoanduvomal = "";
 
 class valoracionesApp extends Component {
   constructor(props) {
@@ -29,7 +22,6 @@ class valoracionesApp extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    console.log(this.state)
 
     var username = this.state.text;
     localStorage.setItem('seller',username)
@@ -48,23 +40,25 @@ class valoracionesApp extends Component {
 
         console.log(response);
         if (response.ok) {
+
           var lasvaloraciones = response.json();
+
           lasvaloraciones.then(value => {
-            console.log(value)
+
             valoracionesObtenidas = value
             console.log(valoracionesObtenidas)
             this.setState({termino: 'si', userok: 'true'});
             console.log('estado'+JSON.stringify(valoracionesObtenidas))
+
           })
           
         } else {
+
           this.setState({userok: 'false', termino: 'si'});
+
         }
       })
-      /*.catch(function(error) {
-        unavariablequemeindicaquetodoanduvomal=<p>No Existe tal usuario</p>
-        this.setState({userok: 'false', termino:'si'});
-      });*/
+
     }
 
   }
@@ -87,13 +81,58 @@ class valoracionesApp extends Component {
       var tipoDeUsuario = valoracionesObtenidas.user_type
       var puntos = valoracionesObtenidas.points
       var idDelSitio = valoracionesObtenidas.site_id
+
+
+      fechaDeRegistro = (JSON.stringify(fechaDeRegistro)).substring(1, 11)
+
+      if (pais === 'AR'){
+        pais = 'Argentina'
+      }
+
+      if (level_id === '5_green'){
+        level_id = <Badge variant="verdecito"> </Badge>//COMPUMAR
+      }else if (level_id === '4_light_green' ){
+        level_id = <Badge variant="verdecito_clarito"> </Badge> //ARIEL_SANDIN2008
+      }else if (level_id === '2_orange'){
+        level_id = <Badge variant="naranjita"> </Badge> //CAMILAASBORNORUS
+      }else if (level_id === '3_yellow'){
+        level_id = <Badge variant="amarillito"> </Badge> //CONO1971
+      }else if (level_id === '1_red'){
+        level_id = <Badge variant="rojito"> </Badge> //VEJU2313599
+      }else if (level_id === 'null'){
+        level_id = '-'
+      }
+
+      if (seller_status === 'null'){
+        seller_status = '-'
+      }
+
+      if (status === 'active'){
+        status = 'Activo'
+      }else{
+        status = 'Inactivo'
+      }
+
+      if (transacciones_periodo === 'historic'){
+        transacciones_periodo = 'Histórico'
+      }else{
+        transacciones_periodo = 'Nuevo'
+      }
+
     }
+
     if (this.state.userok === ''){
+
       var unavariable = <div class = "puntitos">...</div>
+
     }else if(this.state.userok === 'false') {
+
       unavariable = <Alert variant='warning'>NO HAY UN USUARIO CON ESE NOMBRE!</Alert>
+
     }else{
+
       unavariable = <Alert variant='success'>USUARIO ENCONTRADO CORRECTAMENTE</Alert>
+
     }
     return (
       
@@ -114,7 +153,7 @@ class valoracionesApp extends Component {
             </button>
           </form>
         </div>
-      
+
         <div>
           {unavariable}
         </div>

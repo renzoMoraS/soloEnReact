@@ -119,6 +119,7 @@ tr:hover {background-color:#f5f5f5;}
 tr a{
   float: right;
 }
+
 .label{
   padding-right: 10px;
 }
@@ -130,4 +131,36 @@ tr a{
 .puntitos{
   padding-top: 32px;
   padding-bottom: 10px;
+
+}
+
+.badge-verdecito{
+  background-color: green;
+  width: 20%;
+  height: 15px;
+}
+
+.badge-verdecito_clarito{
+  background-color: lightgreen;
+  width: 20%;
+  height: 15px;
+}
+
+.badge-naranjita{
+  background-color: orange;
+  width: 20%;
+  height: 15px;
+}
+
+.badge-amarillito{
+  background-color: yellow;
+  width: 20%;
+  height: 15px;
+}
+
+.badge-rojito{
+  background-color: red;
+  width: 20%;
+  height: 15px;
+
 }
