@@ -1,6 +1,7 @@
 ////////////////IMPORTS////////////////
 import React, { Component } from 'react';
 import {Bar} from 'react-chartjs-2';
+import Cookies  from 'universal-cookie'; 
 
 ////////////////GLOBAL VARIABLES////////////////
 var contgs = 0
@@ -12,6 +13,7 @@ var contfree = 0
 var contgold = 0
 var exps = []
 var speedData
+var cookie = new Cookies;
 
 ////////////////FUNCTIONS////////////////
 function aleatorio(inferior,superior){
@@ -52,6 +54,9 @@ class DistExp extends Component{
 
         fetch('/sasara', {
             method: 'POST',
+            body: JSON.stringify({
+                "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+            }),
             headers:{
               'Content-Type': 'application/json',
             }

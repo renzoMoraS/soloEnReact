@@ -1,7 +1,8 @@
 //import React from 'react';
 import React, { Component } from 'react';
 //import { Alert } from 'reactstrap';
-import Alert from 'react-bootstrap/Alert';  
+import Alert from 'react-bootstrap/Alert'; 
+import Cookies  from 'universal-cookie'; 
 //import axios from 'axios'
 //import valoracionesDeUsuarios from '../valoraciones'
 //var xhr = new XMLHttpRequest();
@@ -10,6 +11,7 @@ import Alert from 'react-bootstrap/Alert';
 //xhr.send();
 
 var valoracionesObtenidas = '';
+var cookie = new Cookies;
 //var unavariablequemeindicaquetodoanduvomal = "";
 
 class valoracionesApp extends Component {
@@ -38,7 +40,8 @@ class valoracionesApp extends Component {
       fetch('/valoraciones',{
             method: 'POST',
             body: JSON.stringify({
-                "username": username
+                "username": username,
+                "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
             }),
             headers:{
                 'Content-Type': 'application/json',

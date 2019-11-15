@@ -1,7 +1,9 @@
 // Dependencies
 import React, { Component } from 'react';
 import './InterfazVenCat.css';
+import Cookies  from 'universal-cookie'; 
 
+var cookie = new Cookies;
 class VenCat extends Component {
 
   componentDidMount() {      

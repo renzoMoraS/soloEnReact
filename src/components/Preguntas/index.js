@@ -1,9 +1,11 @@
 // Dependencies
 import React, { Component } from 'react';
 import './InterfazPreguntas.css';
+import Cookies  from 'universal-cookie'; 
 
 //var total = 0;
 var cont = 0;
+var cookie = new Cookies;
 
 const Item = props => (
   <tr>
@@ -28,7 +30,18 @@ class Preguntas extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/preguntas')
+
+    fetch('http://localhost:3000/preguntas',{
+
+      method: 'POST',
+      body: JSON.stringify({
+          "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+      }),
+      headers:{
+          'Content-Type': 'application/json',
+      }
+
+    })
     .then(function (res) { // res es un json
       return res.json()
     })

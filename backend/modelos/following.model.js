@@ -2,12 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let FollSell = new Schema({
+
     _name: {
         type: String
     },
     _user: {
-        type: String
+        type: []
     },
+    _results: {
+        type: {}
+    }
+
 });
 
 FollSell.query.byName = function(name){

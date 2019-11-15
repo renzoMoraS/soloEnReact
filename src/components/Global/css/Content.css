@@ -131,3 +131,45 @@ tr a{
   padding-top: 32px;
   padding-bottom: 10px;
 }
+
+
+.badge-verdecito{
+  background-color: green;
+  width: 50%;
+  height: 15px;
+}
+
+.badge-verdecito_clarito{
+  background-color: lightgreen;
+  width: 50%;
+  height: 15px;
+}
+
+.badge-naranjita{
+  background-color: orange;
+  width: 50%;
+  height: 15px;
+}
+
+.badge-amarillito{
+  background-color: yellow;
+  width: 50%;
+  height: 15px;
+}
+
+.badge-rojito{
+  background-color: red;
+  width: 50%;
+  height: 15px;
+} 
+
+.FollowingItems{
+  padding-top: 2%;
+  height: 100%;
+  font-size: 16px;
+}
+
+.Acordeon{
+  margin-bottom: 1%;
+  font-size: 16px;
+}
