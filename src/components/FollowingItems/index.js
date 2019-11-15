@@ -81,12 +81,14 @@ class FollowingItems extends Component {
         axios.post('http://localhost:4000/MLHuergo/items/getFollowed', {token})
         .then(res => {
 
-            /*res.data.map(function(citem, i){
+            var aux = [];
+            res.data.map(function(citem, i){
 
                 var itemId = citem._itemId;
                 axios.get('http://localhost:4000/MLHuergo/changes/' + itemId)
                 .then(resp => {
                     
+                    console.log(resp.data);
                     var item = resp.data;
                     aux.push([{
                         id: itemId,
@@ -97,7 +99,7 @@ class FollowingItems extends Component {
                 console.log('algo')
             });
             console.log('ao')
-            console.log(aux);*/
+            console.log(aux);
             this.setState({items: res.data});
 
         })

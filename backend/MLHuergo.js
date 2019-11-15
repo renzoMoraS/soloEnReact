@@ -364,7 +364,6 @@ routes.route('/items/getFollowed').post(function(req, res) {
 
     var real = [];
     var token = req.body.token;
-    console.log(token);
     token = JSON.parse(token);
     Item.find().byUser(token.user_id).exec(function(err, item) {
 
@@ -372,7 +371,12 @@ routes.route('/items/getFollowed').post(function(req, res) {
             res.status(400).json(err)
         else{
 
-            res.status(200).json(item);
+            Item.find().byUser("Todos").exec(function(errt, itemt) {
+
+                item.push(itemt[0]);
+                res.status(200).json(item);
+            
+            })
 
         }
 
