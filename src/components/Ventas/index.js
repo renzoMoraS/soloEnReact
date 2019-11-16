@@ -147,7 +147,7 @@ class Ventas extends Component {
         var hoy = ytoday + "-" + mtoday + "-" + dtoday
         var saleswarning
         if(this.state.items == false) {
-            saleswarning = <Alert variant='warning'>No existen ventas en este periodo</Alert>
+            saleswarning = <Alert variant='salewarning'>No existen ventas en este periodo</Alert>
         } else {
             saleswarning = <div class = "puntitos"></div>
         }
