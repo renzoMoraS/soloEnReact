@@ -24,8 +24,8 @@ var cookie = new Cookies;
 var options = {
   form: {
     "grant_type":"authorization_code",
-    "client_id": '6722315906287226',
-    "client_secret": 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',
+    "client_id": '5512240852624948',
+    "client_secret": 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',
     "redirect_uri": "http://pruebaenreact.azurewebsites.net",
     "code": ""
   },
@@ -118,8 +118,8 @@ class Home extends Component {
     }
 
     burl.append("grant_type","authorization_code")
-    burl.append("client_id", '6722315906287226')
-    burl.append("client_secret", 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',)
+    burl.append("client_id", '5512240852624948')
+    burl.append("client_secret", 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',)
     burl.append("code",parse(this.props.location.search).code);
     burl.append("redirect_uri",options.form.redirect_uri)
 
@@ -256,7 +256,7 @@ class Home extends Component {
 
     }else{
 
-      signout = <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" className="btn btn-warning" role="button" aria-pressed="true">Sign In</a>
+      signout = <a href="https://auth.mercadolibre.com/authorization?client_id=5512240852624948&response_type=code&state=5ca75bd30" className="btn btn-warning" role="button" aria-pressed="true">Sign In</a>
 
     }
 
