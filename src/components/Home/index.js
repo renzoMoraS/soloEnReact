@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {parse} from "query-string";
 import Badge from 'react-bootstrap/Badge';
-import cookie  from 'react-cookies';
+import Cookies  from 'universal-cookie';
+
+var logueado = false
 
 var ciudad
 var status
@@ -18,12 +20,13 @@ var tipoDeUsuario
 var puntos
 var idDelSitio
 
+var cookie = new Cookies;
 var options = {
   form: {
     "grant_type":"authorization_code",
-    "client_id": '5512240852624948',
-    "client_secret": 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',
-    "redirect_uri": "https://pruebaenreact.azurewebsites.net",
+    "client_id": '6722315906287226',
+    "client_secret": 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',
+    "redirect_uri": "http://pruebaenreact.azurewebsites.net",
     "code": ""
   },
   method: "POST", 
@@ -35,14 +38,18 @@ var options = {
 var el_auth_code_anterior
 
 function miFuncion(textitoQueDevolvioToken) {
+
   if (this.state.termino) {
     if (this.state.termino == 'si') {
       return null
     }
   }
 
-  fetch('https://pruebaenreact.azurewebsites.net/pantallaInicio', {
+  fetch('http://pruebaenreact.azurewebsites.net/pantallaInicio', {
     method: 'POST',
+    body: JSON.stringify({
+      "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+    }),
     headers:{
         'Content-Type': 'application/json',
     }
@@ -111,15 +118,17 @@ class Home extends Component {
     }
 
     burl.append("grant_type","authorization_code")
-    burl.append("client_id", '5512240852624948')
-    burl.append("client_secret", 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',)
+    burl.append("client_id", '6722315906287226')
+    burl.append("client_secret", 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',)
     burl.append("code",parse(this.props.location.search).code);
     burl.append("redirect_uri",options.form.redirect_uri)
 
     var aurl = url + burl 
     
     if (this.state.termino==='no' && this.state.userok==='false'){
-      fetch('https://pruebaenreact.azurewebsites.net/token', {
+
+      fetch('http://pruebaenreact.azurewebsites.net/token', {
+
         method: 'POST',
         body: cookie,
         body: JSON.stringify({
@@ -136,7 +145,7 @@ class Home extends Component {
         return response.text()
           .then(function (data) {
             console.log(data);
-            cookie.save("cookieQueGuardaElToken", data)
+            cookie.set("cookieQueGuardaElToken", data)
             miFuncion('1')
           })
 
@@ -147,6 +156,13 @@ class Home extends Component {
       miFuncion('1')
 
     }
+
+  }
+
+  handleClickDelBotonQuePodriaSerElDeLoginOElDeLogout(e){
+
+    cookie.remove("cookieQueGuardaElToken")
+    localStorage.setItem('valoracionesObtenidas', null) 
 
   }
 
@@ -162,23 +178,46 @@ class Home extends Component {
 
     if (algo !== null){
 
-      ciudad = algo.address.city
-      status = algo.status.site_status
-      level_id = algo.seller_reputation.level_id
-      seller_status = algo.seller_reputation.power_seller_status
-      transacciones_canceladas = algo.seller_reputation.transactions.canceled
-      transacciones_completadas = algo.seller_reputation.transactions.completed
-      transacciones_periodo = algo.seller_reputation.transactions.period
-      transacciones_total = algo.seller_reputation.transactions.total
-      nombreDelUsuario = algo.nickname
-      fechaDeRegistro = algo.registration_date
-      pais = algo.country_id
-      tipoDeUsuario = algo.user_type
-      puntos = algo.points
-      idDelSitio = algo.site_id
+      if (JSON.stringify(cookie.get("cookieQueGuardaElToken")) == ""){
 
-      var signout = <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">Sign Out</a>
+        ciudad = ""
+        status = ""
+        level_id = ""
+        seller_status = ""
+        transacciones_canceladas = ""
+        transacciones_completadas = ""
+        transacciones_periodo = ""
+        transacciones_total = ""
+        nombreDelUsuario = ""
+        fechaDeRegistro = ""
+        pais = ""
+        tipoDeUsuario = ""
+        puntos = ""
+        idDelSitio = ""
       
+      }else{
+
+        ciudad = algo.address.city
+        status = algo.status.site_status
+        level_id = algo.seller_reputation.level_id
+        seller_status = algo.seller_reputation.power_seller_status
+        transacciones_canceladas = algo.seller_reputation.transactions.canceled
+        transacciones_completadas = algo.seller_reputation.transactions.completed
+        transacciones_periodo = algo.seller_reputation.transactions.period
+        transacciones_total = algo.seller_reputation.transactions.total
+        nombreDelUsuario = algo.nickname
+        fechaDeRegistro = algo.registration_date
+        pais = algo.country_id
+        tipoDeUsuario = algo.user_type
+        puntos = algo.points
+        idDelSitio = algo.site_id
+
+      }
+
+      var signout = <a href="/" className="btn btn-warning" role="button" aria-pressed="true" onClick={this.handleClickDelBotonQuePodriaSerElDeLoginOElDeLogout.bind(this)}>Sign Out</a>
+      //var signout = <a href="https://www.mercadolibre.com/jms/mla/lgz/logout?go=https://auth.mercadolibre.com.ar/authorization?redirect_uri=mysite&response_type=code&client_id=CLIENT_ID&platform_id=ml" className="btn btn-warning" role="button" aria-pressed="true" onClick={this.handleClickDelBotonQuePodriaSerElDeLoginOElDeLogout.bind(this)}>Sign Out</a>
+      //Esto de arriba redirecciona y desloguea a Mercado libre.
+
       fechaDeRegistro = (JSON.stringify(fechaDeRegistro)).substring(1, 11)
 
       if (pais === 'AR'){
@@ -217,95 +256,20 @@ class Home extends Component {
 
     }else{
 
-      signout = <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">Sign In</a>
-    
+      signout = <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" className="btn btn-warning" role="button" aria-pressed="true">Sign In</a>
+
     }
 
     return (
       
       <div>
         
-        <table class="tabla">
-          <tr>
-            <th>Datos de la Empresa</th>
-            <th>{signout}</th>
-          </tr>
-          <tr>
-            <td>Nombre de la empresa</td>
-            <td>{nombreDelUsuario}</td>
-          </tr>
-          <tr>
-            <td>Fecha de registro</td>
-            <td>{fechaDeRegistro}</td>
-          </tr>
-          <tr>
-            <td>País</td>
-            <td>{pais}</td>
-          </tr>
-          <tr>
-            <td>Ciudad</td>
-            <td>{ciudad}</td>
-          </tr>
-          <tr>
-            <td>Tipo de usuario</td>
-            <td>{tipoDeUsuario}</td>
-          </tr>
-          <tr>
-            <td>Puntos</td>
-            <td>{puntos}</td>
-          </tr>
-          <tr>
-            <td>ID del sitio</td>
-            <td>{idDelSitio}</td>
-          </tr>
-          <tr>
-            <td>Estado del sitio</td>
-            <td>{status}</td>
-          </tr>
-        </table>
-
-        <table class="tabla">
-          <tr>
-            <th>Reputación del usuario</th>
-            <th></th>
-          </tr>
-          <tr>
-            <td>Nivel</td>
-            <td>{level_id}</td>
-          </tr>
-          <tr>
-            <td>Estado del vendedor</td>
-            <td>{seller_status}</td>
-          </tr>
-        </table>
-
-        <table class="tabla">
-          <tr>
-            <th>Ventas</th>
-            <th></th>
-          </tr>
-            <td>Canceladas</td>
-            <td>{transacciones_canceladas}</td>
-          <tr>
-            <td>Completadas</td>
-            <td>{transacciones_completadas}</td>
-          </tr>
-          <tr>
-            <td>Periodo</td>
-            <td>{transacciones_periodo}</td>
-          </tr>
-          <tr>
-            <td>Total</td>
-            <td>{transacciones_total}</td>
-          </tr>
-        </table>
-        
-        <div>
-          
-          <table class="tabla">
+        <table className="tabla">
+          <tbody>
+              
             <tr>
               <th>Datos de la Empresa</th>
-              <th><a href="https://auth.mercadolibre.com/authorization?client_id=5512240852624948&response_type=code&state=5ca75bd30" class="btn btn-warning" role="button" aria-pressed="true">Sign In</a></th>
+              <th>{signout}</th>
             </tr>
             <tr>
               <td>Nombre de la empresa</td>
@@ -339,30 +303,44 @@ class Home extends Component {
               <td>Estado del sitio</td>
               <td>{status}</td>
             </tr>
+
+            </tbody>
+
           </table>
 
-          <table class="tabla">
-            <tr>
-              <th>Reputación del usuario</th>
-              <th></th>
-            </tr>
-            <tr>
-              <td>Nivel</td>
-              <td>{level_id}</td>
-            </tr>
-            <tr>
-              <td>Estado del vendedor</td>
-              <td>{seller_status}</td>
-            </tr>
-          </table>
+          <table className="tabla">
 
-          <table class="tabla">
+            <tbody>
+                
+              <tr>
+                <th>Reputación del usuario</th>
+                <th></th>
+              </tr>
+              <tr>
+                <td>Nivel</td>
+                <td>{level_id}</td>
+              </tr>
+              <tr>
+                <td>Estado del vendedor</td>
+                <td>{seller_status}</td>
+              </tr>
+
+          </tbody>
+
+        </table>
+
+        <table className="tabla">
+
+          <tbody>
+              
             <tr>
               <th>Ventas</th>
               <th></th>
             </tr>
+            <tr>
               <td>Canceladas</td>
               <td>{transacciones_canceladas}</td>
+            </tr>
             <tr>
               <td>Completadas</td>
               <td>{transacciones_completadas}</td>
@@ -375,10 +353,12 @@ class Home extends Component {
               <td>Total</td>
               <td>{transacciones_total}</td>
             </tr>
-          </table>
-          
-      </div>
-      </div>
+
+          </tbody>
+
+        </table>
+        
+    </div>
     );    
   }
 }

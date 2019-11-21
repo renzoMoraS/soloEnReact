@@ -3,6 +3,9 @@ import { Accordion, AccordionItem } from 'react-light-accordion';
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-light-accordion/demo/css/index.css';
+import Cookies  from 'universal-cookie'; 
+
+var cookie = new Cookies;
 
 function isEmptyObject(obj){
     return !Object.keys(obj).length;
@@ -18,7 +21,7 @@ const Change = props => (
   
 function getChanges(id){
 
-    axios.get('http://localhost:4000/MLHuergo/changes/' + id)
+    axios.get('http://localhost:4000/MLHuergo/changes/' + id, {token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))})
     .then(function(response){
 
         return response.data.map(function(item, i){
@@ -74,32 +77,35 @@ class FollowingItems extends Component {
     componentDidMount(){    
 
         //this.setState({changes: JSON.parse(localStorage.getItem('changes'))});
-        axios.get('http://localhost:4000/MLHuergo/items/getFollowed')
-            .then(res => {
+        var token = JSON.stringify(cookie.get("cookieQueGuardaElToken"));
+        axios.post('http://localhost:4000/MLHuergo/items/getFollowed', {token})
+        .then(res => {
 
-                /*res.data.map(function(citem, i){
+            var aux = [];
+            res.data.map(function(citem, i){
 
-                    var itemId = citem._itemId;
-                    axios.get('http://localhost:4000/MLHuergo/changes/' + itemId)
-                    .then(resp => {
-                        
-                        var item = resp.data;
-                        aux.push([{
-                            id: itemId,
-                            results: item
-                        }])
+                var itemId = citem._itemId;
+                axios.get('http://localhost:4000/MLHuergo/changes/' + itemId)
+                .then(resp => {
+                    
+                    console.log(resp.data);
+                    var item = resp.data;
+                    aux.push([{
+                        id: itemId,
+                        results: item
+                    }])
 
-                    })
-                    console.log('algo')
-                });
-                console.log('ao')
-                console.log(aux);*/
-                this.setState({items: res.data});
+                })
+                console.log('algo')
+            });
+            console.log('ao')
+            console.log(aux);
+            this.setState({items: res.data});
 
-            })
-            .catch(function (err){
-                console.log(err);
-            })
+        })
+        .catch(function (err){
+            console.log(err);
+        })
 
     }
 
@@ -118,11 +124,15 @@ class FollowingItems extends Component {
         return(
 
             <div className="FollowingItems">
-                <form onSubmit={this.handleSubmit}>
-                <button>
-                    Buscar cambios 
-                </button>
-                </form>
+
+                <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Productos seguidos por el usuario.&nbsp;</p>
+                <div align="center">
+                    <form  onSubmit={this.handleSubmit}>
+                        <button className="Acordeon" >
+                            Buscar cambios 
+                        </button>
+                    </form>
+                </div>
                 <Accordion atomic={true}>
                     {this.itemList()}
                 </Accordion>

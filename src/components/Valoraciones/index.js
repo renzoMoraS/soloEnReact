@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Alert from 'react-bootstrap/Alert'; 
 import Badge from 'react-bootstrap/Badge';
+import Cookies  from 'universal-cookie'; 
 
-
+var cookie = new Cookies();
 var valoracionesObtenidas = '';
 
 class valoracionesApp extends Component {
@@ -27,15 +28,16 @@ class valoracionesApp extends Component {
     localStorage.setItem('seller',username)
 
     if (username.length!==0) {
-      fetch('https://pruebaenreact.azurewebsites.net/valoraciones',{
-            method: 'POST',
-            body: JSON.stringify({
-                "username": username
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-            }
-        })
+      fetch('http://pruebaenreact.azurewebsites.net/valoraciones',{
+        method: 'POST',
+        body: JSON.stringify({
+            "username": username,
+            "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+        }
+      })
       .then((response) => {
 
         console.log(response);

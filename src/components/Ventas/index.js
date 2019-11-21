@@ -6,6 +6,9 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-light-accordion/demo/css/index.css';
 import 'react-day-picker/lib/style.css';
+import Cookies  from 'universal-cookie'; 
+
+var cookie = new Cookies;
 
 function isEmptyObject(obj){
     return !Object.keys(obj).length;
@@ -92,7 +95,8 @@ class Ventas extends Component {
             axios.get('http://localhost:4000/ventasEnOrden',{
                 params: {
                   desde: this.state.desde,
-                  hasta: this.state.hasta
+                  hasta: this.state.hasta,
+                  token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
                 }})
             .then(res => {
 

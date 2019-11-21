@@ -2,30 +2,26 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Item = new Schema({
+
     _itemId: {
         type: String
     },
     _name: {
         type: String
     },
-    _link:{
-        type: String
-    },
-    _user:{
-        type: String
-    },
     _seller: {
         type: String
     },
-    _following: { 
-        type: Boolean 
+    _user:{
+        type: []
     },
     _lastUpdate: {
         type: String
     },
     _data: {
         type: {}
-    },
+    }
+
 });
 
 Item.query.byItemId = function(id){

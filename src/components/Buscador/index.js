@@ -6,12 +6,9 @@ import 'react-light-accordion/demo/css/index.css';
 import "bootstrap";
 import { Card, CardImg, Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
-//import "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js";
-//import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js";
-//import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
+import Cookies  from 'universal-cookie'; 
 
-
-var url = 'https://api.mercadolibre.com/oauth/token?';
+var cookie = new Cookies;
 
 function startFollowing(item, token) {
 
@@ -30,11 +27,13 @@ function isEmptyObject(obj) {
 
 const Item = props => (
   <tr>
-    <td>{props.item._seller}</td>
-    <td>{props.item._name}</td>
+    <td>      
+      <a href={props.item.Link}>Ver</a>
+    </td>
+    <td >{props.item.Nombre}</td>
     <td>
-      <Link>
-        <span onClick={() => startFollowing(props.item, localStorage.getItem('token'))}>${props.item._data.price}</span>
+      <Link to="/buscador">
+        <span onClick={() => startFollowing(props.item, JSON.stringify(cookie.get("cookieQueGuardaElToken")))}>${props.item.Precio}</span>
       </Link>
     </td>
   </tr>
@@ -52,6 +51,7 @@ class Buscador extends Component {
       text: '',
       items: [],
       popoverOpen: false,
+      first: false,
       userok: ''
 
     };
@@ -67,14 +67,15 @@ class Buscador extends Component {
 
   componentDidMount() {
 
-    axios.get('http://localhost:4000/MLHuergo/items/searchSeller/' + localStorage.getItem('seller'))
+    axios.get('http://localhost:4000/items/searchItems/' + localStorage.getItem('seller'))
       .then(res => {
         if (!isEmptyObject(res.data)) this.setState({ items: res.data, userok: 'true'});
       })
       .catch(function (err) {
         console.log(err);
       })
-      this.setState({userok: 'false'});
+      if(!this.state.first) this.setState({userok: 'false'}); else this.setState({first: false});
+
   }
 
   itemList() {
@@ -89,7 +90,7 @@ class Buscador extends Component {
 
     var alerta;
     if (this.state.userok === ''){
-      alerta = <div class = "puntitos">...</div>
+      alerta = <div className = "puntitos">...</div>
     }else if(this.state.userok === 'false') {
       alerta = <Alert variant='warning'>NO HAY UN USUARIO CON ESE NOMBRE!</Alert>
     }else{
@@ -130,15 +131,15 @@ class Buscador extends Component {
           {alerta}
         </div>
         <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Productos de usuarios por busqueda.&nbsp;</p>
-        <table className="table table-striped" style={{ marginTop: 20 }}>
+        <table className="table" style={{ marginTop: 20 }}>
 
           <thead>
 
             <tr>
 
-              <th>Vendedor</th>
-              <th>Producto</th>
-              <th>Precio</th>
+              <th>Publicacion</th>
+              <th>Nombre</th>
+              <th>Seguir</th>
 
             </tr>
 
@@ -171,10 +172,10 @@ class Buscador extends Component {
     }
     var username = this.state.text;
     localStorage.setItem('seller', username)
-    axios.get('http://localhost:4000/items/searchItems/' + username)
-      .then(setTimeout(function () {
+    /*axios.get('http://localhost:4000/items/searchItems/' + username)
+      .then(setTimeout(function () {*/
         window.location.reload()
-      }.bind(this), 1000));
+      //}.bind(this), 1000));
 
   }
 

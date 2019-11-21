@@ -2,7 +2,9 @@
 import React, { Component } from 'react';
 import {Pie} from 'react-chartjs-2';
 import './InterfazTenCat.css';
+import Cookies  from 'universal-cookie'; 
 
+var cookie = new Cookies;
 var data = {
   labels:[/*CREAR VARIABLE QUE DEFINE LA CANTIDAD DE CAMPOS DEL GRÁFICO*/],
   datasets:[

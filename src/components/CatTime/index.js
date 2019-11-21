@@ -1,6 +1,7 @@
 ////////////////IMPORTS////////////////
 import React, { Component } from 'react';
 import {Line} from 'react-chartjs-2';
+import Cookies  from 'universal-cookie'; 
 
 ////////////////GLOBAL VARIABLES////////////////
 var categories = []
@@ -21,6 +22,7 @@ var year = []
 var yearmonth = {}
 var conty = 0
 var showdate = '2019'
+var cookie = new Cookies;
 
 ////////////////MOCK////////////////
 
@@ -98,8 +100,11 @@ class CatTime extends Component {
     componentWillMount(){
         let currentComponent = this;
 
-        fetch('https://pruebaenreact.azurewebsites.net/sasara', {
+        fetch('http://pruebaenreact.azurewebsites.net/sasara', {
             method: 'POST',
+            body: JSON.stringify({
+                "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+            }),
             headers:{
               'Content-Type': 'application/json',
             }
@@ -148,10 +153,11 @@ class CatTime extends Component {
                         categories.push(category)
 
                     
-                        fetch('https://pruebaenreact.azurewebsites.net/categories', {
+                        fetch('http://pruebaenreact.azurewebsites.net/categories', {
                             method: 'POST',
                             body: JSON.stringify({
-                                "category": category
+                                "category": category,
+                                "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
                             }),
                             headers:{
                             'Content-Type': 'application/json',

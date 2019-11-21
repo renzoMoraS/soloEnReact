@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
-import cookie from 'react-cookies';
+import Cookies  from 'universal-cookie';
 
 ////////////////GLOBAL VARIABLES////////////////
 var complete_marker_list = {name: {}, lat: {}, long: {}};
 var marker_list = {name: {0:0},cant: {0:0}, lat: {0:0}, long: {0:0}};
+var cookie = new Cookies;
 
 ////////////////FUNCTIONS////////////////
 function makeMarkers(ml,makers){
@@ -18,7 +19,6 @@ function makeMarkers(ml,makers){
   }
 
   console.log(makers)
-
   return makers;
 }
 
@@ -34,9 +34,11 @@ class BMap extends Component {
 
     let thisComponent = this
 
-    fetch('https://pruebaenreact.azurewebsites.net/sasara', {
+    fetch('http://pruebaenreact.azurewebsites.net/sasara', {
       method: 'POST',
-      body: cookie,
+      body: JSON.stringify({
+        "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+      }),
       headers:{
         'Content-Type': 'application/json',
       }
@@ -107,10 +109,11 @@ class BMap extends Component {
   ////////////////END OF WILL MOUNT////////////////
   ////////////////START OF RENDER////////////////
   render() {
+    var ml;
     if (this.state.esUnd===true) {
-      var ml = JSON.parse(localStorage.getItem('markerList'));
+      ml = JSON.parse(localStorage.getItem('markerList'));
     }else{
-      var ml = "vacio"
+      ml = "vacio"
     } 
     
     console.log(ml)

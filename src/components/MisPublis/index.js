@@ -7,13 +7,14 @@ import {Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './micss.css';
 import './InterfazMP.css';
-
+import Cookies  from 'universal-cookie'; 
 
 
 
 //let elcanvas=document.getElementById("Grafico").getContext("2d");
 
 var listita = []
+var cookie = new Cookies;
 var ladata;
 
 var data = {
@@ -78,7 +79,17 @@ class MisPublis extends Component {
     
     cosito = () => {
         let currentComponent = this;
-        fetch('http://localhost:4000/MPublis')
+        fetch('http://localhost:4000/MPublis',{
+
+                method: 'POST',
+                body: JSON.stringify({
+                    "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+                }),
+                headers:{
+                    'Content-Type': 'application/json',
+                }
+
+            })
             .then(function (data) {
                 
                 //var dataStringified = JSON.stringify(data);// acá podes hacer cosas con res, que es la respuesta en forma de json que de dio eze}

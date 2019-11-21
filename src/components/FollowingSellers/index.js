@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { Accordion, AccordionItem } from 'react-light-accordion';
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import Cookies  from 'universal-cookie'; 
 import 'react-light-accordion/demo/css/index.css';
+
+var cookie = new Cookies;
 var url = 'https://api.mercadolibre.com/sites/MLA/search?';
 
 function isEmptyObject(obj){
@@ -60,6 +62,7 @@ class FollowingSellers extends Component {
             .catch(function (err){
                 console.log(err);
             })
+        axios.post('http://localhost:4000/MLHuergo/items/delete')
 
     }
 
