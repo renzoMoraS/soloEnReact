@@ -34,7 +34,7 @@ class BMap extends Component {
 
     let thisComponent = this
 
-    fetch('http://pruebaenreact.azurewebsites.net/sasara', {
+    fetch('https://pruebaenreact.azurewebsites.net/sasara', {
       method: 'POST',
       body: JSON.stringify({
         "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
@@ -128,7 +128,7 @@ class BMap extends Component {
           <Map style={{position: "absolute" ,display: 'block',margin: "0", padding:0, height:"96.40%",width:"80%"}} center={[-34.304573, -64.76381]} zoom={3} maxZoom={17}>
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             <MarkerClusterGroup maxClusterRadius={120}>
               {makeMarkers(ml,makers)}

@@ -54,7 +54,7 @@ class FollowingSellers extends Component {
       
     componentDidMount(){    
 
-        axios.get('http://localhost:4000/MLHuergo/FollSell/searchForMe')
+        axios.get('https://pruebaenreact.azurewebsites.net/MLHuergo/FollSell/searchForMe')
             .then(res => {
                 console.log(res.data);
                 if(!isEmptyObject(res.data)) this.setState({ items: res.data });
@@ -62,7 +62,7 @@ class FollowingSellers extends Component {
             .catch(function (err){
                 console.log(err);
             })
-        axios.post('http://localhost:4000/MLHuergo/items/delete')
+        axios.post('https://pruebaenreact.azurewebsites.net/MLHuergo/items/delete')
 
     }
 

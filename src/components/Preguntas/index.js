@@ -31,11 +31,11 @@ class Preguntas extends Component {
 
   componentDidMount() {
 
-    fetch('http://pruebaenreact.azurewebsites.net/preguntas',{
+    fetch('https://pruebaenreact.azurewebsites.net/preguntas',{
 
       method: 'POST',
       body: JSON.stringify({
-          "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+          token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
       }),
       headers:{
           'Content-Type': 'application/json',

@@ -21,7 +21,7 @@ const Change = props => (
   
 function getChanges(id){
 
-    axios.get('http://localhost:4000/MLHuergo/changes/' + id, {token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))})
+    axios.get('https://pruebaenreact.azurewebsites.net/MLHuergo/changes/' + id, {token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))})
     .then(function(response){
 
         return response.data.map(function(item, i){
@@ -78,14 +78,14 @@ class FollowingItems extends Component {
 
         //this.setState({changes: JSON.parse(localStorage.getItem('changes'))});
         var token = JSON.stringify(cookie.get("cookieQueGuardaElToken"));
-        axios.post('http://localhost:4000/MLHuergo/items/getFollowed', {token})
+        axios.post('https://pruebaenreact.azurewebsites.net/MLHuergo/items/getFollowed', {token})
         .then(res => {
 
             var aux = [];
             res.data.map(function(citem, i){
 
                 var itemId = citem._itemId;
-                axios.get('http://localhost:4000/MLHuergo/changes/' + itemId)
+                axios.get('https://pruebaenreact.azurewebsites.net/MLHuergo/changes/' + itemId)
                 .then(resp => {
                     
                     console.log(resp.data);
@@ -155,13 +155,13 @@ class FollowingItems extends Component {
         this.state.items.map(function(citem, i){
 
             citem = JSON.stringify(citem);
-            axios.post('http://localhost:4000/MLHuergo/items/getChanges', {citem})
+            axios.post('https://pruebaenreact.azurewebsites.net/MLHuergo/items/getChanges', {citem})
             .then(res => {
 
                 citem = JSON.parse(citem);
                 itemId = citem._itemId;
                 console.log(itemId);
-                axios.get('http://localhost:4000/MLHuergo/changes/' + itemId)
+                axios.get('https://pruebaenreact.azurewebsites.net/MLHuergo/changes/' + itemId)
                 .then(res => {
                     citem = JSON.stringify(res.data);
                     aux.push({

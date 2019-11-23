@@ -26,7 +26,7 @@ var options = {
     "grant_type":"authorization_code",
     "client_id": '5512240852624948',
     "client_secret": 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',
-    "redirect_uri": "http://pruebaenreact.azurewebsites.net",
+    "redirect_uri": "https://pruebaenreact.azurewebsites.net",
     "code": ""
   },
   method: "POST", 
@@ -45,7 +45,7 @@ function miFuncion(textitoQueDevolvioToken) {
     }
   }
 
-  fetch('http://pruebaenreact.azurewebsites.net/pantallaInicio', {
+  fetch('https://pruebaenreact.azurewebsites.net/pantallaInicio', {
     method: 'POST',
     body: JSON.stringify({
       "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
@@ -127,7 +127,7 @@ class Home extends Component {
     
     if (this.state.termino==='no' && this.state.userok==='false'){
 
-      fetch('http://pruebaenreact.azurewebsites.net/token', {
+      fetch('https://pruebaenreact.azurewebsites.net/token', {
 
         method: 'POST',
         body: cookie,

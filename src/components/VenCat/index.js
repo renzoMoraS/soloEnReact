@@ -8,7 +8,7 @@ class VenCat extends Component {
 
   componentDidMount() {      
 
-    fetch('http://localhost:4000/VenCat')
+    fetch('https://pruebaenreact.azurewebsites.net/VenCat')
       .then(function (res) { 
         
         console.log(res);

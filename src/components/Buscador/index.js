@@ -14,10 +14,13 @@ function startFollowing(item, token) {
 
   console.log(item);
   item = JSON.stringify(item);
-  axios.post('http://localhost:4000/items/startFollowing', { item, token })
-    .then(function (data) {
-      //this.props.history.push('/FollowingItems');
-    });
+  fetch('https://pruebaenreact.azurewebsites.net/items/startFollowing', {
+    item, 
+    token 
+  })
+  .then(function (data) {
+    //this.props.history.push('/FollowingItems');
+  });
 
 }
 
@@ -67,7 +70,7 @@ class Buscador extends Component {
 
   componentDidMount() {
 
-    axios.get('http://localhost:4000/items/searchItems/' + localStorage.getItem('seller'))
+    axios.get('https://pruebaenreact.azurewebsites.net/items/searchItems/' + localStorage.getItem('seller'))
       .then(res => {
         if (!isEmptyObject(res.data)) this.setState({ items: res.data, userok: 'true'});
       })
@@ -172,7 +175,7 @@ class Buscador extends Component {
     }
     var username = this.state.text;
     localStorage.setItem('seller', username)
-    /*axios.get('http://localhost:4000/items/searchItems/' + username)
+    /*axios.get('https://pruebaenreact.azurewebsites.net/items/searchItems/' + username)
       .then(setTimeout(function () {*/
         window.location.reload()
       //}.bind(this), 1000));
@@ -184,7 +187,7 @@ class Buscador extends Component {
     if (!this.state.text.length) {
       return;
     }
-    axios.post('http://localhost:4000/MLfollowing/add', { _name: this.state.text })
+    axios.post('https://pruebaenreact.azurewebsites.net/MLfollowing/add', { _name: this.state.text })
       .then(function () { window.location.reload(); });
 
   }

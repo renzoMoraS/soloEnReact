@@ -33,6 +33,7 @@ var corsMiddleware = function(req, res, next) {
     next();
 }
 app.use(corsMiddleware);
+
 var url;
 
 mongoose.connect('mongodb://157.92.32.246:27017/MLHuergo', { useNewUrlParser: true });
@@ -183,9 +184,9 @@ ROMPER TODO
 
 */
 
-app.get('/ventasEnOrden',function(req,res){
+app.post('/ventasEnOrden',function(req,res){
 
-    var token = req.query.token;
+    var token = req.body.token;
     token = JSON.parse(token);
     console.log("Entró");
     var fecha = new Date();
@@ -198,13 +199,13 @@ app.get('/ventasEnOrden',function(req,res){
     var desde = "2015-01-01"
     console.log(req);
 
-    if (req.query.hasta != null){
-        hasta = req.query.hasta
+    if (req.body.hasta != null){
+        hasta = req.body.hasta
         hasta = hasta.substring(0,10) 
 
     }
-    if (req.query.desde != null){
-        desde = req.query.desde
+    if (req.body.desde != null){
+        desde = req.body.desde
         desde = desde.substring(0,10) 
     }
 
