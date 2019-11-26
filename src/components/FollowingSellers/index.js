@@ -15,27 +15,11 @@ function isEmptyObject(obj){
 
 const Item = props => (
 
-    <AccordionItem title={props.item._name}>
+    <tr>
 
-        <table className="table table-striped" style={{ marginTop: 20 }}>
+        {props.user._name}
 
-            <thead>
-
-                <tr>
-
-                    <th>Producto</th>
-                    <th>Campo</th>
-                    <th>Valor Anterior</th>
-                    <th>Valor Actual</th>
-
-                </tr>
-
-            </thead>  
-            <tbody></tbody>
-
-        </table>
-            
-    </AccordionItem>
+    </tr>
 
 )
 
@@ -54,14 +38,27 @@ class FollowingSellers extends Component {
       
     componentDidMount(){    
 
-        axios.get('http://localhost:4000/MLHuergo/FollSell/searchForMe')
-            .then(res => {
-                console.log(res.data);
-                if(!isEmptyObject(res.data)) this.setState({ items: res.data });
-            })
-            .catch(function (err){
-                console.log(err);
-            })
+        fetch('http://localhost:4000/MLHuergo/FollSell/searchForMe', { 
+      
+            method: 'POST',
+            body: cookie,
+            body: JSON.stringify({
+
+                token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+
+            }),
+            headers:{
+            'Content-Type': 'application/json',
+            }
+    
+        })
+        .then(res => {
+            console.log(res.body);
+            if(!isEmptyObject(res.data)) this.setState({ items: res.data });
+        })
+        .catch(function (err){
+            console.log(err);
+        })
         axios.post('http://localhost:4000/MLHuergo/items/delete')
 
     }
@@ -69,7 +66,7 @@ class FollowingSellers extends Component {
     itemList() {
 
         return this.state.items.map(function(citem, i){
-            return <Item item={citem} key={i} />
+            return <Item user={citem} key={i} />
         })
     
     }
@@ -79,10 +76,15 @@ class FollowingSellers extends Component {
         return(
 
             <div className="FollowingSellers">
-                
-                <Accordion atomic={true}>
-                    {this.itemList()}
-                </Accordion>
+
+                <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Vendedores seguidos por el usuario.&nbsp;</p>
+                <table className="table" style={{ marginTop: 20 }}>
+
+                    <tbody>
+                        {this.itemList()}
+                    </tbody>
+
+                </table>
 
             </div>
 

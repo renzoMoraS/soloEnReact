@@ -81,8 +81,8 @@ class Ventas extends Component {
     
         };
         this.pedirDatosABackend = this.pedirDatosABackend.bind(this);
-        this.handleDayChangeDesde = this.handleDayChangeDesde.bind(this)
-        this.handleDayChangeHasta = this.handleDayChangeHasta.bind(this)
+        this.handleDayChangeDesde = this.handleDayChangeDesde.bind(this);
+        this.handleDayChangeHasta = this.handleDayChangeHasta.bind(this);
 
     }
     

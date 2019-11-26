@@ -173,3 +173,36 @@ tr a{
   margin-bottom: 1%;
   font-size: 16px;
 }
+
+.Buscador span{
+  padding-top: 2%;
+  height: 100%;
+  width: 99%;
+  padding-left: 2%;
+  text-align:center;
+}
+
+.Buscador .btn {
+
+  padding: 2%;
+  display: inline;
+  text-align:center;
+  margin: 1%;
+
+}
+
+.Buscador .alert {
+
+  display:block;
+
+}
+
+@media screen and (min-width:1024px) {
+
+  .Buscador .btn {
+
+    padding: 1%;
+  
+  }
+
+}

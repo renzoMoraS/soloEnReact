@@ -8,7 +8,7 @@ import { Card, CardImg, Button, Popover, PopoverHeader, PopoverBody } from 'reac
 import Alert from 'react-bootstrap/Alert';
 import Cookies  from 'universal-cookie'; 
 
-var cookie = new Cookies;
+var cookie = new Cookies();
 
 function startFollowing(item, token) {
 
@@ -57,6 +57,8 @@ class Buscador extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFollow = this.handleFollow.bind(this);
+
   }
 
   toggle() {
@@ -112,9 +114,6 @@ class Buscador extends Component {
               onChange={this.handleChange}
               value={this.state.text}
             />
-            <button>
-              Buscar
-            </button>
             <Button id="Popover1" type="button">¿?</Button>
             <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
               <PopoverHeader>¿Cómo buscar tiendas oficiales?</PopoverHeader>
@@ -125,9 +124,18 @@ class Buscador extends Component {
             </Popover>
             
           </form>
-
+          <Link to="/buscador">
+            <span className="btn btn-warning" onClick={this.handleSubmit}>
+              Buscar productos
+            </span>
+          </Link>
+          <Link to="/buscador">
+            <span className="btn btn-warning" onClick={this.handleFollow}>
+              Seguir vendedor
+            </span>
+          </Link>
         </div>
-        <div>
+        <div className="alerta">
           {alerta}
         </div>
         <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Productos de usuarios por busqueda.&nbsp;</p>
@@ -179,13 +187,26 @@ class Buscador extends Component {
 
   }
 
-  handleFollow() {
+  handleFollow(e) {
 
+    e.preventDefault();
     if (!this.state.text.length) {
       return;
     }
-    axios.post('http://localhost:4000/MLfollowing/add', { _name: this.state.text })
-      .then(function () { window.location.reload(); });
+    fetch('http://localhost:4000/MLHuergo/FollSell/add', { 
+      
+      method: 'POST',
+      body: JSON.stringify({
+        name: this.state.text,
+        token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+      }
+  
+    }
+    ).then(function () { window.location.reload(); })
+    .catch(function(err){console.log(err)})
 
   }
 

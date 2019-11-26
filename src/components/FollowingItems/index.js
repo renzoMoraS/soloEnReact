@@ -19,19 +19,15 @@ const Change = props => (
     </tr>
   )
   
-function getChanges(id){
+function getChanges(chan){
 
-    axios.get('http://localhost:4000/MLHuergo/changes/' + id, {token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))})
-    .then(function(response){
+    return chan.map(function(item, i){
 
-        return response.data.map(function(item, i){
+        if(item._field == null) 
+            return <tr key={i}><td>Este producto no tiene cambios registrados</td></tr>;
+        return <Change item={item} key={i}/>;
 
-            console.log(item);
-            return <Change item={item} key={i}/>;
-    
-        })
-
-    });
+    })
 
 }
 
@@ -52,7 +48,7 @@ const Item = props => (
                 </tr>
 
             </thead>  
-            <tbody>{getChanges(props.item._itemId)}</tbody>
+            <tbody>{getChanges(props.change)}</tbody>
 
         </table>
             
@@ -71,36 +67,46 @@ class FollowingItems extends Component {
     
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        this.handlePage = this.handlePage.bind(this);
     }
       
-    componentDidMount(){    
+    componentWillMount(){    
 
         //this.setState({changes: JSON.parse(localStorage.getItem('changes'))});
+        var aux = [];
+        this.handlePage();
+
+    }
+
+    componentDidMount(){
+
+        var i = 0;
+        while(i<10) {console.log('Wait for handlePage');i++;}
+
+    }
+
+    handlePage(){
+
         var token = JSON.stringify(cookie.get("cookieQueGuardaElToken"));
         axios.post('http://localhost:4000/MLHuergo/items/getFollowed', {token})
         .then(res => {
 
-            var aux = [];
+            var itemId = [];
+            console.log(res.data);
             res.data.map(function(citem, i){
 
-                var itemId = citem._itemId;
-                axios.get('http://localhost:4000/MLHuergo/changes/' + itemId)
-                .then(resp => {
-                    
-                    console.log(resp.data);
-                    var item = resp.data;
-                    aux.push([{
-                        id: itemId,
-                        results: item
-                    }])
+                itemId.push(citem._itemId);
 
-                })
-                console.log('algo')
             });
-            console.log('ao')
-            console.log(aux);
-            this.setState({items: res.data});
+            console.log(itemId);
+            axios.post('http://localhost:4000/MLHuergo/changes/getMine', {itemId})
+            .then(resp => {
+                
+                console.log(resp.data);
+                localStorage.setItem('changes', JSON.stringify(resp.data));
+                this.setState({items: res.data});
+
+            }).catch(function (err){console.log(err)})
 
         })
         .catch(function (err){
@@ -111,9 +117,29 @@ class FollowingItems extends Component {
 
     itemList() {
 
+        console.log(JSON.parse(localStorage.getItem('changes')))
+        var changes = JSON.parse(localStorage.getItem('changes'));
+        var aux = [];
+        var first = [];
+        var idAux;
+        if(changes == '') changes = [];
+        changes.map(function(chen, i){
+            
+            if(i == 0) idAux = chen._itemId;
+            if(chen._itemId != idAux){
+        
+                aux.push(first);
+                idAux = chen._itemId;
+                first = [chen];
+
+            }else first.push(chen)
+        
+        })
+        aux.push(first);
+        console.log(aux);
         return this.state.items.map(function(citem, i){
 
-            return <Item item={citem} key={i} />;
+            return <Item item={citem} change={aux[i]} key={i} />;
 
         })
     
@@ -149,37 +175,20 @@ class FollowingItems extends Component {
 
     handleSubmit(e) {
 
-        e.preventDefault();
-        var itemId;
-        var aux = [];
+        e.preventDefault(); //Revisar manera de registrar cambios
+        var self = this;      /////////////////////////////////////
+        var token = JSON.stringify(cookie.get("cookieQueGuardaElToken"));
         this.state.items.map(function(citem, i){
 
             citem = JSON.stringify(citem);
-            axios.post('http://localhost:4000/MLHuergo/items/getChanges', {citem})
+            axios.post('http://localhost:4000/MLHuergo/items/getChanges', {citem, token})
             .then(res => {
 
-                citem = JSON.parse(citem);
-                itemId = citem._itemId;
-                console.log(itemId);
-                axios.get('http://localhost:4000/MLHuergo/changes/' + itemId)
-                .then(res => {
-                    citem = JSON.stringify(res.data);
-                    aux.push({
-                        id: itemId,
-                        results: citem
-                    })
-                    setTimeout(function() {
-                        //window.location.reload()
-                        }.bind(this), 1000)
-                })
+                self.handlePage();
 
             });
 
         })
-        //console.log(JSON.stringify(aux));
-        /*aux = aux.join(',');
-        localStorage.setItem('changes', JSON.stringify(aux));
-        this.setState({changes: aux});*/
 
     }
 
