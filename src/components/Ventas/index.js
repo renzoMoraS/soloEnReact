@@ -10,10 +10,6 @@ import Cookies  from 'universal-cookie';
 
 var cookie = new Cookies;
 
-import Cookies  from 'universal-cookie'; 
-
-var cookie = new Cookies;
-
 function isEmptyObject(obj){
     return !Object.keys(obj).length;
 }

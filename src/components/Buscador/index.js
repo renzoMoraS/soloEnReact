@@ -74,7 +74,7 @@ class Buscador extends Component {
     });
   }
 
-  componentDidMount() {
+  componentWillMount() {
 
 
     fetch('http://localhost:4000/items/searchItems/' + localStorage.getItem('seller'))

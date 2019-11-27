@@ -95,7 +95,6 @@ class FollowingItems extends Component {
         })
         .then(res => {
 
-
             var itemId = [];
             res.json().then(data => {
                 
@@ -124,6 +123,12 @@ class FollowingItems extends Component {
                         console.log(datap);
                         localStorage.setItem('changes', JSON.stringify(datap));
                         this.setState({items: data});
+                        if(localStorage.getItem('first') == undefined){
+
+                            localStorage.setItem('first', 'false');
+                            window.location.reload();
+
+                        }
 
                     })
     
@@ -160,9 +165,12 @@ class FollowingItems extends Component {
         })
         aux.push(first);
         console.log(aux);
+        var chang;
         return this.state.items.map(function(citem, i){
 
-            return <Item item={citem} change={aux[i]} key={i} />;
+            console.log(aux[i])
+            if(citem._itemId == aux[i][0]._itemId) chang = aux[i]; else chang = ['aux'];
+            return <Item item={citem} change={chang} key={i} />;
 
         })
     
@@ -203,7 +211,6 @@ class FollowingItems extends Component {
         this.state.items.map(function(citem, i){
 
             citem = JSON.stringify(citem);
-
             fetch('http://localhost:4000/MLHuergo/items/getChanges', { 
       
                 method: 'POST',

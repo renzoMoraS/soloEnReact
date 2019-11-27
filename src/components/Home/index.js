@@ -3,8 +3,6 @@ import {parse} from "query-string";
 import Badge from 'react-bootstrap/Badge';
 import Cookies  from 'universal-cookie';
 
-var logueado = false
-
 var ciudad
 var status
 var level_id
@@ -24,9 +22,9 @@ var cookie = new Cookies;
 var options = {
   form: {
     "grant_type":"authorization_code",
-    "client_id": '5512240852624948',
-    "client_secret": 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',
-    "redirect_uri": "https://pruebaenreact.azurewebsites.net",
+    "client_id": '6722315906287226',
+    "client_secret": 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',
+    "redirect_uri": "http://localhost:3000/",
     "code": ""
   },
   method: "POST", 
@@ -39,13 +37,14 @@ var el_auth_code_anterior
 
 function miFuncion(textitoQueDevolvioToken) {
 
+  
   if (this.state.termino) {
     if (this.state.termino == 'si') {
       return null
     }
   }
 
-  fetch('https://pruebaenreact.azurewebsites.net/pantallaInicio', {
+  fetch('/pantallaInicio', {
     method: 'POST',
     body: JSON.stringify({
       "token": JSON.stringify(cookie.get("cookieQueGuardaElToken"))
@@ -118,8 +117,8 @@ class Home extends Component {
     }
 
     burl.append("grant_type","authorization_code")
-    burl.append("client_id", '5512240852624948')
-    burl.append("client_secret", 'ZkOmQohZeAo8MuPyfIJRQMqyKDi1H7EO',)
+    burl.append("client_id", '6722315906287226')
+    burl.append("client_secret", 'su5nxkJECtvTyYp5GGVlGcy8QicnzeAI',)
     burl.append("code",parse(this.props.location.search).code);
     burl.append("redirect_uri",options.form.redirect_uri)
 
@@ -127,8 +126,7 @@ class Home extends Component {
     
     if (this.state.termino==='no' && this.state.userok==='false'){
 
-      fetch('https://pruebaenreact.azurewebsites.net/token', {
-
+      fetch('/token', {
 
         method: 'POST',
         body: cookie,
@@ -160,15 +158,7 @@ class Home extends Component {
 
   }
 
-  handleClickDelBotonQuePodriaSerElDeLoginOElDeLogout(e){
-
-    cookie.remove("cookieQueGuardaElToken")
-    localStorage.setItem('valoracionesObtenidas', null) 
-
-  }
-
   render() {
-
 
     if (this.state.termino==='si' && this.state.userok==='false') {
 
@@ -180,46 +170,23 @@ class Home extends Component {
 
     if (algo !== null){
 
-      if (JSON.stringify(cookie.get("cookieQueGuardaElToken")) == ""){
+      ciudad = algo.address.city
+      status = algo.status.site_status
+      level_id = algo.seller_reputation.level_id
+      seller_status = algo.seller_reputation.power_seller_status
+      transacciones_canceladas = algo.seller_reputation.transactions.canceled
+      transacciones_completadas = algo.seller_reputation.transactions.completed
+      transacciones_periodo = algo.seller_reputation.transactions.period
+      transacciones_total = algo.seller_reputation.transactions.total
+      nombreDelUsuario = algo.nickname
+      fechaDeRegistro = algo.registration_date
+      pais = algo.country_id
+      tipoDeUsuario = algo.user_type
+      puntos = algo.points
+      idDelSitio = algo.site_id
 
-        ciudad = ""
-        status = ""
-        level_id = ""
-        seller_status = ""
-        transacciones_canceladas = ""
-        transacciones_completadas = ""
-        transacciones_periodo = ""
-        transacciones_total = ""
-        nombreDelUsuario = ""
-        fechaDeRegistro = ""
-        pais = ""
-        tipoDeUsuario = ""
-        puntos = ""
-        idDelSitio = ""
+      var signout = <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" className="btn btn-warning" role="button" aria-pressed="true">Sign Out</a>
       
-      }else{
-
-        ciudad = algo.address.city
-        status = algo.status.site_status
-        level_id = algo.seller_reputation.level_id
-        seller_status = algo.seller_reputation.power_seller_status
-        transacciones_canceladas = algo.seller_reputation.transactions.canceled
-        transacciones_completadas = algo.seller_reputation.transactions.completed
-        transacciones_periodo = algo.seller_reputation.transactions.period
-        transacciones_total = algo.seller_reputation.transactions.total
-        nombreDelUsuario = algo.nickname
-        fechaDeRegistro = algo.registration_date
-        pais = algo.country_id
-        tipoDeUsuario = algo.user_type
-        puntos = algo.points
-        idDelSitio = algo.site_id
-
-      }
-
-      var signout = <a href="/" className="btn btn-warning" role="button" aria-pressed="true" onClick={this.handleClickDelBotonQuePodriaSerElDeLoginOElDeLogout.bind(this)}>Sign Out</a>
-      //var signout = <a href="https://www.mercadolibre.com/jms/mla/lgz/logout?go=https://auth.mercadolibre.com.ar/authorization?redirect_uri=mysite&response_type=code&client_id=CLIENT_ID&platform_id=ml" className="btn btn-warning" role="button" aria-pressed="true" onClick={this.handleClickDelBotonQuePodriaSerElDeLoginOElDeLogout.bind(this)}>Sign Out</a>
-      //Esto de arriba redirecciona y desloguea a Mercado libre.
-
       fechaDeRegistro = (JSON.stringify(fechaDeRegistro)).substring(1, 11)
 
       if (pais === 'AR'){
@@ -258,8 +225,8 @@ class Home extends Component {
 
     }else{
 
-      signout = <a href="https://auth.mercadolibre.com/authorization?client_id=5512240852624948&response_type=code&state=5ca75bd30" className="btn btn-warning" role="button" aria-pressed="true">Sign In</a>
-
+      signout = <a href="https://auth.mercadolibre.com/authorization?client_id=6722315906287226&response_type=code&state=5ca75bd30" className="btn btn-warning" role="button" aria-pressed="true">Sign In</a>
+    
     }
 
     return (

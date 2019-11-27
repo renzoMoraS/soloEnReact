@@ -529,8 +529,6 @@ app.get('/items/searchItems/:username', function(req, res) {
         response.json()
           .then(function(data) {
 
-            console.log(data);
-
             var items = [];
             data.results.map(citem => {
 
@@ -558,7 +556,9 @@ app.get('/items/searchItems/:username', function(req, res) {
 
 app.post('/items/startFollowing',function(req,rest){
     
+    var sell = req.body.sell;
     var citem = req.body.item;
+    console.log(citem);
     citem = JSON.parse(citem);
     var token = req.body.token;
     token = JSON.parse(token);
@@ -586,23 +586,41 @@ app.post('/items/startFollowing',function(req,rest){
                 .then(function (response){
 
                     response.json().then(resp => {
-                        
-                        console.log(resp);
-                        console.log(JSON.stringify(resp));
+
                         var item;
-                        item = {
-    
-                            _user: token.user_id,
-                            _itemId: Id,
-                            _name: citem.Nombre,
-                            _seller: citem.Vendedor,
-                            _lastUpdate: '',
-                            _data: {
-                                
-                                _price: citem.Precio,
-            
+                        if(sell === undefined){
+
+                            item = {
+        
+                                _user: token.user_id,
+                                _itemId: Id,
+                                _name: citem.Nombre,
+                                _seller: citem.Vendedor,
+                                _lastUpdate: '',
+                                _data: {
+                                    
+                                    _price: citem.Precio,
+                
+                                }
+                
                             }
-            
+
+                        }else{
+
+                            item = {
+
+                                _itemId: Id,
+                                _name: citem.Nombre,
+                                _seller: citem.Vendedor,
+                                _lastUpdate: '',
+                                _data: {
+                                    
+                                    _price: citem.Precio,
+                
+                                }
+                
+                            }
+
                         }
                         data.map(function(aux){
                             item._lastUpdate = aux.body.last_updated;
@@ -610,13 +628,12 @@ app.post('/items/startFollowing',function(req,rest){
                         if(!isEmptyObject(resp)){
 
                             resp = resp[0];
-                            if(!resp._user.includes(item._user)){
+                            if(!resp._user.includes(item._user) && sell !== undefined){
     
                                 var itemAux = [];
                                 itemAux.push(resp._user[0]);
                                 itemAux.push(item._user);
                                 item._user = itemAux;
-                                console.log(item);
                                 url = 'http://localhost:4000/MLHuergo/items/update';
                                 fetch(url, {
                     
@@ -636,7 +653,6 @@ app.post('/items/startFollowing',function(req,rest){
     
                         }else if(resp._user === undefined || !resp._user.includes(item._user)){
     
-                            console.log('response._user');
                             url = 'http://localhost:4000/MLHuergo/items/add';
                             fetch(url, {
                 
@@ -729,7 +745,6 @@ routes.route('/changes/getMine').post(function(req, res) {
         Change.find().byItemId(id).exec(function(err, item) {
 
             if(isEmptyObject(item)) item = [{_itemId: id, _field: null}];
-            console.log(item);
             if(i > 0) {
 
                 setTimeout(function(){
@@ -795,6 +810,7 @@ routes.route('/FollSell/add').post(function(req, res) {
 
     var token = req.body.token;
     token = JSON.parse(token);
+    var auxUsr = [];
     var aux = {
 
         _user: token.user_id,
@@ -812,25 +828,58 @@ routes.route('/FollSell/add').post(function(req, res) {
         }
         
     }
-    url = 'http://localhost:4000/MLHuergo/FollSell/searchName/' + aux._name;
+    url = 'http://localhost:4000/items/searchItems/' + aux._name;
+    fetch(url, options)
+    .then(item => {item.json().then(items => {
+        
+        items.map(function(item){
+
+            console.log(item);
+            fetch('http://localhost:4000/items/startFollowing', { 
+      
+                method: 'POST',
+                body: JSON.stringify({
+
+                    sell: "yes",
+                    item: JSON.stringify(item),
+                    token: JSON.stringify(token)
+
+                }),
+                headers:{
+                  'Content-Type': 'application/json',
+                }
+            
+            })
+
+        })
+    
+    })})
+    /*url = 'http://localhost:4000/MLHuergo/FollSell/searchName/' + aux._name;
     fetch(url, options)
      .then(resp =>{
 
-        if(resp.size != 0) return;
-        let follSell = new FollSell(aux);
-        follSell.save()
-            .then(item => {
-
-                res.status(200).json({'message': "Usuario seguido exitosamente."});
-
-            })
-            .catch(err => {
-
-                res.status(400).send('adding new item failed');
+        resp.json().then(rest => {
+            
+            //if(!isEmptyObject(rest)) res.status(200).json({"message": "Ya habia seguido a este usuario."});  
+            auxUsr.push(rest[0]._user);
+            auxUsr.push(aux._user);
+            aux._user = auzUsr;
+            let follSell = new FollSell(aux);
+            follSell.save()
+                .then(item => {
     
-            });
+                    res.status(200).json({'message': "Usuario seguido exitosamente."});
+    
+                })
+                .catch(err => {
+    
+                    res.status(400).send('adding new item failed');
+        
+                });
+    
+            })    
 
-        })        
+        })  */
 
      .catch(err => {
 
@@ -897,10 +946,27 @@ routes.route('/FollSell/searchName/:name').get(function(req, res) {
 routes.route('/FollSell/searchForMe').post(function(req, res) {
 
     var token = req.body.token;
+    console.log(token);
     token = JSON.parse(token);
+    FollSell.find().byUser(token.user_id).exec(function(err, item) {
 
-    console.log(token.user_id);
+        console.log(item);
+        if(err)
+            res.status(400).log(err)
+        else{
+            res.status(200).json(item);
+                
+        }
 
+    });
+
+});
+
+routes.route('/FollSell/items/:seller').get(function(req, res) {
+
+    var token = req.body.token;
+    console.log(token);
+    token = JSON.parse(token);
     FollSell.find().byUser(token.user_id).exec(function(err, item) {
 
         console.log(item);
@@ -1075,7 +1141,7 @@ routes.route('/CatTend/searchName/:name').get(function(req, res) {
 
 routes.route('/CatTend/delete').post(function(req, res) {
 
-    CatTend.deleteMany({__v: 0}, function(err) {
+    CatTend.deleteMany({_day: req.body.id}, function(err) {
 
         if(err) console.log(err);
         res.status(200).json({item: "Eliminado con exito"});

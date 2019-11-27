@@ -183,6 +183,34 @@ tr a{
   font-size: 16px;
 }
 
+.FollowingSellers{
+  padding-top: 3%;
+  height: 100%;
+  font-size: 16px;
+}
+
+.FollowingSellers p{
+
+  padding-bottom: 0;
+  margin-bottom: 0;
+
+}
+
+.FollowingSellers .btn .btn-warning{
+
+  display: auto;
+  margin-left: 1%;
+  margin-right: 1%;
+
+}
+
+.table .btnw{
+
+  padding: 0%;
+  vertical-align: middle;
+
+}
+
 .Acordeon{
   margin-bottom: 1%;
   font-size: 16px;
