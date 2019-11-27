@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import { Accordion, AccordionItem } from 'react-light-accordion';
 import axios from 'axios';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
-
+import Alert from 'react-bootstrap/Alert';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-light-accordion/demo/css/index.css';
 import 'react-day-picker/lib/style.css';
+import Cookies  from 'universal-cookie'; 
+
+var cookie = new Cookies;
+
 import Cookies  from 'universal-cookie'; 
 
 var cookie = new Cookies;
@@ -75,7 +79,7 @@ class Ventas extends Component {
         this.state = {
     
           empty: true,
-          items: [],
+          items: false,
           desde: null,
           hasta: null
     
@@ -92,17 +96,34 @@ class Ventas extends Component {
         //if (this.state.desde!=null && this.state.hasta!=null) {
             console.log(this.state)
             console.log('va a hacer el get')
-            axios.get('http://localhost:4000/ventasEnOrden',{
-                params: {
-                  desde: this.state.desde,
-                  hasta: this.state.hasta,
-                  token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
-                }})
-            .then(res => {
 
+            fetch('https://pruebaenreact.azurewebsites.net/ventasEnOrden', {
+
+                method: 'POST',
+                body: JSON.stringify({
+                
+                    desde: this.state.desde,
+                    hasta: this.state.hasta,
+                    token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+
+                }),
+                headers:{
+                'Content-Type': 'application/json',
+                }
+                
+            })
+            .then(function(res){
+                
+                  return res.json()
+                
+              })
+
+            .then(res => {
+                this.setState({ items: false });
                 if(!isEmptyObject(res)) {
-                    console.log(res.data.results)
-                    this.setState({ items: res.data.results });
+                    console.log(res.results)
+                    
+                    this.setState({ items: res.results });
                 }
             })
             .catch(function (err){
@@ -118,10 +139,13 @@ class Ventas extends Component {
     }
 
     itemList() {
-
-        return this.state.items.map(function(citem, i){
-            return <Item item={citem} key={i} />;
-        })
+        if (!this.state.items) {
+            return null
+        } else {
+            return this.state.items.map(function(citem, i){
+                return <Item item={citem} key={i} />;
+            })
+        }
     
     }
     
@@ -138,20 +162,39 @@ class Ventas extends Component {
     }
 
     render() {
+    
         var fecha = new Date();
         //var fechaprime = //2015-07-01
         var ytoday = fecha.getFullYear();
         var mtoday = fecha.getMonth()+1;
         var dtoday = fecha.getDate();
         var hoy = ytoday + "-" + mtoday + "-" + dtoday
+        var saleswarning
+        if(this.state.items == false) {
+            saleswarning = <Alert variant='salewarning'>No existen ventas en este periodo</Alert>
+        } else {
+            saleswarning = <div class = "puntitos"></div>
+        }
 
         return(
-            <div>
+        <div>
+
+            <div class='centrado' style={{display:'flex', flexDirection:'row', width:'33%', paddingTop: '10px'}}>    
                     
-        <DayPickerInput onDayChange={this.handleDayChangeDesde} format='yyyy-mm-dd'placeholder='2015-01-01'
-        />
-        <DayPickerInput onDayChange={this.handleDayChangeHasta} format='yyyy-mm-dd' placeholder={hoy}
-        />
+                <div style={{width: '50%'}}>
+                <DayPickerInput onDayChange={this.handleDayChangeDesde} format='yyyy-mm-dd'placeholder='2015-01-01'
+                />
+                </div>
+                <div style={{width: '50%'}}>
+                <DayPickerInput onDayChange={this.handleDayChangeHasta} format='yyyy-mm-dd' placeholder={hoy}
+                />
+                </div>
+        
+            </div>
+        <div>
+          {saleswarning}
+        </div>
+
 
                 <div className="FollowingItems">
                     

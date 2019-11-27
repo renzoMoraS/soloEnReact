@@ -76,6 +76,7 @@ class Buscador extends Component {
 
   componentDidMount() {
 
+
     fetch('http://localhost:4000/items/searchItems/' + localStorage.getItem('seller'))
       .then(res => {
 
@@ -192,6 +193,7 @@ class Buscador extends Component {
       return;
     }
     var username = this.state.text;
+
     localStorage.setItem('seller', username);
     window.location.reload()
 
@@ -203,6 +205,7 @@ class Buscador extends Component {
     if (!this.state.text.length) {
       return;
     }
+
     fetch('http://localhost:4000/MLHuergo/FollSell/add', { 
       
       method: 'POST',
