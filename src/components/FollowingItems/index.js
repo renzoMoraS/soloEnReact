@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { Accordion, AccordionItem } from 'react-light-accordion';
-import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-light-accordion/demo/css/index.css';
 import Cookies  from 'universal-cookie'; 
 
 var cookie = new Cookies;
-
-function isEmptyObject(obj){
-    return !Object.keys(obj).length;
-}
 
 const Change = props => (
     <tr>
@@ -72,8 +67,6 @@ class FollowingItems extends Component {
       
     componentWillMount(){    
 
-        //this.setState({changes: JSON.parse(localStorage.getItem('changes'))});
-        var aux = [];
         this.handlePage();
 
     }
@@ -87,8 +80,17 @@ class FollowingItems extends Component {
 
     handlePage(){
 
-        var token = JSON.stringify(cookie.get("cookieQueGuardaElToken"));
-        axios.post('http://localhost:4000/MLHuergo/items/getFollowed', {token})
+        fetch('http://localhost:4000/MLHuergo/items/getFollowed', { 
+      
+            method: 'POST',
+            body: JSON.stringify({
+              token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+            }),
+            headers:{
+              'Content-Type': 'application/json',
+            }
+        
+          })
         .then(res => {
 
             var itemId = [];
@@ -99,7 +101,17 @@ class FollowingItems extends Component {
 
             });
             console.log(itemId);
-            axios.post('http://localhost:4000/MLHuergo/changes/getMine', {itemId})
+            fetch('http://localhost:4000/MLHuergo/changes/getMine', { 
+      
+                method: 'POST',
+                body: JSON.stringify({
+                    itemId: itemId,
+                }),
+                headers:{
+                  'Content-Type': 'application/json',
+                }
+            
+              })
             .then(resp => {
                 
                 console.log(resp.data);
@@ -175,13 +187,23 @@ class FollowingItems extends Component {
 
     handleSubmit(e) {
 
-        e.preventDefault(); //Revisar manera de registrar cambios
-        var self = this;      /////////////////////////////////////
-        var token = JSON.stringify(cookie.get("cookieQueGuardaElToken"));
+        e.preventDefault();
+        var self = this;
         this.state.items.map(function(citem, i){
 
             citem = JSON.stringify(citem);
-            axios.post('http://localhost:4000/MLHuergo/items/getChanges', {citem, token})
+            fetch('http://localhost:4000/MLHuergo/items/getChanges', { 
+      
+                method: 'POST',
+                body: JSON.stringify({
+                  citem: citem,
+                  token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+                }),
+                headers:{
+                  'Content-Type': 'application/json',
+                }
+            
+              })
             .then(res => {
 
                 self.handlePage();

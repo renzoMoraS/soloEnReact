@@ -1,7 +1,6 @@
 // Dependencies
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import 'react-light-accordion/demo/css/index.css';
 import "bootstrap";
 import { Card, CardImg, Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
@@ -10,14 +9,22 @@ import Cookies  from 'universal-cookie';
 
 var cookie = new Cookies();
 
-function startFollowing(item, token) {
+function startFollowing(item) {
 
   console.log(item);
   item = JSON.stringify(item);
-  axios.post('http://localhost:4000/items/startFollowing', { item, token })
-    .then(function (data) {
-      //this.props.history.push('/FollowingItems');
-    });
+  fetch('http://localhost:4000/items/startFollowing', { 
+      
+    method: 'POST',
+    body: JSON.stringify({
+      item: item,
+      token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+    }
+
+  })
 
 }
 
@@ -33,7 +40,7 @@ const Item = props => (
     <td >{props.item.Nombre}</td>
     <td>
       <Link to="/buscador">
-        <span onClick={() => startFollowing(props.item, JSON.stringify(cookie.get("cookieQueGuardaElToken")))}>${props.item.Precio}</span>
+        <span onClick={() => startFollowing(props.item)}>${props.item.Precio}</span>
       </Link>
     </td>
   </tr>
@@ -69,7 +76,7 @@ class Buscador extends Component {
 
   componentDidMount() {
 
-    axios.get('http://localhost:4000/items/searchItems/' + localStorage.getItem('seller'))
+    fetch('http://localhost:4000/items/searchItems/' + localStorage.getItem('seller'))
       .then(res => {
         if (!isEmptyObject(res.data)) this.setState({ items: res.data, userok: 'true'});
       })
@@ -179,11 +186,8 @@ class Buscador extends Component {
       return;
     }
     var username = this.state.text;
-    localStorage.setItem('seller', username)
-    /*axios.get('http://localhost:4000/items/searchItems/' + username)
-      .then(setTimeout(function () {*/
-        window.location.reload()
-      //}.bind(this), 1000));
+    localStorage.setItem('seller', username);
+    window.location.reload()
 
   }
 
