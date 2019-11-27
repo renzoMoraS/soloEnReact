@@ -38,28 +38,15 @@ class FollowingSellers extends Component {
       
     componentDidMount(){    
 
-        fetch('http://localhost:4000/MLHuergo/FollSell/searchForMe', { 
-      
-            method: 'POST',
-            body: cookie,
-            body: JSON.stringify({
-
-                token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
-
-            }),
-            headers:{
-            'Content-Type': 'application/json',
-            }
-    
-        })
-        .then(res => {
-            console.log(res.body);
-            if(!isEmptyObject(res.data)) this.setState({ items: res.data });
-        })
-        .catch(function (err){
-            console.log(err);
-        })
-        axios.post('http://localhost:4000/MLHuergo/items/delete')
+        axios.get('https://pruebaenreact.azurewebsites.net/MLHuergo/FollSell/searchForMe')
+            .then(res => {
+                console.log(res.data);
+                if(!isEmptyObject(res.data)) this.setState({ items: res.data });
+            })
+            .catch(function (err){
+                console.log(err);
+            })
+        axios.post('https://pruebaenreact.azurewebsites.net/MLHuergo/items/delete')
 
     }
 

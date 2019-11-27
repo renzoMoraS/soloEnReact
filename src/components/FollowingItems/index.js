@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-light-accordion/demo/css/index.css';
 import Cookies  from 'universal-cookie'; 
 
+
 var cookie = new Cookies;
 
 const Change = props => (
@@ -14,6 +15,7 @@ const Change = props => (
     </tr>
   )
   
+
 function getChanges(chan){
 
     return chan.map(function(item, i){
@@ -92,6 +94,7 @@ class FollowingItems extends Component {
         
           })
         .then(res => {
+
 
             var itemId = [];
             console.log(res.data);
@@ -192,6 +195,7 @@ class FollowingItems extends Component {
         this.state.items.map(function(citem, i){
 
             citem = JSON.stringify(citem);
+
             fetch('http://localhost:4000/MLHuergo/items/getChanges', { 
       
                 method: 'POST',
@@ -207,6 +211,7 @@ class FollowingItems extends Component {
             .then(res => {
 
                 self.handlePage();
+
 
             });
 

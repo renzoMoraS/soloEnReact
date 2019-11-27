@@ -34,7 +34,7 @@ class TenCat extends Component {
         console.log(res)}
       )
 
-    fetch('http://localhost:4000/TenCat')
+    fetch('https://pruebaenreact.azurewebsites.net/TenCat')
       .then(function (res) { 
         console.log(res);
       })

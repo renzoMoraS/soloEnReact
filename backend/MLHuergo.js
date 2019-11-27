@@ -33,6 +33,7 @@ var corsMiddleware = function(req, res, next) {
     next();
 }
 app.use(corsMiddleware);
+
 var url;
 
 mongoose.connect('mongodb://157.92.32.246:27017/MLHuergo', { useNewUrlParser: true });
@@ -186,6 +187,7 @@ ROMPER TODO
 app.get('/ventasEnOrden',function(req,res){
 
     var token = req.query.token;
+
     token = JSON.parse(token);
     console.log("Entró");
     var fecha = new Date();
@@ -198,13 +200,13 @@ app.get('/ventasEnOrden',function(req,res){
     var desde = "2015-01-01"
     console.log(req);
 
-    if (req.query.hasta != null){
-        hasta = req.query.hasta
+    if (req.body.hasta != null){
+        hasta = req.body.hasta
         hasta = hasta.substring(0,10) 
 
     }
-    if (req.query.desde != null){
-        desde = req.query.desde
+    if (req.body.desde != null){
+        desde = req.body.desde
         desde = desde.substring(0,10) 
     }
 
@@ -377,6 +379,7 @@ routes.route('/items/getFollowed').post(function(req, res) {
 
             });
 
+
         }
 
     });
@@ -422,6 +425,7 @@ routes.route('/items/getChanges').post(function(req, res) {
                         citem._lastUpdate = rest.last_updated;
 
                     }
+
                     console.log(item._lastUpdate != citem._lastUpdate);
                     if(item._lastUpdate != citem._lastUpdate){
 
@@ -446,6 +450,7 @@ routes.route('/items/getChanges').post(function(req, res) {
         
                         }
                         url = 'http://localhost:4000/MLHuergo/changes/add';
+
                         fetch(url, {
                             method: 'POST',
                             body: JSON.stringify(aux),
@@ -524,6 +529,7 @@ app.get('/items/searchItems/:username', function(req, res) {
           .then(function(data) {
 
             console.log(data);
+
             var items = [];
             data.results.map(citem => {
 
@@ -891,7 +897,9 @@ routes.route('/FollSell/searchForMe').post(function(req, res) {
 
     var token = req.body.token;
     token = JSON.parse(token);
+
     console.log(token.user_id);
+
     FollSell.find().byUser(token.user_id).exec(function(err, item) {
 
         console.log(item);
