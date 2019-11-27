@@ -1,26 +1,30 @@
 // Dependencies
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import 'react-light-accordion/demo/css/index.css';
 import "bootstrap";
 import { Card, CardImg, Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
 import Cookies  from 'universal-cookie'; 
 
-var cookie = new Cookies;
+var cookie = new Cookies();
 
-function startFollowing(item, token) {
+function startFollowing(item) {
 
   console.log(item);
   item = JSON.stringify(item);
-  fetch('https://pruebaenreact.azurewebsites.net/items/startFollowing', {
-    item, 
-    token 
+  fetch('http://localhost:4000/items/startFollowing', { 
+      
+    method: 'POST',
+    body: JSON.stringify({
+      item: item,
+      token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+    }
+
   })
-  .then(function (data) {
-    //this.props.history.push('/FollowingItems');
-  });
 
 }
 
@@ -36,7 +40,7 @@ const Item = props => (
     <td >{props.item.Nombre}</td>
     <td>
       <Link to="/buscador">
-        <span onClick={() => startFollowing(props.item, JSON.stringify(cookie.get("cookieQueGuardaElToken")))}>${props.item.Precio}</span>
+        <span onClick={() => startFollowing(props.item)}>${props.item.Precio}</span>
       </Link>
     </td>
   </tr>
@@ -60,6 +64,8 @@ class Buscador extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFollow = this.handleFollow.bind(this);
+
   }
 
   toggle() {
@@ -68,11 +74,18 @@ class Buscador extends Component {
     });
   }
 
-  componentDidMount() {
+  componentWillMount() {
 
-    axios.get('https://pruebaenreact.azurewebsites.net/items/searchItems/' + localStorage.getItem('seller'))
+
+    fetch('http://localhost:4000/items/searchItems/' + localStorage.getItem('seller'))
       .then(res => {
-        if (!isEmptyObject(res.data)) this.setState({ items: res.data, userok: 'true'});
+
+        res.json().then(data => {
+
+          if (!isEmptyObject(data)) this.setState({ items: data, userok: 'true'});
+
+        })
+      
       })
       .catch(function (err) {
         console.log(err);
@@ -115,9 +128,6 @@ class Buscador extends Component {
               onChange={this.handleChange}
               value={this.state.text}
             />
-            <button>
-              Buscar
-            </button>
             <Button id="Popover1" type="button">¿?</Button>
             <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
               <PopoverHeader>¿Cómo buscar tiendas oficiales?</PopoverHeader>
@@ -128,9 +138,18 @@ class Buscador extends Component {
             </Popover>
             
           </form>
-
+          <Link to="/buscador">
+            <span className="btn btn-warning" onClick={this.handleSubmit}>
+              Buscar productos
+            </span>
+          </Link>
+          <Link to="/buscador">
+            <span className="btn btn-warning" onClick={this.handleFollow}>
+              Seguir vendedor
+            </span>
+          </Link>
         </div>
-        <div>
+        <div className="alerta">
           {alerta}
         </div>
         <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Productos de usuarios por busqueda.&nbsp;</p>
@@ -174,21 +193,33 @@ class Buscador extends Component {
       return;
     }
     var username = this.state.text;
-    localStorage.setItem('seller', username)
-    /*axios.get('https://pruebaenreact.azurewebsites.net/items/searchItems/' + username)
-      .then(setTimeout(function () {*/
-        window.location.reload()
-      //}.bind(this), 1000));
+
+    localStorage.setItem('seller', username);
+    window.location.reload()
 
   }
 
-  handleFollow() {
+  handleFollow(e) {
 
+    e.preventDefault();
     if (!this.state.text.length) {
       return;
     }
-    axios.post('https://pruebaenreact.azurewebsites.net/MLfollowing/add', { _name: this.state.text })
-      .then(function () { window.location.reload(); });
+
+    fetch('http://localhost:4000/MLHuergo/FollSell/add', { 
+      
+      method: 'POST',
+      body: JSON.stringify({
+        name: this.state.text,
+        token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+      }
+  
+    }
+    ).then(function () { window.location.reload(); })
+    .catch(function(err){console.log(err)})
 
   }
 

@@ -6,7 +6,6 @@ import Alert from 'react-bootstrap/Alert';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-light-accordion/demo/css/index.css';
 import 'react-day-picker/lib/style.css';
-
 import Cookies  from 'universal-cookie'; 
 
 var cookie = new Cookies;
@@ -82,8 +81,8 @@ class Ventas extends Component {
     
         };
         this.pedirDatosABackend = this.pedirDatosABackend.bind(this);
-        this.handleDayChangeDesde = this.handleDayChangeDesde.bind(this)
-        this.handleDayChangeHasta = this.handleDayChangeHasta.bind(this)
+        this.handleDayChangeDesde = this.handleDayChangeDesde.bind(this);
+        this.handleDayChangeHasta = this.handleDayChangeHasta.bind(this);
 
     }
     
@@ -93,6 +92,7 @@ class Ventas extends Component {
         //if (this.state.desde!=null && this.state.hasta!=null) {
             console.log(this.state)
             console.log('va a hacer el get')
+
             fetch('https://pruebaenreact.azurewebsites.net/ventasEnOrden', {
 
                 method: 'POST',
@@ -113,6 +113,7 @@ class Ventas extends Component {
                   return res.json()
                 
               })
+
             .then(res => {
                 this.setState({ items: false });
                 if(!isEmptyObject(res)) {

@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { Accordion, AccordionItem } from 'react-light-accordion';
-import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-light-accordion/demo/css/index.css';
 import Cookies  from 'universal-cookie'; 
 
-var cookie = new Cookies;
 
-function isEmptyObject(obj){
-    return !Object.keys(obj).length;
-}
+var cookie = new Cookies;
 
 const Change = props => (
     <tr>
@@ -19,19 +15,16 @@ const Change = props => (
     </tr>
   )
   
-function getChanges(id){
 
-    axios.get('https://pruebaenreact.azurewebsites.net/MLHuergo/changes/' + id, {token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))})
-    .then(function(response){
+function getChanges(chan){
 
-        return response.data.map(function(item, i){
+    return chan.map(function(item, i){
 
-            console.log(item);
-            return <Change item={item} key={i}/>;
-    
-        })
+        if(item._field == null) 
+            return <tr key={i}><td>Este producto no tiene cambios registrados</td></tr>;
+        return <Change item={item} key={i}/>;
 
-    });
+    })
 
 }
 
@@ -52,7 +45,7 @@ const Item = props => (
                 </tr>
 
             </thead>  
-            <tbody>{getChanges(props.item._itemId)}</tbody>
+            <tbody>{getChanges(props.change)}</tbody>
 
         </table>
             
@@ -71,36 +64,77 @@ class FollowingItems extends Component {
     
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        this.handlePage = this.handlePage.bind(this);
     }
       
-    componentDidMount(){    
+    componentWillMount(){    
 
-        //this.setState({changes: JSON.parse(localStorage.getItem('changes'))});
-        var token = JSON.stringify(cookie.get("cookieQueGuardaElToken"));
-        axios.post('https://pruebaenreact.azurewebsites.net/MLHuergo/items/getFollowed', {token})
+        this.handlePage();
+
+    }
+
+    componentDidMount(){
+
+        var i = 0;
+        while(i<10) {console.log('Wait for handlePage');i++;}
+
+    }
+
+    handlePage(){
+
+        fetch('http://localhost:4000/MLHuergo/items/getFollowed', { 
+      
+            method: 'POST',
+            body: JSON.stringify({
+              token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+            }),
+            headers:{
+              'Content-Type': 'application/json',
+            }
+        
+        })
         .then(res => {
 
-            var aux = [];
-            res.data.map(function(citem, i){
-
-                var itemId = citem._itemId;
-                axios.get('https://pruebaenreact.azurewebsites.net/MLHuergo/changes/' + itemId)
+            var itemId = [];
+            res.json().then(data => {
+                
+                console.log(data);
+                data.map(function(citem, i){
+    
+                    itemId.push(citem._itemId);
+    
+                });
+                console.log(itemId);
+                fetch('http://localhost:4000/MLHuergo/changes/getMine', { 
+          
+                    method: 'POST',
+                    body: JSON.stringify({
+                        itemId: itemId,
+                    }),
+                    headers:{
+                      'Content-Type': 'application/json',
+                    }
+                
+                  })
                 .then(resp => {
                     
-                    console.log(resp.data);
-                    var item = resp.data;
-                    aux.push([{
-                        id: itemId,
-                        results: item
-                    }])
+                    resp.json().then(datap => {
 
-                })
-                console.log('algo')
+                        console.log(datap);
+                        localStorage.setItem('changes', JSON.stringify(datap));
+                        this.setState({items: data});
+                        if(localStorage.getItem('first') == undefined){
+
+                            localStorage.setItem('first', 'false');
+                            window.location.reload();
+
+                        }
+
+                    })
+    
+                }).catch(function (err){console.log(err)})
+                
             });
-            console.log('ao')
-            console.log(aux);
-            this.setState({items: res.data});
 
         })
         .catch(function (err){
@@ -111,9 +145,32 @@ class FollowingItems extends Component {
 
     itemList() {
 
+        console.log(JSON.parse(localStorage.getItem('changes')));
+        var changes = JSON.parse(localStorage.getItem('changes'));
+        var aux = [];
+        var first = [];
+        var idAux;
+        if(changes == '') changes = [];
+        changes.map(function(chen, i){
+            
+            if(i == 0) idAux = chen._itemId;
+            if(chen._itemId != idAux){
+        
+                aux.push(first);
+                idAux = chen._itemId;
+                first = [chen];
+
+            }else first.push(chen)
+        
+        })
+        aux.push(first);
+        console.log(aux);
+        var chang;
         return this.state.items.map(function(citem, i){
 
-            return <Item item={citem} key={i} />;
+            console.log(aux[i])
+            if(citem._itemId == aux[i][0]._itemId) chang = aux[i]; else chang = ['aux'];
+            return <Item item={citem} change={chang} key={i} />;
 
         })
     
@@ -150,36 +207,30 @@ class FollowingItems extends Component {
     handleSubmit(e) {
 
         e.preventDefault();
-        var itemId;
-        var aux = [];
+        var self = this;
         this.state.items.map(function(citem, i){
 
             citem = JSON.stringify(citem);
-            axios.post('https://pruebaenreact.azurewebsites.net/MLHuergo/items/getChanges', {citem})
+            fetch('http://localhost:4000/MLHuergo/items/getChanges', { 
+      
+                method: 'POST',
+                body: JSON.stringify({
+                  citem: citem,
+                  token: JSON.stringify(cookie.get("cookieQueGuardaElToken"))
+                }),
+                headers:{
+                  'Content-Type': 'application/json',
+                }
+            
+              })
             .then(res => {
 
-                citem = JSON.parse(citem);
-                itemId = citem._itemId;
-                console.log(itemId);
-                axios.get('https://pruebaenreact.azurewebsites.net/MLHuergo/changes/' + itemId)
-                .then(res => {
-                    citem = JSON.stringify(res.data);
-                    aux.push({
-                        id: itemId,
-                        results: citem
-                    })
-                    setTimeout(function() {
-                        //window.location.reload()
-                        }.bind(this), 1000)
-                })
+                self.handlePage();
+
 
             });
 
         })
-        //console.log(JSON.stringify(aux));
-        /*aux = aux.join(',');
-        localStorage.setItem('changes', JSON.stringify(aux));
-        this.setState({changes: aux});*/
 
     }
 

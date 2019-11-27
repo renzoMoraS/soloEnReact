@@ -10,12 +10,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './micss.css';
 import './InterfazMP.css';
 
+
 var cookie = new Cookies;
+
 
 
 //let elcanvas=document.getElementById("Grafico").getContext("2d");
 
 var listita = []
+var cookie = new Cookies;
 var ladata;
 var usados = 0;
 var nuevos = 0;
@@ -160,6 +163,7 @@ class MisPublis extends Component {
     
     cosito = () => {
         let currentComponent = this;
+
         fetch('https://pruebaenreact.azurewebsites.net/MPublis', {
             method: 'POST',
             body: JSON.stringify({

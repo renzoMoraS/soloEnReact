@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Changes = new Schema({
+
     _itemId: {
         type: String
     },
@@ -14,6 +15,7 @@ let Changes = new Schema({
     _nextValue: {
         type: String
     },
+    
 });
 
 Changes.query.byItemId = function(id){
