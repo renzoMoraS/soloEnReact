@@ -90,35 +90,43 @@ class FollowingItems extends Component {
               'Content-Type': 'application/json',
             }
         
-          })
+        })
         .then(res => {
 
             var itemId = [];
-            console.log(res.data);
-            res.data.map(function(citem, i){
-
-                itemId.push(citem._itemId);
-
-            });
-            console.log(itemId);
-            fetch('http://localhost:4000/MLHuergo/changes/getMine', { 
-      
-                method: 'POST',
-                body: JSON.stringify({
-                    itemId: itemId,
-                }),
-                headers:{
-                  'Content-Type': 'application/json',
-                }
-            
-              })
-            .then(resp => {
+            res.json().then(data => {
                 
-                console.log(resp.data);
-                localStorage.setItem('changes', JSON.stringify(resp.data));
-                this.setState({items: res.data});
+                console.log(data);
+                data.map(function(citem, i){
+    
+                    itemId.push(citem._itemId);
+    
+                });
+                console.log(itemId);
+                fetch('http://localhost:4000/MLHuergo/changes/getMine', { 
+          
+                    method: 'POST',
+                    body: JSON.stringify({
+                        itemId: itemId,
+                    }),
+                    headers:{
+                      'Content-Type': 'application/json',
+                    }
+                
+                  })
+                .then(resp => {
+                    
+                    resp.json().then(datap => {
 
-            }).catch(function (err){console.log(err)})
+                        console.log(datap);
+                        localStorage.setItem('changes', JSON.stringify(datap));
+                        this.setState({items: data});
+
+                    })
+    
+                }).catch(function (err){console.log(err)})
+                
+            });
 
         })
         .catch(function (err){
@@ -129,7 +137,7 @@ class FollowingItems extends Component {
 
     itemList() {
 
-        console.log(JSON.parse(localStorage.getItem('changes')))
+        console.log(JSON.parse(localStorage.getItem('changes')));
         var changes = JSON.parse(localStorage.getItem('changes'));
         var aux = [];
         var first = [];

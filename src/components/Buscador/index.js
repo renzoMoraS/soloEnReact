@@ -78,7 +78,13 @@ class Buscador extends Component {
 
     fetch('http://localhost:4000/items/searchItems/' + localStorage.getItem('seller'))
       .then(res => {
-        if (!isEmptyObject(res.data)) this.setState({ items: res.data, userok: 'true'});
+
+        res.json().then(data => {
+
+          if (!isEmptyObject(data)) this.setState({ items: data, userok: 'true'});
+
+        })
+      
       })
       .catch(function (err) {
         console.log(err);

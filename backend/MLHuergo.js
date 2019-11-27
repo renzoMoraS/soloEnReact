@@ -373,6 +373,7 @@ routes.route('/items/getFollowed').post(function(req, res) {
             Item.find().byUser("Todos").exec(function(errt, itemt) {
 
                 item.push(itemt[0]);
+                console.log(item);
                 res.status(200).json(item);
 
             });
