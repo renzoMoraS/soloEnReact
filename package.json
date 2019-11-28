@@ -18,6 +18,7 @@
     "leaflet.markercluster": "^1.4.1",
     "mercadolibre": "0.0.13",
     "mongoose": "^5.6.1",
+    "path": "0.12.7",
     "prop-types": "^15.7.2",
     "query-string": "^6.5.0",
     "querystring": "^0.2.0",
@@ -28,6 +29,7 @@
     "react-cookies": "^0.1.1",
     "react-day-picker": "^7.4.0",
     "react-dom": "^16.8.6",
+    "react-infinite-scroll-component": "^5.0.4",
     "react-leaflet": "^2.3.0",
     "react-leaflet-markercluster": "^2.0.0-rc3",
     "react-light-accordion": "^0.1.4",
@@ -35,8 +37,7 @@
     "react-scripts": "3.0.1",
     "reactstrap": "^8.0.1",
     "universal-cookie": "^4.0.2",
-    "url-search-params": "^1.1.0",
-    "path": "0.12.7"
+    "url-search-params": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

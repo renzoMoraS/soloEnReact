@@ -61,7 +61,14 @@ function isEmptyObject(obj){
 function lookForItems(seller){
 
     localStorage.setItem('seller', seller);
-    fetch('https://pruebaenreact.azurewebsites.net/MLHuergo/items/searchSeller/' + seller)  
+    fetch('https://pruebaenreact.azurewebsites.net/MLHuergo/items/searchSeller/' + seller, { 
+        
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+        }
+
+    })  
     .then(res => res.json().then(rest => {
         
         localStorage.setItem('items', JSON.stringify(rest));

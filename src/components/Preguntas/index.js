@@ -6,6 +6,9 @@ import Cookies  from 'universal-cookie';
 //var total = 0;
 var cont = 0;
 var cookie = new Cookies;
+var click = false;
+var resultados_busqueda = [];
+var unavariable;
 
 const Item = props => (
   <tr>
@@ -25,8 +28,9 @@ class Preguntas extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { preg : null, cambio : true};
+    this.state = { preg : null, cambio : true, resultadosBusqueda: false, layer : false};
     setearPreg = setearPreg.bind(this)
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -47,99 +51,132 @@ class Preguntas extends Component {
     .then(function (res) { // res es un json
       return res.json()
     })
-      .then(function (data) {
-        data = JSON.stringify(data);// acá podes hacer cosas con res, que es la respuesta en forma de json que de dio eze}
-        localStorage.setItem('preguntas',data)
-        var preg = JSON.parse(localStorage.getItem('preguntas'))
-        setearPreg(preg);
-    })
+    .then(function (data) {
+      data = JSON.stringify(data);// acá podes hacer cosas con res, que es la respuesta en forma de json que de dio eze}
+      localStorage.setItem('preguntas', data)
+      var preg = JSON.parse(localStorage.getItem('preguntas'))
+      setearPreg(preg);
+  })
   }
 
   ordenar_Usuario(){ 
-    cont = cont + 1;
-    
-    this.state.preg.questions.sort(
-      function (a, b) {
-        return b.id - a.id;
+    if (this.state.preg != null){
+      if (click == false){
+        click = true;
+        this.state.preg.questions.sort(
+          function (a, b) {return b.id - a.id;}
+        );
+      }else{
+        click = false;
+        this.state.preg.questions.sort(
+          function (a, b) {return a.id - b.id;}
+        );
       }
-    );
-    
-    if (cont == 1){
-      this.setState({cambio : false})
-    }else{
-      window.location.reload()
     }
+    this.setState({cambio : false})
   }
 
   ordenar_Producto(){ 
-    cont = cont + 1;
-
-    this.state.preg.questions.sort(
-      function (a, b) {
-        return b.item_id.localeCompare(a.item_id);
+    if (this.state.preg != null){
+      if (click == false){  
+        click = true;
+        this.state.preg.questions.sort(function (a, b) {
+          return b.item_id.localeCompare(a.item_id);
+        }
+        );
+      }else{
+        click = false;
+        this.state.preg.questions.sort(
+          function (a, b) {
+            return a.item_id.localeCompare(b.item_id);
+          }
+        );
       }
-    );
-    
-    if (cont == 1){
-      this.setState({cambio : false})
-    }else{
-      window.location.reload()
     }
+    this.setState({cambio : false})
   }
 
-  ordenar_Pregunta(){ 
-    cont = cont + 1;
-
-    this.state.preg.questions.sort(
-      function (a, b) {
-        return b.id - a.id;
+  ordenar_Pregunta(){
+    if (this.state.preg != null){
+      if(click == false){
+        click = true;
+        this.state.preg.questions.sort(function (a, b) {
+          return b.id - a.id;
+        }
+      );
+      }else{
+          click = false;
+          this.state.preg.questions.sort(
+            function (a, b){
+              return a.id - b.id
+            }     
+          );  
       }
-    );
-    
-    if (cont == 1){
-      this.setState({cambio : false})
-    }else{
-      window.location.reload()
     }
+    this.setState({cambio : false})
   }
 
 
   ordenar_Estado(){ 
-    cont = cont + 1;
-
-    this.state.preg.questions.sort(
-      function (a, b) {
-        return a.from.answered_questions - b.from.answered_questions
+    if (this.state.preg != null){
+      if(click == false){
+        click = true;
+        this.state.preg.questions.sort(function (a, b){
+          return a.from.answered_questions - b.from.answered_questions
+        }
+      );
+      }else{
+        click = false;
+        this.state.preg.questions.sort(function (a, b){
+          return b.from.answered_questions - a.from.answered_questions
+        }
+        );
       }
-    );
-    
-    if (cont == 1){
-      this.setState({cambio : false})
-    }else{
-      window.location.reload()
     }
+    this.setState({cambio : false})
   }
 
   ordenar_Fecha(){ 
-    cont = cont + 1;
-
-    this.state.preg.questions.sort(
-      function (a, b) {
-        return b.date_created.localeCompare(a.date_created);
+    if (this.state.preg != null){
+      if (click == false){
+        click = true;
+        this.state.preg.questions.sort(function (a, b) {
+          return b.date_created.localeCompare(a.date_created);
+        }
+        );
+      }else{
+        click = false;
+        this.state.preg.questions.sort(function (a, b){
+          return a.date_created.localeCompare(b.date_created);
+        }
+        );
       }
-    );
-    
-    if (cont == 1){
-      this.setState({cambio : false})
-    }else{
-      window.location.reload()
     }
+    this.setState({cambio : false})
   }
 
   itemList() {
-    if(this.state.preg!=null) {
+    if(this.state.preg != null && !this.state.resultadosBusqueda) {
+      this.state.layer = false;
       return this.state.preg.questions.map(function(citem, i){
+        console.log();
+        if (citem.status == "ANSWERED" || citem.status == "Respondida"){
+          citem.status = "Respondida";
+          } else {
+          citem.status = "Sin responder";
+        }      
       
+        console.log(citem)
+        return <Item data={citem} key={i} />;
+        
+      })
+    } else if(this.state.resultadosBusqueda) {
+        
+      this.state.resultadosBusqueda = false;
+      this.state.layer = true;
+
+      return resultados_busqueda.map(function(citem, i){
+          
         console.log();
         if (citem.status == "ANSWERED" || citem.status == "Respondida"){
           citem.status = "Respondida";
@@ -152,6 +189,7 @@ class Preguntas extends Component {
         return <Item data={citem} key={i} />;
       
       })
+
     }
   }
 
@@ -159,7 +197,7 @@ class Preguntas extends Component {
 
 /*     if (this.state.preg != null){
      var total = this.state.preg.questions.length
-    } */ 
+    } */
 
     return (
 
@@ -167,37 +205,50 @@ class Preguntas extends Component {
 
         <h1 style = {{textAlign: 'center'}} class = "titulo" > Preguntas </h1>
         
+      <div style={{textAlign: 'center'}} class="input">  
+        <form onSubmit={this.handleSubmit} >
+          
+          <label htmlFor="new-todo">
+                Búsqueda por pregunta: &nbsp;
+          </label>
+          
+          <input 
+            class = "buscador"
+            id="new-todo"
+            onChange={this.handleChange}
+            value={this.state.text}
+          />
         
-        <form onSubmit={this.handleSubmit}>
-
+        
         <p style={{color:"#7c7d7e",backgroundColor:"#ebebeb"}}>&nbsp;Visualizar y ordenar las preguntas recibidas.&nbsp;</p>
-
+      
+        <div>{unavariable}</div>
+      
         </form>
+      </div>
 
-       
-
-        <table className = "table table-striped" style={{ marginTop: 20 }}>
+        <table className = "table table-striped" style={{ marginTop: 5 }}>
           <thead>
             <tr>
 
               <th>
-                <button onClick = {this.ordenar_Usuario.bind(this)} class = "Button User" > Ordenar por Usuario </button>
+                <button onClick = {this.ordenar_Usuario.bind(this)} type = "button" class = "btn btn-outline-success" > Ordenar por Usuario </button>
               </th>
               
               <th>
-                <button onClick = {this.ordenar_Producto.bind(this)} class = "Button Producto" > Ordenar por Publicación </button>
+                <button onClick = {this.ordenar_Producto.bind(this)} type = "button" class = "btn miColor" > Ordenar x Publicación </button>
               </th>
 
               <th>
-                <button onClick = {this.ordenar_Pregunta.bind(this)} class = "Button Pregunta" > Ordenar por Pregunta  </button>
+                <button onClick = {this.ordenar_Pregunta.bind(this)} type = "button" class = "btn btn-outline-warning" > Ordenar por Pregunta  </button>
               </th>
               
               <th>
-                <button onClick = {this.ordenar_Estado.bind(this)} class = "Button Estado" > Ordenar por Estado </button>
+                <button onClick = {this.ordenar_Estado.bind(this)} type = "button" class = "btn btn-outline-info" > Ordenar por Estado </button>
               </th>
               
               <th>
-                <button onClick = {this.ordenar_Fecha.bind(this)} class = "Button Fecha" > Ordenar por Fecha </button>   
+                <button onClick = {this.ordenar_Fecha.bind(this)} type = "button" class = "btn btn-outline-light" > Ordenar por Fecha </button>   
               </th>
 
             </tr>
@@ -217,25 +268,23 @@ class Preguntas extends Component {
   }
 
   handleChange(e) {
-    this.setState({ text: e.target.value });
-  }
 
-  handleSubmit(e) {
-
-    e.preventDefault();
-    if (!this.state.text.length) {
-      return;
-    }
-    var dato_ingresado = this.state.text;
+    resultados_busqueda = [];
     
-/*     localStorage.setItem('seller', dato_ingresado)
-    axios.get('http://localhost:8081/items/searchItems/' + dato_ingresado)
-      .then(setTimeout(function () {
-        window.location.reload()
-      }.bind(this), 1000)); */
-
+    this.state.preg.questions.map(function(preguntaActual, i){
+      if(preguntaActual.text.includes(e.target.value) || e.target.value == ''){ //
+        resultados_busqueda.push(preguntaActual)
+      }
+    })
+    this.setState({resultadosBusqueda: true})
   }
 
 }
 
 export default Preguntas;
+
+/*     localStorage.setItem('seller', dato_ingresado)
+    axios.get('http://localhost:8081/items/searchItems/' + dato_ingresado)
+      .then(setTimeout(function () {
+        window.location.reload()
+      }.bind(this), 1000)); */
