@@ -176,12 +176,10 @@ app.post('/pantallaInicio', function(reqv, resv) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*TODO
-
 Solo se guarda un usuario en el modelo
 No se puede dejar de seguir
 Posible inutilidad de guardar todos los productos
 ROMPER TODO
-
 */
 
 app.get('/ventasEnOrden',function(req,res){
@@ -857,7 +855,6 @@ routes.route('/FollSell/add').post(function(req, res) {
     /*url = 'http://localhost:4000/MLHuergo/FollSell/searchName/' + aux._name;
     fetch(url, options)
      .then(resp =>{
-
         resp.json().then(rest => {
             
             //if(!isEmptyObject(rest)) res.status(200).json({"message": "Ya habia seguido a este usuario."});  
@@ -878,7 +875,6 @@ routes.route('/FollSell/add').post(function(req, res) {
                 });
     
             })    
-
         })  */
 
      .catch(err => {
