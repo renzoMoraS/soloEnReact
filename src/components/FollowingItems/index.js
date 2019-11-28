@@ -82,7 +82,7 @@ class FollowingItems extends Component {
 
     handlePage(){
 
-        fetch('http://localhost:4000/MLHuergo/items/getFollowed', { 
+        fetch('https://pruebaenreact.azurewebsites.net/MLHuergo/items/getFollowed', { 
       
             method: 'POST',
             body: JSON.stringify({
@@ -105,7 +105,7 @@ class FollowingItems extends Component {
     
                 });
                 console.log(itemId);
-                fetch('http://localhost:4000/MLHuergo/changes/getMine', { 
+                fetch('https://pruebaenreact.azurewebsites.net/MLHuergo/changes/getMine', { 
           
                     method: 'POST',
                     body: JSON.stringify({
@@ -211,7 +211,7 @@ class FollowingItems extends Component {
         this.state.items.map(function(citem, i){
 
             citem = JSON.stringify(citem);
-            fetch('http://localhost:4000/MLHuergo/items/getChanges', { 
+            fetch('https://pruebaenreact.azurewebsites.net/MLHuergo/items/getChanges', { 
       
                 method: 'POST',
                 body: JSON.stringify({

@@ -13,7 +13,7 @@ function startFollowing(item) {
 
   console.log(item);
   item = JSON.stringify(item);
-  fetch('http://localhost:4000/items/startFollowing', { 
+  fetch('https://pruebaenreact.azurewebsites.net/items/startFollowing', { 
       
     method: 'POST',
     body: JSON.stringify({
@@ -77,7 +77,7 @@ class Buscador extends Component {
   componentWillMount() {
 
 
-    fetch('http://localhost:4000/items/searchItems/' + localStorage.getItem('seller'))
+    fetch('https://pruebaenreact.azurewebsites.net/items/searchItems/' + localStorage.getItem('seller'))
       .then(res => {
 
         res.json().then(data => {
@@ -206,7 +206,7 @@ class Buscador extends Component {
       return;
     }
 
-    fetch('http://localhost:4000/MLHuergo/FollSell/add', { 
+    fetch('https://pruebaenreact.azurewebsites.net/MLHuergo/FollSell/add', { 
       
       method: 'POST',
       body: JSON.stringify({

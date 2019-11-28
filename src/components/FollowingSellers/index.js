@@ -61,7 +61,7 @@ function isEmptyObject(obj){
 function lookForItems(seller){
 
     localStorage.setItem('seller', seller);
-    fetch('http://localhost:4000/MLHuergo/items/searchSeller/' + seller)  
+    fetch('https://pruebaenreact.azurewebsites.net/MLHuergo/items/searchSeller/' + seller)  
     .then(res => res.json().then(rest => {
         
         localStorage.setItem('items', JSON.stringify(rest));
@@ -108,7 +108,7 @@ class FollowingSellers extends Component {
 
         if(localStorage.getItem('seller') == 'null' || localStorage.getItem('seller') == null){
 
-            fetch('http://localhost:4000/MLHuergo/FollSell/searchForMe', { 
+            fetch('https://pruebaenreact.azurewebsites.net/MLHuergo/FollSell/searchForMe', { 
         
                 method: 'POST',
                 body: JSON.stringify({
@@ -141,7 +141,7 @@ class FollowingSellers extends Component {
             items.map(function(data){
 
                 console.log(data);
-                fetch('http://localhost:4000/MLHuergo/changes/getMine', { 
+                fetch('https://pruebaenreact.azurewebsites.net/MLHuergo/changes/getMine', { 
           
                     method: 'POST',
                     body: JSON.stringify({
